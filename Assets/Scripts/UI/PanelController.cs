@@ -6,193 +6,190 @@ using UnityEngine.InputSystem;
 
 public class PanelController : MonoBehaviour
 {
-    [SerializeField] panelLibrary[] panelLibraries;
+    // [SerializeField] panelLibrary[] panelLibraries;
 
-    //Input variables
-    InputReader inputs;
-    InputAction Quit;
-    InputAction Menu;
+    // //Input variables
+    // InputReader inputs;
+    // InputAction Quit;
+    // InputAction Menu;
 
-    //Timing variables
-    private float unavailablePanelCooldown = 0.2f;
-    private float timeSinceLastHit;
+    // //Timing variables
+    // private float unavailablePanelCooldown = 0.2f;
+    // private float timeSinceLastHit;
 
-    //Panel dictionary
-    private Dictionary<PanelType, GameObject> panelMap;
-    private bool isManualPanelOpen = false;
+    // //Panel dictionary
+    // private Dictionary<PanelType, GameObject> panelMap;
+    // private bool isManualPanelOpen = false;
 
-    //Camera 
-    private Camera camera;
+    // //Camera 
+    // private Camera camera;
 
-    //Events
-    public static event Action OnUnAvailableGame;
-    public static event Action<bool> OnEnablePlayerInput;
+    // //Events
+    // public static event Action OnUnAvailableGame;
+    // public static event Action<bool> OnEnablePlayerInput;
 
     
 
 
-    //Layer Setup
-    int unavailableLayerMask;
-    const int UnAvailableGameLayer = 8;
+    // //Layer Setup
+    // int unavailableLayerMask;
+    // const int UnAvailableGameLayer = 8;
 
-    private void Awake()
-    {
-        camera = Camera.main;
-        unavailableLayerMask = 1 << UnAvailableGameLayer;
-        timeSinceLastHit = Time.time;
+    // private void Awake()
+    // {
+    //     camera = Camera.main;
+    //     unavailableLayerMask = 1 << UnAvailableGameLayer;
+    //     timeSinceLastHit = Time.time;
 
-        //Build the dictionary for quick access
-        panelMap = new Dictionary<PanelType, GameObject>();
-        foreach (var panel in panelLibraries)
-        {
-            if (!panelMap.ContainsKey(panel.panelName))
-                panelMap.Add(panel.panelName, panel.panelObject);
-        }
+    //     //Build the dictionary for quick access
+    //     panelMap = new Dictionary<PanelType, GameObject>();
+    //     foreach (var panel in panelLibraries)
+    //     {
+    //         if (!panelMap.ContainsKey(panel.panelName))
+    //             panelMap.Add(panel.panelName, panel.panelObject);
+    //     }
         
-        for(int i =0; i < panelLibraries.Length; i++)
-        {
-            panelLibraries[i].visibilityState = panelLibraries[i].panelObject.activeSelf;
-        }
+    //     for(int i =0; i < panelLibraries.Length; i++)
+    //     {
+    //         panelLibraries[i].visibilityState = panelLibraries[i].panelObject.activeSelf;
+    //     }
 
-    }
-
-
-    void OnEnable()
-    {
-        // Input actions enabling
-        Quit?.Enable();
-        Menu?.Enable();
-
-        //Action subscriptions
-        Quit.performed += ActiveInputPanelManager;
-        // Menu.performed += ActiveInputPanelManager;
-        TutorialID.OnTutorialTrigger += SetActivePanel;
-    }
+    // }
 
 
-    void OnDisable()
-    {
-        //Action unsubscriptions
-        Quit.performed -= ActiveInputPanelManager;
-        // Menu.performed -= ActiveInputPanelManager;
-        TutorialID.OnTutorialTrigger -= SetActivePanel;
+    // void OnEnable()
+    // {
+    //     // Input actions enabling
+    //     Quit?.Enable();
+    //     Menu?.Enable();
+
+    //     //Action subscriptions
+    //     Quit.performed += ActiveInputPanelManager;
+    //     // Menu.performed += ActiveInputPanelManager;
+    // }
+
+
+    // void OnDisable()
+    // {
+    //     //Action unsubscriptions
+    //     Quit.performed -= ActiveInputPanelManager;
+    //     // Menu.performed -= ActiveInputPanelManager;
         
-        //Input Actions disabling
-        Quit?.Disable();
-        Menu?.Disable();
-        inputs?.Disable();
+    //     //Input Actions disabling
+    //     Quit?.Disable();
+    //     Menu?.Disable();
        
-    }
+    // }
 
-    private void ActiveInputPanelManager(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-        string uiInputCall = context.action.name;
+    // private void ActiveInputPanelManager(InputAction.CallbackContext context)
+    // {
+    //     if (!context.performed) return;
+    //     string uiInputCall = context.action.name;
 
-        // Try to match the input name with a panel type
-        if (Enum.TryParse(uiInputCall, out PanelType panelType))
-        {
-            bool isActive = panelMap.ContainsKey(panelType) && panelMap[panelType].activeSelf;
-            bool newState = !isActive;
+    //     // Try to match the input name with a panel type
+    //     if (Enum.TryParse(uiInputCall, out PanelType panelType))
+    //     {
+    //         bool isActive = panelMap.ContainsKey(panelType) && panelMap[panelType].activeSelf;
+    //         bool newState = !isActive;
 
-            Debug.Log($"{panelType} Panel: Toggle state = {newState}");
+    //         Debug.Log($"{panelType} Panel: Toggle state = {newState}");
 
-            if (newState)
-            {
-                isManualPanelOpen = true;
-                SetActivePanel(panelType);
-            }
-            else
-            {
-                isManualPanelOpen = false;
-                ResetToHUDPanel();
-            }
+    //         if (newState)
+    //         {
+    //             isManualPanelOpen = true;
+    //             SetActivePanel(panelType);
+    //         }
+    //         else
+    //         {
+    //             isManualPanelOpen = false;
+    //             ResetToHUDPanel();
+    //         }
                 
-        }
-        else
-        {
-            Debug.LogWarning($"No panel found matching input action '{uiInputCall}'.");
-        }
-    }
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning($"No panel found matching input action '{uiInputCall}'.");
+    //     }
+    // }
 
-    private void Update()
-    {
-        UnAvailableGamePanelTrigger();
-    }
+    // private void Update()
+    // {
+    //     UnAvailableGamePanelTrigger();
+    // }
 
-    public void ResetToHUDPanel()
-    {
-        isManualPanelOpen = false;
-        foreach (var pair in panelMap)
-        {
-            bool shouldBeActive = (pair.Key == PanelType.PlayerHUD);
-            pair.Value.SetActive(shouldBeActive);
-        }
+    // public void ResetToHUDPanel()
+    // {
+    //     isManualPanelOpen = false;
+    //     foreach (var pair in panelMap)
+    //     {
+    //         bool shouldBeActive = (pair.Key == PanelType.PlayerHUD);
+    //         pair.Value.SetActive(shouldBeActive);
+    //     }
 
-        UpdateVisibilityState();
-        //Re-enable player input
-        OnEnablePlayerInput?.Invoke(true);
+    //     UpdateVisibilityState();
+    //     //Re-enable player input
+    //     OnEnablePlayerInput?.Invoke(true);
 
-        //Cursor lock and make invisible
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-    }
+    //     //Cursor lock and make invisible
+    //     Cursor.visible = false;
+    //     Cursor.lockState = CursorLockMode.Locked;
+    // }
 
 
 
-    private void SetActivePanel(PanelType targetPanel)
-    {
-        isManualPanelOpen = true;
-        foreach (var pair in panelMap)
-        {
-            bool shouldBeActive = pair.Key == targetPanel;
-            Debug.Log($"Target Panel:{targetPanel} == > {shouldBeActive}");
-            pair.Value.SetActive(shouldBeActive);
+    // private void SetActivePanel(PanelType targetPanel)
+    // {
+    //     isManualPanelOpen = true;
+    //     foreach (var pair in panelMap)
+    //     {
+    //         bool shouldBeActive = pair.Key == targetPanel;
+    //         Debug.Log($"Target Panel:{targetPanel} == > {shouldBeActive}");
+    //         pair.Value.SetActive(shouldBeActive);
 
-        }
-        UpdateVisibilityState();
+    //     }
+    //     UpdateVisibilityState();
 
-        //Disable player input
-        OnEnablePlayerInput?.Invoke(false);
+    //     //Disable player input
+    //     OnEnablePlayerInput?.Invoke(false);
 
-        //Cursor unlock and make visible
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-    }
+    //     //Cursor unlock and make visible
+    //     Cursor.visible = true;
+    //     Cursor.lockState = CursorLockMode.None;
+    // }
 
-    private void UpdateVisibilityState()
-    {
-        for(int i =0; i < panelLibraries.Length; i++)
-        {
-            if (panelMap.TryGetValue(panelLibraries[i].panelName, out var obj))
-                panelLibraries[i].visibilityState = obj.activeSelf;
-        }
-    }
+    // private void UpdateVisibilityState()
+    // {
+    //     for(int i =0; i < panelLibraries.Length; i++)
+    //     {
+    //         if (panelMap.TryGetValue(panelLibraries[i].panelName, out var obj))
+    //             panelLibraries[i].visibilityState = obj.activeSelf;
+    //     }
+    // }
 
-    private void UnAvailableGamePanelTrigger()
-    {
-        if (isManualPanelOpen) return;
-        Ray ray = new Ray(camera.transform.position, camera.transform.forward);
+    // private void UnAvailableGamePanelTrigger()
+    // {
+    //     if (isManualPanelOpen) return;
+    //     Ray ray = new Ray(camera.transform.position, camera.transform.forward);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 5f, unavailableLayerMask))
-        {
-            timeSinceLastHit = Time.time;
-            foreach (var panelbook in panelLibraries)
-            {
-                if (panelbook.panelName == PanelType.UnAvailableGame)
-                {
-                    OnUnAvailableGame?.Invoke();//Invoke the event if the UnAvailableGamePanel on
-                    panelbook.panelObject.SetActive(true);
-                }
-                else
-                    panelbook.panelObject.SetActive(false);
-            }
-        }
-        else if (Time.time - timeSinceLastHit > unavailablePanelCooldown)
-        {
-            ResetToHUDPanel();
-        }
-    }
+    //     if (Physics.Raycast(ray, out RaycastHit hit, 5f, unavailableLayerMask))
+    //     {
+    //         timeSinceLastHit = Time.time;
+    //         foreach (var panelbook in panelLibraries)
+    //         {
+    //             if (panelbook.panelName == PanelType.UnAvailableGame)
+    //             {
+    //                 OnUnAvailableGame?.Invoke();//Invoke the event if the UnAvailableGamePanel on
+    //                 panelbook.panelObject.SetActive(true);
+    //             }
+    //             else
+    //                 panelbook.panelObject.SetActive(false);
+    //         }
+    //     }
+    //     else if (Time.time - timeSinceLastHit > unavailablePanelCooldown)
+    //     {
+    //         ResetToHUDPanel();
+    //     }
+    // }
     
 }
 
