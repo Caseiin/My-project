@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerController : EntityController
+public class PlayerController : EntityController,IMoveable
 {
     //Provides Info about player to other classes
 
@@ -14,7 +14,8 @@ public class PlayerController : EntityController
     public float MoveSpeed{get; set;} = 6f;
     public float JumpForce{get; set;} = 8f;
     public float FallMultiplier{get; set;} = 2.5f;
-    public Rigidbody RB {get; private set;}
+    public Rigidbody RB {get;private set;}
+    public bool IsMovementBlocked { get;set;} = false;
 
     [Header("Sensitivity")]
     public Transform _headTransform;

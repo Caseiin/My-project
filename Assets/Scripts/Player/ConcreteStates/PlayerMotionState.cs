@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMotionState : BaseState
@@ -9,7 +10,7 @@ public class PlayerMotionState : BaseState
         _player = player;
     }
 
-    public override void OnEnter() => Debug.Log("Player is moving!");
+    public override void OnEnter() {}
     public override void OnExit() => _player.RB.linearVelocity = Vector2.zero;
 
 
@@ -25,7 +26,7 @@ public class PlayerMotionState : BaseState
 
     void Move()
     {
-        Vector2 input = _player.Input.MoveDirection;
+        Vector2 input = _player.IsMovementBlocked? Vector2.zero :_player.Input.MoveDirection;
 
         // Get directions relative to player rotation
         Vector3 forward = _player.transform.forward;
