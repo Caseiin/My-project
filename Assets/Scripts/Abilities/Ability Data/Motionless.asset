@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0346407407db584291d2960758b9b04, type: 3}
   m_Name: Motionless
   m_EditorClassIdentifier: Assembly-CSharp::AbilitySO
-  effects: []
+  effects:
+  - rid: 6007473254814449817
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6007473254814449817
+      type: {class: MotionlessEffect, ns: , asm: Assembly-CSharp}
+      data:
+        motionlessDuration: 2.5

@@ -5,7 +5,6 @@ using UnityEngine;
 [Serializable]
 public class MotionlessEffect : Effect
 {
-
     [SerializeField] float motionlessDuration = 2.5f;
 
     public override void Apply(IEffectable target)
@@ -15,7 +14,6 @@ public class MotionlessEffect : Effect
         {
             var _runner = _target as MonoBehaviour;
             _runner.StartCoroutine(SlowedCouroutine(_target));
-            Debug.Log("Target has stopped");
         }
     }
 
