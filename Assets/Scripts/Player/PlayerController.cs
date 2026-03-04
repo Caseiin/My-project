@@ -28,12 +28,12 @@ public class PlayerController : EntityController
 
     void Update()
     {
-        machine.Update();
+        machine?.Update();
     }
 
     void FixedUpdate()
     {
-        machine.FixedUpdate();
+        machine?.FixedUpdate();
     }
 
     void DeclareStateInformation()
@@ -47,6 +47,8 @@ public class PlayerController : EntityController
         // Define transitions
         At(idlestate,motionstate,new FuncPredicate(()=> _input.MoveDirection.sqrMagnitude > _movementThreshold));
         At(motionstate,idlestate,new FuncPredicate(()=> _input.MoveDirection.sqrMagnitude <= _movementThreshold));
+
+        machine.SetState(idlestate);
 
     }
 
