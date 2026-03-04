@@ -7,9 +7,4 @@ public class PlayerIdleState : BaseState
     {
     }
 
-    public override void OnEnter()
-    {
-        Debug.Log("Player is Idling!");
-        // _player.RB.linearVelocity = Vector2.zero;
-    }
 }
