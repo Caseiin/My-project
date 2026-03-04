@@ -42,6 +42,11 @@ public class StateMachine
         GetOrAddNode(from).AddTransitions(GetOrAddNode(to).State, condition);
     }
 
+    public void AddAnyTransition(IState to, IPredicate condition)
+    {
+        anyTransitions.Add(new Transition(to,condition));
+    }
+
     StateNode GetOrAddNode(IState state)
     {
         var node = nodes.GetValueOrDefault(state.GetType());

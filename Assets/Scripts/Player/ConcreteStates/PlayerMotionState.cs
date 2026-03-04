@@ -3,12 +3,15 @@ using UnityEngine;
 public class PlayerMotionState : BaseState
 {
     
-    public PlayerMotionState(PlayerController player): base(player){}
+    private PlayerController player;
 
-    public override void OnEnter()
+    public PlayerMotionState(PlayerController player) : base(player)
     {
-        
+        this.player = player;
     }
+
+    public override void OnEnter() => Debug.Log("Player is moving!");
+
 
     public override void FixedUpdate()
     {

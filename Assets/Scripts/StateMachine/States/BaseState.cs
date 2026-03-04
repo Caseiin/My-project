@@ -2,10 +2,10 @@ using UnityEngine;
 
 public abstract class BaseState : IState
 {
-    protected readonly PlayerController player;
-    protected BaseState(PlayerController player)
+    protected readonly EntityController entity;
+    protected BaseState(EntityController entity)
     {
-        this.player = player;
+        this.entity = entity;
     }
     public virtual void FixedUpdate()
     {
