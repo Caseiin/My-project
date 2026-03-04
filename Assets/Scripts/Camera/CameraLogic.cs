@@ -3,7 +3,6 @@ using UnityEngine;
 
 public abstract class CameraLogic
 {
-
     protected PlayerController _player;
     protected Vector2 _currentLook;
     protected Vector2 _lookVelocity;
