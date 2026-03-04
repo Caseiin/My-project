@@ -25,8 +25,22 @@ public class PlayerMotionState : BaseState
 
     void Move()
     {
-        var move = new Vector3(_player.Input.MoveDirection.x, 0f, _player.Input.MoveDirection.y);
-        _player.RB.linearVelocity = new Vector3(move.x * _player.MoveSpeed,_player.RB.linearVelocity.y,move.z * _player.MoveSpeed);
+        Vector2 input = _player.Input.MoveDirection;
+
+        // Get directions relative to player rotation
+        Vector3 forward = _player.transform.forward;
+        Vector3 right = _player.transform.right;
+
+        // Keep movement flat
+        forward.y = 0f;
+        right.y = 0f;
+
+        forward.Normalize();
+        right.Normalize();
+
+        Vector3 moveDir = forward * input.y + right * input.x;
+
+        _player.RB.linearVelocity = new Vector3(moveDir.x * _player.MoveSpeed,_player.RB.linearVelocity.y,moveDir.z * _player.MoveSpeed);
     }
 
     void Jump()

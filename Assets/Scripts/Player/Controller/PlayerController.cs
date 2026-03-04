@@ -16,6 +16,16 @@ public class PlayerController : EntityController
     public float FallMultiplier{get; set;} = 2.5f;
     public Rigidbody RB {get; private set;}
 
+    [Header("Sensitivity")]
+    [SerializeField] Transform _headTransform;
+    [SerializeField] float _sensitivity = .1f;
+    [SerializeField] float _verticalClamp = 80f;
+    [SerializeField] float _lookSmoothTime = 0.05f; // small = snappy, large = more smooth
+    Vector2 _currentLook; // current smoothed input
+    Vector2 _lookVelocity; // used internally for SmoothDamp    
+
+    float _xRotation;
+
     // StateMachine & state declaration
     StateMachine machine;
 
@@ -28,6 +38,7 @@ public class PlayerController : EntityController
 
     void Update()
     {
+        HandleLook();
         machine?.Update();
     }
 
@@ -50,6 +61,26 @@ public class PlayerController : EntityController
 
         machine.SetState(idlestate);
 
+    }
+
+    void HandleLook()
+    {
+        // Smooth input first
+        _currentLook.x = Mathf.SmoothDamp(_currentLook.x, _input.LookDirection.x, ref _lookVelocity.x, _lookSmoothTime);
+        _currentLook.y = Mathf.SmoothDamp(_currentLook.y, _input.LookDirection.y, ref _lookVelocity.y, _lookSmoothTime);
+
+        // Apply sensitivity
+        float mouseX = _currentLook.x * _sensitivity;
+        float mouseY = _currentLook.y * _sensitivity;
+
+        // Rotate body (yaw)
+        transform.Rotate(Vector3.up * mouseX);
+
+        // Rotate head (pitch)
+        _xRotation -= mouseY;
+        _xRotation = Mathf.Clamp(_xRotation, -_verticalClamp, _verticalClamp);
+
+        _headTransform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
     }
 
     // Helper Methods
