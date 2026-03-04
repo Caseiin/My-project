@@ -5,9 +5,8 @@ using UnityEngine;
 [Serializable]
 public class MotionlessEffect : Effect
 {
-    [Range(0.1f,0.9f)]
-    [SerializeField] float slowCoefficient = 0.5f;
-    [SerializeField] float slowDuration = 2.5f;
+
+    [SerializeField] float motionlessDuration = 2.5f;
 
     public override void Apply(IEffectable target)
     {
@@ -23,7 +22,7 @@ public class MotionlessEffect : Effect
     IEnumerator SlowedCouroutine(IMoveable target)
     {
         target.IsMovementBlocked = true;
-        yield return new WaitForSecondsRealtime(slowDuration);
+        yield return new WaitForSecondsRealtime(motionlessDuration);
         target.IsMovementBlocked = false;
     }
 }

@@ -7,9 +7,11 @@ public class Tester : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        foreach(var effect in ability.effects)
+        var effectables = other.gameObject.GetComponents<IEffectable>();
+        foreach(var effectable in effectables)
         {
-            if (other.gameObject.TryGetComponent<IEffectable>(out IEffectable effectable)){
+            foreach ( var effect in ability.effects)
+            {
                 effect.Apply(effectable);
             }
         }
