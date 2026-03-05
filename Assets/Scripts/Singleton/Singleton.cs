@@ -23,4 +23,16 @@ public class Singleton<T> : MonoBehaviour where T : Component
             return _instance;
         }
     }
+
+    protected virtual void Awake()
+    {
+        
+    }
+
+    protected virtual void InitialiseSingleton()
+    {
+        if (!Application.isPlaying) return;
+
+        _instance = this as T;
+    }
 }

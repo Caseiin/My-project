@@ -9,6 +9,6 @@ public class DamageEffect : Effect
     public override void Apply(IEffectable target)
     {
         var _target = target as IDamageable;
-        _target.TakeDamage(dmgAmount);
+        _target?.TakeDamage(dmgAmount);
     }
 }

@@ -9,6 +9,6 @@ public class HealingEffect: Effect
     public override void Apply(IEffectable target)
     {
         var _target = target as IDamageable;
-        _target.RestoreHealth(healingAmount);
+        _target?.RestoreHealth(healingAmount);
     }
 }
