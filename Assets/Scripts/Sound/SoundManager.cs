@@ -15,7 +15,9 @@ public class SoundManager : MonoBehaviour
     private Dictionary<SoundType, List<SoundData>> _soundDictionary = new();
 
 
-    private void Awake(){}
+    void Awake()
+    {
+    }
     private void Start(){}
     private void Update(){}
 
