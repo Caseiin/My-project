@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AbilitySO
   AbilityEffectIcon: {fileID: 0}
   effects:
-  - rid: 6007473271733747779
+  - rid: 6007473272275599429
   references:
     version: 2
     RefIds:
-    - rid: 6007473271733747779
+    - rid: 6007473272275599429
       type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
       data:
-        dmgAmount: 50
+        dmgAmount: 30
