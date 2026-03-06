@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+public class SoundManager : Singleton<SoundManager>
 {
 
     [Header("Sound Library")]
@@ -13,4 +13,9 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource _loopedSfxSource;
 
     private Dictionary<SoundType, List<SoundData>> _soundDictionary = new();
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 }

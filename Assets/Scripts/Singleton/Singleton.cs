@@ -26,7 +26,7 @@ public class Singleton<T> : MonoBehaviour where T : Component
 
     protected virtual void Awake()
     {
-        
+        InitialiseSingleton();
     }
 
     protected virtual void InitialiseSingleton()
