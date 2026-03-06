@@ -12,7 +12,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public InputSystem_Actions Input;
     public Vector2 MoveDirection{get;private set;}
     public Vector2 LookDirection{get;private set;}
-    public event Action onJumpPressed;
 
     public void EnableInputMap()
     {
