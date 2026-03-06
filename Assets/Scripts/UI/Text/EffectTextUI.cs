@@ -29,7 +29,7 @@ public class EffectTextUI : MonoBehaviour
     IEnumerator DisplayEffect(string msg)
     {
         _effectTxt.text = msg;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
         _effectTxt.text = "";
     }
 }
