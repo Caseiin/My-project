@@ -1,15 +1,13 @@
+using System;
 using UnityEngine;
 
-public class Messenger
+public static class Messenger
 {
-    string _message ="";
-    public void AddEffectMessage(object effectname,string effect)
+    public static event System.Action<String> OnMessage;
+    public static  void AddEffectMessage(string msg)
     {
-        _message = $"{nameof(effectname)}: effect provided = {effect}";
+        OnMessage?.Invoke(msg);
     }
 
-    public string DisplayMessage()
-    {
-        return _message;
-    }
+
 }
