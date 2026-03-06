@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DialogueOptions : MonoBehaviour
+public class DialogueOptions
 {
     public string [] texts;
     public DialogueNode NextNode;
