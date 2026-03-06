@@ -11,12 +11,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public void RestoreHealth(int health)
     {
         _health += health;
-        Debug.Log($"health is restored... new health {_health}");
     }
 
     public void TakeDamage(int dmg)
     {
         _health -= dmg;
-        Debug.Log($"health is taken... new health {_health}");
+        OnDeath?.Invoke();
     }
 }
