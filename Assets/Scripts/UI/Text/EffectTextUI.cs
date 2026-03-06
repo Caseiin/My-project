@@ -4,10 +4,10 @@ using System.Collections;
 
 public class EffectTextUI : MonoBehaviour
 {
-    TextMeshPro _effectTxt;
+    TextMeshProUGUI _effectTxt;
     void Awake()
     {
-        _effectTxt = GetComponent<TextMeshPro>();
+        _effectTxt = GetComponent<TextMeshProUGUI>();
     }
 
     void OnEnable()
@@ -22,6 +22,7 @@ public class EffectTextUI : MonoBehaviour
 
     void DisplayEffectMessage(string msg)
     {
+        Debug.Log(msg); 
         StartCoroutine(DisplayEffect(msg));
     }
 
