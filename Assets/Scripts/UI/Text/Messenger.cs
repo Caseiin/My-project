@@ -3,9 +3,9 @@ using UnityEngine;
 public class Messenger
 {
     string _message ="";
-    public void AddEffectMessage(string effectname,string effect)
+    public void AddEffectMessage(object effectname,string effect)
     {
-        _message = $"{effectname}: effect provided = {effect}";
+        _message = $"{nameof(effectname)}: effect provided = {effect}";
     }
 
     public string DisplayMessage()
