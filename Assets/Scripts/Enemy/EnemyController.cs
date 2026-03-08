@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class EnemyController : MonoBehaviour, IMoveable
+public class EnemyController : EntityController, IMoveable
 {
     [Header("Movement")]
     public float MoveSpeed{get; set;} = 6f;
