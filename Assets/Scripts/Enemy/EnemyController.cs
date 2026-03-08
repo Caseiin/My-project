@@ -7,7 +7,7 @@ public class EnemyController : EntityController, IMoveable
     [SerializeField]float detectionRange = 15f; 
 
     [Header("Movement")]
-    public float MoveSpeed{get; set;} = 6f;
+    public float MoveSpeed{get; set;} = 4f;
     public Rigidbody RB {get;private set;}
     public bool IsMovementBlocked { get;set;} = false;
 
