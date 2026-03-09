@@ -1,16 +1,21 @@
+using System;
 using UnityEngine;
 
-public class EnemyHealth : MonoBehaviour
+public class EnemyHealth : MonoBehaviour, IDamageable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Range(0,150)]
+    [SerializeField] int _health;
+    public int Health => _health;
+    public event Action OnDeath;
+
+    public void RestoreHealth(int health)
     {
-        
+        _health += health;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void TakeDamage(int dmg)
     {
-        
+        _health -= dmg;
+        OnDeath?.Invoke();
     }
 }

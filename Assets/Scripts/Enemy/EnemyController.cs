@@ -36,13 +36,13 @@ public class EnemyController : EntityController, IMoveable
         machine = new StateMachine();
 
         var trackState = new EnemyTrackState(this);
-        var idlestate =  new EnemyIdleState(this);
+        var idlestate = new EnemyIdleState(this);
 
-    At(idlestate, trackState, new FuncPredicate(() => 
-        PlayerPosition != null && Vector3.Distance(transform.position, PlayerPosition.position) < detectionRange));
+        At(idlestate, trackState, new FuncPredicate(() => 
+            PlayerPosition != null && Vector3.Distance(transform.position, PlayerPosition.position) < detectionRange && !IsMovementBlocked));
 
-    At(trackState, idlestate, new FuncPredicate(() => 
-        PlayerPosition == null || Vector3.Distance(transform.position, PlayerPosition.position) >= detectionRange));
+        At(trackState, idlestate, new FuncPredicate(() => 
+            PlayerPosition == null || Vector3.Distance(transform.position, PlayerPosition.position) >= detectionRange || IsMovementBlocked));
 
         machine.SetState(trackState);
     }
