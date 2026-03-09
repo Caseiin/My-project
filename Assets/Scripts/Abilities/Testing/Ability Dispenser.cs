@@ -37,18 +37,5 @@ public class AbilityDispenser : MonoBehaviour
         PlaceAbilityTrip(abilityObject);
     }
 
-    void Start()
-    {
-        InvokeRepeating(nameof(DispenseAbility),0f,5f);
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, maxSpawnRadius);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, minSpawnRadius);
-    }
 
 }

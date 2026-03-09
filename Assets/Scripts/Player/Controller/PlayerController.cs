@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerController : EntityController,IMoveable
 {
     //Provides Info about player to other classes

@@ -1,10 +1,13 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class EnemyController : EntityController, IMoveable
 {
     public Transform PlayerPosition; 
-    [SerializeField]float detectionRange = 15f; 
+    [SerializeField]float _detectionRange = 15f; 
+    [SerializeField]float _attackRange = 2.5f; 
+
 
     [Header("Movement")]
     public float MoveSpeed{get; set;} = 4f;
@@ -37,14 +40,23 @@ public class EnemyController : EntityController, IMoveable
 
         var trackState = new EnemyTrackState(this);
         var idlestate = new EnemyIdleState(this);
+        var attackState = new EnemyAttackState(this);
 
-        At(idlestate, trackState, new FuncPredicate(() => 
-            PlayerPosition != null && Vector3.Distance(transform.position, PlayerPosition.position) < detectionRange && !IsMovementBlocked));
+        At(idlestate, trackState, new FuncPredicate(() => DistanceToPlayer() < _detectionRange));
 
-        At(trackState, idlestate, new FuncPredicate(() => 
-            PlayerPosition == null || Vector3.Distance(transform.position, PlayerPosition.position) >= detectionRange || IsMovementBlocked));
+        At(trackState, attackState, new FuncPredicate(() => DistanceToPlayer() <= _attackRange));
+
+        At(attackState, trackState, new FuncPredicate(() =>  DistanceToPlayer() > _attackRange && DistanceToPlayer()< _detectionRange));
+
+        At(trackState, idlestate, new FuncPredicate(() =>  DistanceToPlayer() >=  _detectionRange));
 
         machine.SetState(trackState);
+    }
+
+    float DistanceToPlayer()
+    {
+        if (PlayerPosition == null) return Mathf.Infinity;
+        return Vector3.Distance(transform.position, PlayerPosition.position);
     }
 
     // Helper Methods

@@ -5,6 +5,6 @@ using UnityEngine;
 public class AbilitySO : ScriptableObject
 {
     public Sprite AbilityEffectIcon;
-    public Color AbilityColour;
+
     [SerializeReference] public List<Effect> effects;
 }
