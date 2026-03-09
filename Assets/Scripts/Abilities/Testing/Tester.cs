@@ -16,7 +16,7 @@ public class Tester : MonoBehaviour
         var effectables = other.gameObject.GetComponents<IEffectable>();
         foreach(var effectable in effectables)
         {
-            ColourChangeRoutine(mesh);
+            StartCoroutine(ColourChangeRoutine(mesh));
             Debug.Log($"effectable components: {effectable}");
             foreach ( var effect in Ability.effects)
             {

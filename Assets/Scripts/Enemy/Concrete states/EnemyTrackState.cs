@@ -13,8 +13,6 @@ public class EnemyTrackState : BaseState
     public override void Update()
     {
         _destination = FindPlayersPosition();
-        Debug.Log(_destination);
-        Debug.Log("Track");
 
     }
 
