@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: DamagingEffect
   m_EditorClassIdentifier: Assembly-CSharp::AbilitySO
   AbilityEffectIcon: {fileID: 0}
+  abilityMaterial: {fileID: 2100000, guid: abc0e321eb786894eac7db19059d086f, type: 2}
   effects:
   - rid: 6007473272275599429
   references:

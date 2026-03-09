@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0346407407db584291d2960758b9b04, type: 3}
   m_Name: HealingAbility
   m_EditorClassIdentifier: Assembly-CSharp::AbilitySO
+  AbilityEffectIcon: {fileID: 0}
+  abilityMaterial: {fileID: 2100000, guid: 0de7f34c594be8a4a989ea2561df1152, type: 2}
   effects:
   - rid: 3045477177273614531
   references:

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0346407407db584291d2960758b9b04, type: 3}
   m_Name: Motionless
   m_EditorClassIdentifier: Assembly-CSharp::AbilitySO
+  AbilityEffectIcon: {fileID: 0}
+  abilityMaterial: {fileID: 2100000, guid: fcb3ba2500a134e48b4f97a1d538390f, type: 2}
   effects:
   - rid: 6007473254814449817
   references:
