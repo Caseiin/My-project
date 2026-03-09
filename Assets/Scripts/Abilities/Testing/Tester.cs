@@ -6,14 +6,14 @@ using UnityEngine;
 public class Tester : MonoBehaviour
 {
     public AbilitySO Ability;
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision collision)
     {
         // Colour change
-        var mesh = other.gameObject.GetComponent<MeshRenderer>();
+        var mesh = collision.gameObject.GetComponent<MeshRenderer>();
 
 
         //effects aplication
-        var effectables = other.gameObject.GetComponents<IEffectable>();
+        var effectables = collision.gameObject.GetComponents<IEffectable>();
         foreach(var effectable in effectables)
         {
             StartCoroutine(ColourChangeRoutine(mesh));
@@ -24,7 +24,9 @@ public class Tester : MonoBehaviour
                 effect.Apply(effectable);
             }
         }
+
     }
+
 
     IEnumerator ColourChangeRoutine(MeshRenderer mesh)
     {

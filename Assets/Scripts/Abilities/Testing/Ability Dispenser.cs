@@ -5,10 +5,9 @@ public class AbilityDispenser : MonoBehaviour
 {
     [SerializeField] List<AbilitySO> _abilityList;
     [SerializeField] GameObject _abilityObject;
-    [SerializeField] float spawnRadius = 5f;
+    [SerializeField] InputReader _input;
     [SerializeField] float minSpawnRadius = 2f;
     [SerializeField] float maxSpawnRadius = 5f;
-
 
     GameObject AbilityFactory(AbilitySO ability)
     {
@@ -37,5 +36,22 @@ public class AbilityDispenser : MonoBehaviour
         PlaceAbilityTrip(abilityObject);
     }
 
+    void OnEnable()
+    {
+        _input.OnShootTriggered += DispenseAbility;
+    }
 
+    void OnDisable()
+    {
+        _input.OnShootTriggered -= DispenseAbility;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, maxSpawnRadius);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, minSpawnRadius);
+    }
 }

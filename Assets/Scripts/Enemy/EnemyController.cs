@@ -14,8 +14,6 @@ public class EnemyController : EntityController, IMoveable
     public Rigidbody RB {get;private set;}
     public bool IsMovementBlocked { get;set;} = false;
 
-    bool isIdling = false;
-
     StateMachine machine;
 
     void Awake()

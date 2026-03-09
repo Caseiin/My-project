@@ -13,6 +13,8 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public Vector2 MoveDirection{get;private set;}
     public Vector2 LookDirection{get;private set;}
 
+    public event Action OnShootTriggered;
+
     public void EnableInputMap()
     {
         if (Input == null)
@@ -91,4 +93,8 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public void OnTrackedDeviceOrientation(InputAction.CallbackContext context){}
 
+    public void OnShoot(InputAction.CallbackContext context)
+    {
+        OnShootTriggered?.Invoke();
+    }
 }
