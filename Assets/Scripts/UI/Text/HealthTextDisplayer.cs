@@ -14,23 +14,18 @@ public class HealthTextDisplayer : MonoBehaviour
 
     void OnEnable()
     {
-        
+        _health.OnHealthChanged += DisplayHealthMessage;
     }
 
     void OnDisable()
     {
-        
+        _health.OnHealthChanged -= DisplayHealthMessage;
     }
 
-    void DisplayEffectMessage(int health)
+    void DisplayHealthMessage(int health)
     {
-        StartCoroutine(DisplayHealth(health));
+        _healthTxt.text = $"Health: {health}";
     }
 
-    IEnumerator DisplayHealth(int health)
-    {
-        _healthTxt.text = $"{health}";
-        yield return new WaitForSeconds(2f);
-        _healthTxt.text = "";
-    }
+
 }

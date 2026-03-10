@@ -9,17 +9,21 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public event Action OnDeath;
     public event Action<int> OnHealthRestored;
     public event Action<int> OnHealthTaken;
+    public event Action<int> OnHealthChanged;
 
     public void RestoreHealth(int health)
     {
         _health += health;
         OnHealthRestored?.Invoke(health);
+        OnHealthChanged?.Invoke(_health);
     }
 
     public void TakeDamage(int dmg)
     {
         _health -= dmg;
         OnHealthTaken?.Invoke(dmg);
-        OnDeath?.Invoke();
+        OnHealthChanged?.Invoke(_health);
+
+        // OnDeath?.Invoke();
     }
 }
