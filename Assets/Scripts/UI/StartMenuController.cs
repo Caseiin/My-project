@@ -3,9 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class StartMenuController : MonoBehaviour
 {
+    [SerializeField] SceneReference scene;
     public void OnStartClick()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene(scene.ScenePath);
     }
 
     public void OnExitClick()
