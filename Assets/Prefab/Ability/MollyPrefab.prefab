@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3225337375752642128}
   - component: {fileID: 3739683981272981528}
   m_Layer: 0
-  m_Name: MotionStopMolly
+  m_Name: MollyPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
