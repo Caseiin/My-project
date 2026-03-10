@@ -12,7 +12,7 @@ public class MotionlessEffect : Effect
         var _target = target as IMoveable;
         if (_target != null)
         {
-            Messenger.AddEffectMessage($"{this.GetType()}: Player cannot move for {motionlessDuration} seconds");
+            Messenger.AddEffectMessage($"{this.GetType()}: cannot move for {motionlessDuration} seconds");
             var _runner = _target as MonoBehaviour;
             _runner.StartCoroutine(SlowedCouroutine(_target));
         }
