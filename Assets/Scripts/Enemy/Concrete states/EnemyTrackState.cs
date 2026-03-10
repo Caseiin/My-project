@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class EnemyTrackState : BaseState
 {
-    EnemyController _enemy;
     Vector2 _destination;
+    EnemyController _enemy;
     public EnemyTrackState(EnemyController enemy) : base(enemy)
     {
         _enemy = enemy;
@@ -24,7 +24,7 @@ public class EnemyTrackState : BaseState
 
     Vector2 FindPlayersPosition()
     {
-        if (_enemy.PlayerPosition == null) return Vector2.zero;
+        if (_enemy.PlayerPosition == null || _enemy.IsMovementBlocked) return Vector2.zero;
 
         Vector3 enemyPos = _enemy.transform.position;
         Vector3 playerPos = _enemy.PlayerPosition.position;
