@@ -5,7 +5,7 @@ using UnityEngine;
 public class DamageEffect : Effect
 {
     [SerializeField] int dmgAmount;
-    public string Message;
+
     public override void Apply(IEffectable target)
     {
         var _target = target as IDamageable;

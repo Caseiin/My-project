@@ -7,4 +7,6 @@ public interface IDamageable : IEffectable
     void RestoreHealth(int health);
     int Health{get;}
     event Action OnDeath;
+    public event Action<int> OnHealthRestored;
+    public event Action<int> OnHealthTaken;
 }

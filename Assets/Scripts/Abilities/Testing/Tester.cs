@@ -21,6 +21,7 @@ public class Tester : MonoBehaviour
             foreach (var effect in Ability.effects)
             {
                 effect.Apply(effectable);
+                if (collision.gameObject.CompareTag("Player")) Messenger.AddEffectMessage(effect.Message);
             }
         }
 
