@@ -5,11 +5,11 @@ using UnityEngine;
 public class EnemyHealthDisplayer : MonoBehaviour
 {
     EnemyHealth _health;
-    TextMeshPro _healthtext;
+    TextMeshProUGUI _healthtext;
     void Awake()
     {
         _health = GetComponentInParent<EnemyHealth>();
-        _healthtext = GetComponent<TextMeshPro>();
+        _healthtext = GetComponent<TextMeshProUGUI>();
     }
 
     void DisplayHealthRestore(int health){
