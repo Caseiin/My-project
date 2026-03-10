@@ -6,13 +6,14 @@ using UnityEngine;
 public class MotionlessEffect : Effect
 {
     [SerializeField] float motionlessDuration = 2.5f;
+    public string Message;
 
     public override void Apply(IEffectable target)
     {
         var _target = target as IMoveable;
         if (_target != null)
         {
-            Messenger.AddEffectMessage($"{this.GetType()}: cannot move for {motionlessDuration} seconds");
+            Message = $"{this.GetType()}: cannot move for {motionlessDuration} seconds";
             var _runner = _target as MonoBehaviour;
             _runner.StartCoroutine(SlowedCouroutine(_target));
         }

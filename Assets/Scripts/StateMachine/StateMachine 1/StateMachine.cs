@@ -44,6 +44,7 @@ public class StateMachine
 
     public void AddAnyTransition(IState to, IPredicate condition)
     {
+        GetOrAddNode(to);
         anyTransitions.Add(new Transition(to,condition));
     }
 

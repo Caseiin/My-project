@@ -14,11 +14,14 @@ public class EnemyController : EntityController, IMoveable
     public Rigidbody RB {get;private set;}
     public bool IsMovementBlocked { get;set;} = false;
 
+    EnemyHealth _enemyHealth;
+
     StateMachine machine;
 
     void Awake()
     {
         RB = GetComponent<Rigidbody>();
+        _enemyHealth = GetComponent<EnemyHealth>();
         DeclareStateInformation();
     }
 
@@ -39,6 +42,7 @@ public class EnemyController : EntityController, IMoveable
         var trackState = new EnemyTrackState(this);
         var idlestate = new EnemyIdleState(this);
         var attackState = new EnemyAttackState(this);
+        var deathState = new EnemyDeathState(this);
 
         At(idlestate, trackState, new FuncPredicate(() => DistanceToPlayer() < _detectionRange));
 
@@ -48,7 +52,9 @@ public class EnemyController : EntityController, IMoveable
 
         At(trackState, idlestate, new FuncPredicate(() =>  DistanceToPlayer() >=  _detectionRange));
 
-        machine.SetState(trackState);
+        Any(deathState, new FuncPredicate(()=> _enemyHealth.Health <= 0f));
+
+        machine.SetState(idlestate);
     }
 
     float DistanceToPlayer()
