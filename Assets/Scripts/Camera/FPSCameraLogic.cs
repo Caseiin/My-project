@@ -8,6 +8,10 @@ public class FPSCameraLogic : CameraLogic
 
     public override void HandleLook()
     {
+        // Hide cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         // Smooth input first
         _currentLook.x = Mathf.SmoothDamp(_currentLook.x, _player.Input.LookDirection.x, ref _lookVelocity.x, _player._lookSmoothTime);
         _currentLook.y = Mathf.SmoothDamp(_currentLook.y, _player.Input.LookDirection.y, ref _lookVelocity.y, _player._lookSmoothTime);
