@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -14,7 +14,7 @@ public class EnemyController : EntityController, IMoveable
     public Rigidbody RB {get;private set;}
     public bool IsMovementBlocked { get;set;} = false;
 
-    public EnemyHealth _enemyHealth;
+    EnemyHealth _enemyHealth;
 
     StateMachine machine;
 
