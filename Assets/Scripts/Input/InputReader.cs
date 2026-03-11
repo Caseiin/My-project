@@ -102,7 +102,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public void OnEscape(InputAction.CallbackContext context)
     {
-        Debug.Log("Escape pressed");
         OnEscapeTriggered?.Invoke();
     }
 }
