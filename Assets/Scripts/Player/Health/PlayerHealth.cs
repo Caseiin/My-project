@@ -24,6 +24,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         OnHealthTaken?.Invoke(dmg);
         OnHealthChanged?.Invoke(_health);
 
-        // OnDeath?.Invoke();
+        if (_health <= 0) OnDeath?.Invoke();
     }
 }

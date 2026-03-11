@@ -14,11 +14,13 @@ public class PanelController : MonoBehaviour
 
     bool isQuitPanelopen = false;
     PlayerController _player;
+    PlayerHealth _playerhealth;
 
     void Awake()
     {
         _inputReader.EnableInputMap();
         _player = FindFirstObjectByType<PlayerController>();
+        _playerhealth = FindFirstObjectByType<PlayerHealth>();
     }
 
     void ToggleQuitPanel()
@@ -31,6 +33,7 @@ public class PanelController : MonoBehaviour
         {
             // Switch to UI camera
             _player.SetCameraLogic(new IdleCameraLogic(_player));
+            _player.IsMovementBlocked = true;
         }
         else
         {
@@ -42,19 +45,21 @@ public class PanelController : MonoBehaviour
     void EnableWinPanel()
     {
         _player.SetCameraLogic(new IdleCameraLogic(_player));
+        _player.IsMovementBlocked = true;
         _winPanel.SetActive(true);
-        Debug.Log("Win condition opened");
     }
 
     void EnableLosePanel()
     {
         _player.SetCameraLogic(new IdleCameraLogic(_player));
+        _player.IsMovementBlocked = true;
         _losePanel.SetActive(true);
     }
 
     void OnEnable()
     {
         _inputReader.OnEscapeTriggered += ToggleQuitPanel;
+        _playerhealth.OnDeath += EnableLosePanel;
         EnemyDeathState.OnEnemyDeath += EnableWinPanel;
     }
 
@@ -62,6 +67,7 @@ public class PanelController : MonoBehaviour
     {
         _inputReader.OnEscapeTriggered -= ToggleQuitPanel;
         EnemyDeathState.OnEnemyDeath -= EnableWinPanel;
+        _playerhealth.OnDeath -= EnableLosePanel;
 
     }
 }
