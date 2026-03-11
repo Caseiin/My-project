@@ -14,7 +14,7 @@ public class EnemyController : EntityController, IMoveable
     public Rigidbody RB {get;private set;}
     public bool IsMovementBlocked { get;set;} = false;
 
-    EnemyHealth _enemyHealth;
+    public EnemyHealth _enemyHealth;
 
     StateMachine machine;
 

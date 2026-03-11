@@ -9,6 +9,9 @@ public class PanelController : MonoBehaviour
 {
     [SerializeField] InputReader _inputReader;
     [SerializeField] GameObject _quitPanel;
+    [SerializeField] GameObject _winPanel;
+    [SerializeField] GameObject _losePanel;
+
     bool isQuitPanelopen = false;
     PlayerController _player;
 
@@ -36,14 +39,30 @@ public class PanelController : MonoBehaviour
         }
     }
 
+    void EnableWinPanel()
+    {
+        _player.SetCameraLogic(new IdleCameraLogic(_player));
+        _winPanel.SetActive(true);
+        Debug.Log("Win condition opened");
+    }
+
+    void EnableLosePanel()
+    {
+        _player.SetCameraLogic(new IdleCameraLogic(_player));
+        _losePanel.SetActive(true);
+    }
+
     void OnEnable()
     {
         _inputReader.OnEscapeTriggered += ToggleQuitPanel;
+        EnemyDeathState.OnEnemyDeath += EnableWinPanel;
     }
 
     void OnDisable()
     {
         _inputReader.OnEscapeTriggered -= ToggleQuitPanel;
+        EnemyDeathState.OnEnemyDeath -= EnableWinPanel;
+
     }
 }
 

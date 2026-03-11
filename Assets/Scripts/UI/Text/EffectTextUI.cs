@@ -12,12 +12,12 @@ public class EffectTextUI : MonoBehaviour
 
     void OnEnable()
     {
-        Messenger.OnMessage += DisplayEffectMessage;
+        Messenger.OnEffectMessage += DisplayEffectMessage;
     }
 
     void OnDisable()
     {
-        Messenger.OnMessage -= DisplayEffectMessage;
+        Messenger.OnEffectMessage -= DisplayEffectMessage;
     }
 
     void DisplayEffectMessage(string msg)
