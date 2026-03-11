@@ -10,7 +10,7 @@ public class AbilityDispenser : MonoBehaviour
         [SerializeField] float minSpawnRadius = 2f;
         [SerializeField] float maxSpawnRadius = 5f;
 
-        List<RaycastResult> _uiHits = new List<RaycastResult>();
+            List<RaycastResult> _uiHits = new List<RaycastResult>();
 
         bool IsPointerOverUI()
         {
