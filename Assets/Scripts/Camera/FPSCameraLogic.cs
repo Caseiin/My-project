@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class FPSCameraLogic : CameraLogic
 {
@@ -8,9 +9,6 @@ public class FPSCameraLogic : CameraLogic
 
     public override void HandleLook()
     {
-        // Hide cursor
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
 
         // Smooth input first
         _currentLook.x = Mathf.SmoothDamp(_currentLook.x, _player.Input.LookDirection.x, ref _lookVelocity.x, _player._lookSmoothTime);

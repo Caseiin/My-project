@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : EntityController,IMoveable
@@ -35,7 +36,7 @@ public class PlayerController : EntityController,IMoveable
         Input.EnableInputMap();
         RB = GetComponent<Rigidbody>();
         DeclareStateInformation();
-        _cameraLogic = new FPSCameraLogic(this);
+        SetCameraLogic(new FPSCameraLogic(this)); 
     }
 
     void Update()
@@ -62,8 +63,14 @@ public class PlayerController : EntityController,IMoveable
         At(motionstate,idlestate,new FuncPredicate(()=> _input.MoveDirection.sqrMagnitude <= _movementThreshold));
 
         machine.SetState(idlestate);
-
     }
+
+    public void SetCameraLogic(CameraLogic logic)
+    {
+        _cameraLogic = logic;
+    }
+
+
 
     // Helper Methods
     void At(IState from, IState to, IPredicate condition) => machine.AddTransitions(from,to,condition);

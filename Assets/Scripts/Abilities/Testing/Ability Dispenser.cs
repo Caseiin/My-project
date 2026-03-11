@@ -1,13 +1,29 @@
     using System.Collections.Generic;
     using UnityEngine;
+using UnityEngine.EventSystems;
 
-    public class AbilityDispenser : MonoBehaviour
+public class AbilityDispenser : MonoBehaviour
     {
         [SerializeField] List<AbilitySO> _abilityList;
         [SerializeField] GameObject _abilityObject;
         [SerializeField] InputReader _input;
         [SerializeField] float minSpawnRadius = 2f;
         [SerializeField] float maxSpawnRadius = 5f;
+
+        List<RaycastResult> _uiHits = new List<RaycastResult>();
+
+        bool IsPointerOverUI()
+        {
+            if (EventSystem.current == null) return false;
+
+            PointerEventData pointerData = new PointerEventData(EventSystem.current);
+            pointerData.position = new Vector2(Screen.width / 2f, Screen.height / 2f);
+
+            _uiHits.Clear();
+            EventSystem.current.RaycastAll(pointerData, _uiHits);
+
+            return _uiHits.Count > 0;
+        }
 
         GameObject AbilityFactory(AbilitySO ability)
         {
@@ -32,6 +48,7 @@
 
         void DispenseAbility()
         {
+            if (IsPointerOverUI()) return;
             if (_abilityList.Count == 0) return;
             var ability = _abilityList[Random.Range(0, _abilityList.Count)];
             var abilityObject = AbilityFactory(ability);
@@ -47,6 +64,9 @@
         {
             _input.OnShootTriggered -= DispenseAbility;
         }
+
+
+
 
         void OnDrawGizmosSelected()
         {

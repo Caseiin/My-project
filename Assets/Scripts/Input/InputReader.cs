@@ -14,6 +14,8 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public Vector2 LookDirection{get;private set;}
 
     public event Action OnShootTriggered;
+    public event Action OnEscapeTriggered;
+
 
     public void EnableInputMap()
     {
@@ -96,5 +98,11 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public void OnShoot(InputAction.CallbackContext context)
     {
         OnShootTriggered?.Invoke();
+    }
+
+    public void OnEscape(InputAction.CallbackContext context)
+    {
+        Debug.Log("Escape pressed");
+        OnEscapeTriggered?.Invoke();
     }
 }
