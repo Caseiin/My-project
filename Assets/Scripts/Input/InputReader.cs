@@ -104,4 +104,5 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     {
         OnEscapeTriggered?.Invoke();
     }
+
 }
