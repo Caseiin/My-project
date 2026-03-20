@@ -24,9 +24,13 @@ public class UIScreensManager : Singleton<UIScreensManager>
 
     public void ShowScreen(ScreenType type)
     {
+        HideAllScreens();
+        _screensMap[type].Show();
+    }
+
+    public void HideAllScreens()
+    {
         // hides all screens
         foreach(var screen in _screensMap.Values) screen.Hide();
-
-        _screensMap[type].Show();
     }
 }
