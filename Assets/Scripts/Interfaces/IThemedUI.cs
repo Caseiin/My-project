@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IThemedUI
 {
-    void ApplyTheme(UIThemes theme);
+    virtual void ApplyTheme(UIThemes theme){}
 }
