@@ -27,6 +27,8 @@ public class PopUpManager : Singleton<PopUpManager>
             maxSize: 10
         );
     }
+
+
     public void AddGamePlayPopUp(string msg, Sprite icon)
     {
         GamePlayPopUp popup = _pool.Get();
@@ -70,14 +72,13 @@ public class PopUpManager : Singleton<PopUpManager>
     }
 
     private IEnumerator ReturnToPoolAfterTime(GamePlayPopUp popup)
-{
-    yield return new WaitForSeconds(_popUpDuration);
-
-    if (activePopUps.Contains(popup))
     {
-        activePopUps.Remove(popup);
-        _pool.Release(popup);
-    }
-}
+        yield return new WaitForSeconds(_popUpDuration);
 
+        if (activePopUps.Contains(popup))
+        {
+            activePopUps.Remove(popup);
+            _pool.Release(popup);
+        }
+    }
 }
