@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public class UIThemes : ScriptableObject
 {
     // Button section
-    public ButtonDataSO Button;
+    public ButtonDataSO PrimaryButton;
+    public ButtonDataSO SecondaryButton;
 
     // Slider Section
 
