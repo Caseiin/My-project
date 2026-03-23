@@ -17,9 +17,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public event Action OnEscapeTriggered;
     public event Action<ScreenType> OnMenuActivated;
 
-    bool onMenuOpen = false;
-
-
     public void EnableInputMap()
     {
         if (Input == null)
