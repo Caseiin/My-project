@@ -4,12 +4,16 @@ using UnityEngine;
 public class UIScreensManager : Singleton<UIScreensManager>
 {
     [SerializeField] List<UIScreens> _screens;
+    [SerializeField] InputReader _input;
     private Dictionary<ScreenType,UIScreens> _screensMap;
+    private ScreenType? _currentScreen;
+
 
     protected override void Awake()
     {
         base.Awake();
         InitializeDictionary();
+        _input.EnableInputMap();
     }
 
     void InitializeDictionary()
@@ -32,5 +36,29 @@ public class UIScreensManager : Singleton<UIScreensManager>
     {
         // hides all screens
         foreach(var screen in _screensMap.Values) screen.Hide();
+    }
+
+
+    public void ToggleScreen(ScreenType type)
+    {
+        if (_currentScreen == type)
+        {
+            HideAllScreens();
+            _currentScreen = null;
+        }
+        else
+        {
+            ShowScreen(type);
+            _currentScreen = type;
+        }
+    }
+    void OnEnable()
+    {
+        _input.OnMenuActivated += ToggleScreen;
+    }
+
+    void OnDisable()
+    {
+        _input.OnMenuActivated -= ToggleScreen;
     }
 }

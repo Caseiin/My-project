@@ -15,6 +15,9 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public event Action OnShootTriggered;
     public event Action OnEscapeTriggered;
+    public event Action<ScreenType> OnMenuActivated;
+
+    bool onMenuOpen = false;
 
 
     public void EnableInputMap()
@@ -102,6 +105,8 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public void OnEscape(InputAction.CallbackContext context)
     {
+        OnMenuActivated?.Invoke(ScreenType.PauseMenu);  
+
         OnEscapeTriggered?.Invoke();
     }
 
