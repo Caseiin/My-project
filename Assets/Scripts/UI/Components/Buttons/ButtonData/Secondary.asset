@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eaaa3739edab6c4a87c9a1183419211, type: 3}
   m_Name: Secondary
   m_EditorClassIdentifier: Assembly-CSharp::ButtonDataSO
-  ButtonDefault: {fileID: 0}
+  ButtonDefault: {fileID: 21300000, guid: c08bdc3d7be1ed247adb61ba7a2cd7b2, type: 3}
   State:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: 778d58d463495db4a96876aebc07d64f, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: 80aca3df2da2f9a439b67eb19aca799a, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: c08bdc3d7be1ed247adb61ba7a2cd7b2, type: 3}
+    m_DisabledSprite: {fileID: 21300000, guid: 6c14b0e266cbbd847b62eb1a18dba19d, type: 3}
