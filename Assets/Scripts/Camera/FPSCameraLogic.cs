@@ -46,7 +46,6 @@ public class FPSCameraLogic : CameraLogic
 
             if (hit.collider.TryGetComponent(out InteractiveProjectile interactive))
             {
-               Debug.Log($"InteractiveProjectile viewed");
                 if (_currentTarget != interactive)
                 {
                     ClearTarget();
