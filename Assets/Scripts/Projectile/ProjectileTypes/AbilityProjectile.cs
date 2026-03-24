@@ -9,8 +9,9 @@ public abstract class AbilityProjectile : MonoBehaviour
     public float maxSpawnRadius;
     public AbilitySO ability;
     protected Rigidbody _rb;
+    private readonly HashSet<IEffectable> _buffer = new HashSet<IEffectable>();
 
-    protected virtual void awake()
+    protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();
     }
@@ -44,15 +45,19 @@ public abstract class AbilityProjectile : MonoBehaviour
 
     List<IEffectable> FindEntitiesWithinRange()
     {
-        List<IEffectable> _effectables = new List<IEffectable>();
+        _buffer.Clear();
         Collider[] _colliders = Physics.OverlapSphere(transform.position, maxSpawnRadius);
 
-        foreach(var collider in _colliders)
+        foreach (var collider in _colliders)
         {
             IEffectable[] found = collider.GetComponents<IEffectable>();
-            _effectables.AddRange(found);
+
+            foreach (var effectable in found)
+            {
+                _buffer.Add(effectable);
+            }
         }
 
-        return _effectables;
+        return new List<IEffectable>(_buffer);
     }
 }
