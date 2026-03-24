@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerController : EntityController,IMoveable
+public class PlayerController : EntityController,IMoveable,IPlayerEffectable
 {
     //Provides Info about player to other classes
 

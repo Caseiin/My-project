@@ -9,8 +9,12 @@ public abstract class AbilityProjectile : MonoBehaviour
     public float MaxEffectRadius;
     public AbilitySO ability;
     protected Rigidbody _rb;
-    List<IEffectable> _playerEffectables = new List<IEffectable>();
-    List<IEffectable> _otherEffectables = new List<IEffectable>();
+    List<IEffectable> _playerEffectables;
+    List<IEffectable> _otherEffectables;
+
+    // Prevents duplication of effects stored;
+    HashSet<IEffectable> _playerBuffer = new HashSet<IEffectable>();
+    HashSet<IEffectable> _otherBuffer = new HashSet<IEffectable>();
 
     protected virtual void Awake()
     {
@@ -20,9 +24,21 @@ public abstract class AbilityProjectile : MonoBehaviour
     public abstract void Launch(Vector3 direction);
     protected void Activate()
     {
-        List<IEffectable> effectables = FindEntitiesWithinRange();
+        FindEntitiesWithinRange(out var _playerEffectables,out var _otherEffectables);
         // Applies all effects to all effectable entities
-        foreach (var effectable in effectables)
+
+        // player
+        foreach (var effectable in _playerEffectables)
+        {
+            foreach(var effect in ability.effects)
+            {
+                effect.Apply(effectable);
+                EffectPopUpManager.Instance.DisplayEffect(effect);
+            }
+        }
+
+        // other entities
+        foreach (var effectable in _otherEffectables)
         {
             foreach(var effect in ability.effects)
             {
@@ -46,8 +62,8 @@ public abstract class AbilityProjectile : MonoBehaviour
 
     void FindEntitiesWithinRange(out List<IEffectable> playerList, out List<IEffectable> othersList)
     {
-        _playerEffectables.Clear();
-        _otherEffectables.Clear();
+        _playerBuffer.Clear();
+        _otherBuffer.Clear();
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, MaxEffectRadius);
 
@@ -57,18 +73,18 @@ public abstract class AbilityProjectile : MonoBehaviour
             foreach (var effectable in found)
             {
     
-                // if ()
-                // {
-                //     _playerEffectables.Add(effectable);
-                // }
-                // else
-                // {
-                //     _otherEffectables.Add(effectable);
-                // }
+                if (effectable is IPlayerEffectable)
+                {
+                    _playerBuffer.Add(effectable);
+                }
+                else
+                {
+                    _otherBuffer.Add(effectable);
+                }
             }
         }
 
-        playerList = _playerEffectables;
-        othersList = _otherEffectables;
+        playerList = new List<IEffectable>(_playerBuffer);
+        othersList = new List<IEffectable>(_otherBuffer);
     }
 }
