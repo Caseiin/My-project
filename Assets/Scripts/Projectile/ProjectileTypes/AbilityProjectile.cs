@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class AbilityProjectile : MonoBehaviour
 {
     public float speed;
-    public float MaxEffectRadius;
+    public float MaxEffectRadius = 5f;
     public AbilitySO ability;
     protected Rigidbody _rb;
     List<IEffectable> _playerEffectables;

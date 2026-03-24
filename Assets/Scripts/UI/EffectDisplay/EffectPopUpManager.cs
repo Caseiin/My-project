@@ -3,7 +3,6 @@ using UnityEngine.Pool;
 
 public class EffectPopUpManager : Singleton<EffectPopUpManager>
 {
-    [SerializeField] GameObject _effectpopUp;
     [SerializeField] GameObject _effectPopUpPrefab;
     [SerializeField] Transform _uiParent;
     [SerializeField] float immediateDuration = 0.3f; 
@@ -14,26 +13,26 @@ public class EffectPopUpManager : Singleton<EffectPopUpManager>
     protected override void Awake()
     {
         base.Awake();
-        _pool = new ObjectPool<EffectPopUp>(CreateEffectPopUp, OnGet, OnRelease, OnDestroyPoolObject, false, 5, 7);
+        _pool = new ObjectPool<EffectPopUp>(CreateEffectPopUp, OnGetfromPool, OnReleasefromPool, OnDestroyPoolObject, false, 5, 7);
     }
 
-    private EffectPopUp CreateEffectPopUp()
+    EffectPopUp CreateEffectPopUp()
     {
         var go = Instantiate(_effectPopUpPrefab, _uiParent);
         return go.GetComponent<EffectPopUp>();
     }
 
-    private void OnGet(EffectPopUp popup)
+    void OnGetfromPool(EffectPopUp popup)
     {
         popup.gameObject.SetActive(true);
     }
 
-    private void OnRelease(EffectPopUp popup)
+    void OnReleasefromPool(EffectPopUp popup)
     {
         popup.gameObject.SetActive(false);
     }
 
-    private void OnDestroyPoolObject(EffectPopUp popup)
+    void OnDestroyPoolObject(EffectPopUp popup)
     {
         Destroy(popup.gameObject);
     }
