@@ -1,3 +1,4 @@
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -14,4 +15,9 @@ public abstract class AbilityProjectile : MonoBehaviour
 
     public abstract void Launch(Vector3 direction);
     public abstract void Activate();
+    public virtual void ReturnToPool()
+    {
+        _rb.linearVelocity = Vector3.zero;
+        ProjectileManager.Instance.ReturnProjectile(this);
+    }
 }

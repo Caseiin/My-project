@@ -43,4 +43,13 @@ public class ProjectileManager : Singleton<ProjectileManager>
     {
         Destroy(abilityProjectile.gameObject);
     }
+    public AbilityProjectile GetProjectile()
+    {
+        return _pool.Get();
+    }
+
+    public void ReturnProjectile(AbilityProjectile projectile)
+    {
+        _pool.Release(projectile);
+    }
 }
