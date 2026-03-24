@@ -17,7 +17,7 @@ public abstract class AbilityProjectile : MonoBehaviour
     }
 
     public abstract void Launch(Vector3 direction);
-    public void Activate()
+    protected void Activate()
     {
         List<IEffectable> effectables = FindEntitiesWithinRange();
         // Applies all effects to all effectable entities

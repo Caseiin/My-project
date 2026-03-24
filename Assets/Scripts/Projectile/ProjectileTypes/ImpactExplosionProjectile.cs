@@ -2,10 +2,6 @@ using UnityEngine;
 
 public class ImpactExplosionProjectile : AbilityProjectile
 {
-    public override void Activate()
-    {
-        base.Activate();
-    }
 
     void OnCollisionEnter(Collision collision)
     {
