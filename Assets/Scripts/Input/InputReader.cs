@@ -16,6 +16,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public event Action OnShootTriggered;
     public event Action OnEscapeTriggered;
     public event Action<ScreenType> OnMenuActivated;
+    public event Action OnInteractTriggered;
 
     public void EnableInputMap()
     {
@@ -44,7 +45,10 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public void OnCrouch(InputAction.CallbackContext context){}
 
 
-    public void OnInteract(InputAction.CallbackContext context){}
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        OnInteractTriggered?.Invoke();
+    }
 
     public void OnJump(InputAction.CallbackContext context){}
 

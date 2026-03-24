@@ -8,7 +8,10 @@ public class InteractiveProjectile : AbilityProjectile
     {
         base.Awake();
     }
-    public void ToInteract(){}
+    public void ToInteract()
+    {
+        Activate();
+    }
     public override void Launch(Vector3 direction){}
 
 

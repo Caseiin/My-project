@@ -7,6 +7,7 @@ public class FPSCameraLogic : CameraLogic
     InteractiveProjectile _currentTarget;
     public FPSCameraLogic(PlayerController player) : base(player)
     {
+        SetUp();
     }
 
     public override void HandleLook()
@@ -62,6 +63,14 @@ public class FPSCameraLogic : CameraLogic
         ClearTarget();
     }
 
+    void TriggerInteractiveProjectile()
+    {
+        if(_currentTarget != null)
+        {
+            _currentTarget.ToInteract();
+        }
+    }
+
     void ClearTarget()
     {
         if (_currentTarget != null)
@@ -69,5 +78,20 @@ public class FPSCameraLogic : CameraLogic
             InteractionProjectileUI.Instance.Hide();
             _currentTarget = null;
         }
+    }
+
+    void SetUp()
+    {
+        _player.Input.OnInteractTriggered += TriggerInteractiveProjectile;
+    }
+
+    void CleanUp()
+    {
+        _player.Input.OnInteractTriggered -= TriggerInteractiveProjectile;
+    }
+
+    ~FPSCameraLogic()
+    {
+        CleanUp();
     }
 }
