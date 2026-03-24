@@ -107,4 +107,8 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         OnEscapeTriggered?.Invoke();
     }
 
+    public void OnMenu(InputAction.CallbackContext context)
+    {
+        OnMenuActivated?.Invoke(ScreenType.MainMenu);
+    }
 }
