@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class AbilityProjectile : MonoBehaviour
 {
     public float speed;
-    public float maxSpawnRadius;
+    public float MaxEffectRadius;
     public AbilitySO ability;
     protected Rigidbody _rb;
     private readonly HashSet<IEffectable> _buffer = new HashSet<IEffectable>();
@@ -40,13 +40,13 @@ public abstract class AbilityProjectile : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, maxSpawnRadius);
+        Gizmos.DrawWireSphere(transform.position, MaxEffectRadius);
     }
 
     List<IEffectable> FindEntitiesWithinRange()
     {
         _buffer.Clear();
-        Collider[] _colliders = Physics.OverlapSphere(transform.position, maxSpawnRadius);
+        Collider[] _colliders = Physics.OverlapSphere(transform.position, MaxEffectRadius);
 
         foreach (var collider in _colliders)
         {
