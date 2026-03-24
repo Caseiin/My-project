@@ -9,7 +9,8 @@ public abstract class AbilityProjectile : MonoBehaviour
     public float MaxEffectRadius;
     public AbilitySO ability;
     protected Rigidbody _rb;
-    private readonly HashSet<IEffectable> _buffer = new HashSet<IEffectable>();
+    List<IEffectable> _playerEffectables = new List<IEffectable>();
+    List<IEffectable> _otherEffectables = new List<IEffectable>();
 
     protected virtual void Awake()
     {
@@ -43,21 +44,31 @@ public abstract class AbilityProjectile : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, MaxEffectRadius);
     }
 
-    List<IEffectable> FindEntitiesWithinRange()
+    void FindEntitiesWithinRange(out List<IEffectable> playerList, out List<IEffectable> othersList)
     {
-        _buffer.Clear();
-        Collider[] _colliders = Physics.OverlapSphere(transform.position, MaxEffectRadius);
+        _playerEffectables.Clear();
+        _otherEffectables.Clear();
 
-        foreach (var collider in _colliders)
+        Collider[] colliders = Physics.OverlapSphere(transform.position, MaxEffectRadius);
+
+        foreach (var col in colliders)
         {
-            IEffectable[] found = collider.GetComponents<IEffectable>();
-
+            IEffectable[] found = col.GetComponents<IEffectable>();
             foreach (var effectable in found)
             {
-                _buffer.Add(effectable);
+    
+                // if ()
+                // {
+                //     _playerEffectables.Add(effectable);
+                // }
+                // else
+                // {
+                //     _otherEffectables.Add(effectable);
+                // }
             }
         }
 
-        return new List<IEffectable>(_buffer);
+        playerList = _playerEffectables;
+        othersList = _otherEffectables;
     }
 }

@@ -6,6 +6,6 @@ public abstract class Effect
 {
     public Sprite EffectIcon;
     public string Message{get; protected set;}
-    public  IEffectIconDisplay EffectDisplay = null;
+    public virtual float Duration{get; protected set;} = 0f;
     public abstract void Apply(IEffectable target);
 }

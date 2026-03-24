@@ -6,11 +6,7 @@ using UnityEngine;
 public class MotionlessEffect : Effect
 {
     [SerializeField] float motionlessDuration = 2.5f;
-
-    public MotionlessEffect()
-    {
-        EffectDisplay = new TimedEffectDisplay(motionlessDuration);
-    }
+    public override float Duration => motionlessDuration;
 
     public override void Apply(IEffectable target)
     {
