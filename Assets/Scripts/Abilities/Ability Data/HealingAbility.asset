@@ -22,4 +22,5 @@ MonoBehaviour:
       type: {class: HealingEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectIcon: {fileID: 21300000, guid: 361c3a1730733024fb300193d14ef793, type: 3}
+        EffectColour: {r: 0.13882157, g: 0.554717, b: 0.04919186, a: 0}
         healingAmount: 50

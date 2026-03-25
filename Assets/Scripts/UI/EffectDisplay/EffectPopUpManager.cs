@@ -40,7 +40,8 @@ public class EffectPopUpManager : Singleton<EffectPopUpManager>
     {
         var popup = _pool.Get();
         popup.SetIcon(effect.EffectIcon);
-
+        popup.SetColour(effect.EffectColour);
+        
         if(effect.Duration > 0f)
         {
             popup.DisplayTimed(effect.Duration, ()=> _pool.Release(popup));

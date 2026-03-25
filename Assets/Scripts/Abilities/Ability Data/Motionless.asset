@@ -22,4 +22,5 @@ MonoBehaviour:
       type: {class: MotionlessEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectIcon: {fileID: 21300000, guid: ebe31f9c45f372144917589cf23b04c6, type: 3}
+        EffectColour: {r: 0.9169811, g: 0.9169811, b: 0.9169811, a: 0}
         motionlessDuration: 4

@@ -16,6 +16,13 @@ public class EffectPopUp : MonoBehaviour
         _icon.sprite = icon;
     }
 
+    public void SetColour(Color color)
+    {
+        _timer.color = color;
+        Debug.Log("Colour set");
+        _background.color = color;
+    }
+
     public void DisplayImmediate(Action onComplete)
     {
         StartCoroutine(ImmediatedCoroutine(onComplete));
