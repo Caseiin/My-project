@@ -2,14 +2,13 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class DamageEffect : Effect
+public class DamageEffect : GenEffect<IDamageable>
 {
     [SerializeField] int dmgAmount;
 
-    public override void Apply(IEffectable target)
+    protected override void ApplyEffect(IDamageable target)
     {
-        var _target = target as IDamageable;
+        target?.TakeDamage(dmgAmount);
         Message = $"{this.GetType()}:lost -{dmgAmount} hp";
-        _target?.TakeDamage(dmgAmount);
     }
 }

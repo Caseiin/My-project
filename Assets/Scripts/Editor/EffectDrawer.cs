@@ -5,73 +5,65 @@ using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(Effect), useForChildren: true)]
-public class EffectDrawer : PropertyDrawer {
+[CustomPropertyDrawer(typeof(Effect), true)]
+public class EffectDrawer : PropertyDrawer
+{
     static Dictionary<string, Type> typeMap;
 
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-        if (typeMap == null) BuildTypeMap();
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        if (typeMap == null)
+            BuildTypeMap();
 
-        var typeRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
-        var contentRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight, position.width, position.height - EditorGUIUtility.singleLineHeight);
-
-        EditorGUI.BeginProperty(position, label, property);
-        var typeName = property.managedReferenceFullTypename;
-        var displayName = GetShortTypeName(typeName);
-
-        if (EditorGUI.DropdownButton(typeRect, new GUIContent(displayName ?? "Select Effect Type"), FocusType.Keyboard)) {
+        // Draw dropdown for selecting effect type
+        Rect typeRect = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
+        if (EditorGUI.DropdownButton(typeRect, new GUIContent(GetShortTypeName(property.managedReferenceFullTypename) ?? "Select Effect Type"), FocusType.Keyboard))
+        {
             var menu = new GenericMenu();
-            if (typeMap == null || typeMap.Count == 0) {
-                menu.AddDisabledItem(new GUIContent("No Ability Effects available"));
-                menu.ShowAsContext();
-                return;
-            }
-
-            foreach (var kvp in typeMap) {
-                var name = kvp.Key;
+            foreach (var kvp in typeMap)
+            {
                 var type = kvp.Value;
-
-                menu.AddItem(new GUIContent(name), type.FullName == typeName, () => {
-                    property.managedReferenceValue = Activator.CreateInstance(type);
+                menu.AddItem(new GUIContent(kvp.Key), type.FullName == property.managedReferenceFullTypename, () =>
+                {
+                    property.managedReferenceValue = Activator.CreateInstance(type); // Instantiate concrete effect
                     property.serializedObject.ApplyModifiedProperties();
                 });
             }
-
             menu.ShowAsContext();
         }
 
-
-        if (property.managedReferenceValue != null) {
+        // Draw effect fields (healingAmount, etc.)
+        if (property.managedReferenceValue != null)
+        {
+            Rect contentRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight + 2,
+                                        position.width,
+                                        EditorGUI.GetPropertyHeight(property, true));
             EditorGUI.indentLevel++;
             EditorGUI.PropertyField(contentRect, property, GUIContent.none, true);
             EditorGUI.indentLevel--;
         }
-
-        EditorGUI.EndProperty();
     }
 
-    //Returns the Height of the property
-    public override float GetPropertyHeight(SerializedProperty property, GUIContent label) {
-        return EditorGUI.GetPropertyHeight(property, label, true) + EditorGUIUtility.singleLineHeight;
+    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+    {
+        if (property.managedReferenceValue == null)
+            return EditorGUIUtility.singleLineHeight;
+        return EditorGUIUtility.singleLineHeight + EditorGUI.GetPropertyHeight(property, true) + 2;
     }
 
-    //helper method to build the TypeMap
-    static void BuildTypeMap() {
+    static void BuildTypeMap()
+    {
         var baseType = typeof(Effect);
-        typeMap = AppDomain.CurrentDomain.GetAssemblies().SelectMany(asm => {
-            try { return asm.GetTypes(); }
-            catch { return Type.EmptyTypes; }
-        })
-        .Where(t => !t.IsAbstract && baseType.IsAssignableFrom(t))
-        .ToDictionary(t => ObjectNames.NicifyVariableName(t.Name), t => t);
+        typeMap = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(a => { try { return a.GetTypes(); } catch { return Type.EmptyTypes; } })
+            .Where(t => !t.IsAbstract && baseType.IsAssignableFrom(t))
+            .ToDictionary(t => ObjectNames.NicifyVariableName(t.Name), t => t);
     }
 
-    //Helper method that shortens name of the type 
-    static string GetShortTypeName(string fullTypeName) {
+    static string GetShortTypeName(string fullTypeName)
+    {
         if (string.IsNullOrEmpty(fullTypeName)) return null;
         var parts = fullTypeName.Split(' ');
         return parts.Length > 1 ? parts[1].Split('.').Last() : fullTypeName;
     }
-
-
 }

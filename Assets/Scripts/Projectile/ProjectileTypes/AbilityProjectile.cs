@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -12,42 +11,45 @@ public abstract class AbilityProjectile : MonoBehaviour
     List<IEffectable> _playerEffectables;
     List<IEffectable> _otherEffectables;
 
-    // Prevents duplication of effects stored;
-    HashSet<IEffectable> _playerBuffer = new HashSet<IEffectable>();
-    HashSet<IEffectable> _otherBuffer = new HashSet<IEffectable>();
-
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();
     }
 
     public abstract void Launch(Vector3 direction);
+
     protected void Activate()
     {
-        FindEntitiesWithinRange(out var _playerEffectables,out var _otherEffectables);
-        // Applies all effects to all effectable entities
+        FindEffectablesWithinRange(out var _playerEffectables, out var _otherEffectables);
 
         // player
         foreach (var effectable in _playerEffectables)
         {
-            foreach(var effect in ability.effects)
+            foreach (var effect in ability.effects)
             {
-                effect.Apply(effectable);
-                EffectPopUpManager.Instance.DisplayEffect(effect);
+                if (effect.Apply(effectable))
+                {
+                    EffectPopUpManager.Instance.DisplayEffect(effect);
+                }
             }
         }
 
-        // other entities
+        // other
         foreach (var effectable in _otherEffectables)
         {
-            foreach(var effect in ability.effects)
+            foreach (var effect in ability.effects)
             {
-                effect.Apply(effectable);
+                if (effect.Apply(effectable))
+                {
+                    
+                }
             }
         }
+
 
         ReturnToPool();
     }
+
     public virtual void ReturnToPool()
     {
         _rb.linearVelocity = Vector3.zero;
@@ -60,31 +62,30 @@ public abstract class AbilityProjectile : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, MaxEffectRadius);
     }
 
-    void FindEntitiesWithinRange(out List<IEffectable> playerList, out List<IEffectable> othersList)
+    /// <summary>
+    /// Finds all effectables in range. 
+    /// Filtering by type and faction happens inside each effect.
+    /// </summary>
+    void FindEffectablesWithinRange(out List<IEffectable> playerList, out List<IEffectable> otherList)
     {
-        _playerBuffer.Clear();
-        _otherBuffer.Clear();
+        var playerBuffer = new HashSet<IEffectable>();
+        var otherBuffer = new HashSet<IEffectable>();
 
-        Collider[] colliders = Physics.OverlapSphere(transform.position, MaxEffectRadius);
+        var colliders = Physics.OverlapSphere(transform.position, MaxEffectRadius);
 
         foreach (var col in colliders)
         {
-            IEffectable[] found = col.GetComponents<IEffectable>();
-            foreach (var effectable in found)
+            var effectables = col.GetComponents<IEffectable>();
+            foreach (var e in effectables)
             {
-    
-                if (effectable is IPlayerEffectable)
-                {
-                    _playerBuffer.Add(effectable);
-                }
+                if (e is IPlayerEffectable)
+                    playerBuffer.Add(e);
                 else
-                {
-                    _otherBuffer.Add(effectable);
-                }
+                    otherBuffer.Add(e);
             }
         }
 
-        playerList = new List<IEffectable>(_playerBuffer);
-        othersList = new List<IEffectable>(_otherBuffer);
+        playerList = new List<IEffectable>(playerBuffer);
+        otherList = new List<IEffectable>(otherBuffer);
     }
 }

@@ -3,19 +3,18 @@ using System.Collections;
 using UnityEngine;
 
 [Serializable]
-public class MotionlessEffect : Effect
+public class MotionlessEffect : GenEffect<IMoveable>
 {
     [SerializeField] float motionlessDuration = 2.5f;
     public override float Duration => motionlessDuration;
 
-    public override void Apply(IEffectable target)
+    protected override void ApplyEffect(IMoveable target)
     {
-        var _target = target as IMoveable;
-        if (_target != null)
+        if (target != null)
         {
             Message = $"{this.GetType()}: cannot move for {motionlessDuration} seconds";
-            var _runner = _target as MonoBehaviour;
-            _runner.StartCoroutine(SlowedCouroutine(_target));
+            var _runner = target as MonoBehaviour;
+            _runner.StartCoroutine(SlowedCouroutine(target));
         }
     }
 

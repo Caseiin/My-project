@@ -2,13 +2,13 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class HealingEffect: Effect
+public class HealingEffect: GenEffect<IDamageable>
 {
     [SerializeField] int healingAmount;
-    public override void Apply(IEffectable target)
+
+    protected override void ApplyEffect(IDamageable target)
     {
-        var _target = target as IDamageable;
         Message = $"{this.GetType()}:gained +{healingAmount} hp";
-        _target?.RestoreHealth(healingAmount);
+        target?.RestoreHealth(healingAmount);
     }
 }
