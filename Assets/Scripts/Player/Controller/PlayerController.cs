@@ -26,6 +26,9 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     public float _lookSmoothTime = 0.05f; // small = snappy, large = more smooth
 
     // Camera motion logic
+    [Header("Camera Behaviour")]
+    [Range(0,100)]
+    public float ViewRange = 30f;
     CameraLogic _cameraLogic;
 
     // StateMachine & state declaration

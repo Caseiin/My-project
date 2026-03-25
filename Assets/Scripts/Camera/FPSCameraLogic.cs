@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 public class FPSCameraLogic : CameraLogic
 {
     InteractiveProjectile _currentTarget;
+    
     public FPSCameraLogic(PlayerController player) : base(player)
     {
         SetUp();
@@ -39,8 +40,8 @@ public class FPSCameraLogic : CameraLogic
     {
         RaycastHit hit;
         Transform _head = _player._headTransform;
-
-        if (Physics.Raycast(_head.position, _head.forward, out hit, 30f))
+        
+        if (Physics.Raycast(_head.position, _head.forward, out hit, _player.ViewRange))
         {
             Debug.DrawRay(_head.position, _head.forward * hit.distance, Color.red);
 

@@ -24,7 +24,7 @@ public class InteractionProjectileUI : Singleton<InteractionProjectileUI>
     public void Show()
     {
         _icon.color = Color.yellow;
-        _icon.transform.localScale = _originalScale * 1.2f;
+        _icon.transform.localScale = _originalScale * 1.05f;
         _icon.enabled = true;
     }
 
