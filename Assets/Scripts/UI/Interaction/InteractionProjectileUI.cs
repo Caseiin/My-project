@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class InteractionProjectileUI : Singleton<InteractionProjectileUI>
 {
     [SerializeField] Image _icon;
+    [SerializeField] Image _timer;
     Color _originalColor;
     Vector3 _originalScale;
 

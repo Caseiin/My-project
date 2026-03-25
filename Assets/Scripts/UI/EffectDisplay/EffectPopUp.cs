@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class EffectPopUp : MonoBehaviour
 {
     [SerializeField] Image _icon;
+    [SerializeField] Image _timer;
 
     public void SetIcon(Sprite icon)
     {
@@ -27,7 +28,18 @@ public class EffectPopUp : MonoBehaviour
     private IEnumerator TimedCoroutine(float duration, Action onComplete)
     {
         gameObject.SetActive(true);
-        yield return new WaitForSeconds(duration);
+        _timer.enabled = true;
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            _timer.fillAmount = Mathf.Lerp(0f, 1f, elapsed / duration);
+            yield return null;
+        }
+
+        _timer.fillAmount = 1f; 
         onComplete?.Invoke();
+        _timer.enabled = false;
     }
 }
