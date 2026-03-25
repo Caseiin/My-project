@@ -22,4 +22,4 @@ MonoBehaviour:
       type: {class: MotionlessEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectIcon: {fileID: 21300000, guid: ebe31f9c45f372144917589cf23b04c6, type: 3}
-        motionlessDuration: 2.5
+        motionlessDuration: 4

@@ -8,16 +8,17 @@ public class EffectPopUp : MonoBehaviour
 {
     [SerializeField] Image _icon;
     [SerializeField] Image _timer;
+    [SerializeField] Image _background;
+    [SerializeField] float immediateDuration = 0.3f; 
 
     public void SetIcon(Sprite icon)
     {
         _icon.sprite = icon;
     }
 
-    public void DisplayImmediate()
+    public void DisplayImmediate(Action onComplete)
     {
-        // Show once, no timing
-        gameObject.SetActive(true);
+        StartCoroutine(ImmediatedCoroutine(onComplete));
     }
 
     public void DisplayTimed(float duration, Action onComplete)
@@ -25,7 +26,7 @@ public class EffectPopUp : MonoBehaviour
         StartCoroutine(TimedCoroutine(duration, onComplete));
     }
 
-    private IEnumerator TimedCoroutine(float duration, Action onComplete)
+    IEnumerator TimedCoroutine(float duration, Action onComplete)
     {
         gameObject.SetActive(true);
         _timer.enabled = true;
@@ -42,4 +43,14 @@ public class EffectPopUp : MonoBehaviour
         onComplete?.Invoke();
         _timer.enabled = false;
     }
+
+    IEnumerator ImmediatedCoroutine(Action onComplete)
+    {
+        gameObject.SetActive(true);
+        _background.enabled = true;
+        yield return new WaitForSeconds(immediateDuration);
+        onComplete?.Invoke();
+        _background.enabled = false;
+    }
+    
 }

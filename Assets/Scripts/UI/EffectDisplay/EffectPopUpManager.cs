@@ -5,7 +5,6 @@ public class EffectPopUpManager : Singleton<EffectPopUpManager>
 {
     [SerializeField] GameObject _effectPopUpPrefab;
     [SerializeField] Transform _uiParent;
-    [SerializeField] float immediateDuration = 0.3f; 
 
 
     ObjectPool<EffectPopUp> _pool;
@@ -48,7 +47,7 @@ public class EffectPopUpManager : Singleton<EffectPopUpManager>
         }
         else
         {
-            popup.DisplayTimed(immediateDuration, () => _pool.Release(popup));
+            popup.DisplayImmediate(()=> _pool.Release(popup));
         }
     }
 }
