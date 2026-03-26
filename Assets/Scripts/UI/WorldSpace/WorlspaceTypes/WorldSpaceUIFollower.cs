@@ -15,11 +15,21 @@ public abstract class WorldSpaceUIFollower : MonoBehaviour
         _camera = camera;
     }
 
-    public void Tick(Camera cam)
+    public virtual void Tick(Camera cam)
     {
         if (_target == null) return;
 
         Vector3 screenPos = cam.WorldToScreenPoint(_target.position + _offset);
         transform.position = screenPos;
+    }
+
+    public void SetVisible(bool Visible)
+    {
+        gameObject.SetActive(Visible);
+    }
+
+    public virtual void CleanUp()
+    {
+        SetVisible(false);
     }
 }

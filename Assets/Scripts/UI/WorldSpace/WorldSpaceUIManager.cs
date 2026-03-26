@@ -19,5 +19,22 @@ public class WorldSpaceUIManager : Singleton<WorldSpaceUIManager>
     public void UnregisterFollower(WorldSpaceUIFollower follower)
     {
         _followerList.Remove(follower);
+        follower.CleanUp();
+    }
+
+    void LateUpdate()
+    {
+        foreach (var follower in _followerList)
+        {
+            follower.Tick(_camera);
+        }
+    }
+
+    public T SpawnUI<T>(T prefab, Transform target) where T : WorldSpaceUIFollower
+    {
+        var ui = Instantiate(prefab, WorldSpaceRoot);
+        ui.Initialize(target, _camera);
+        RegisterFollower(ui); 
+        return ui;
     }
 }
