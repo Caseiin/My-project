@@ -39,10 +39,7 @@ public abstract class AbilityProjectile : MonoBehaviour
         {
             foreach (var effect in ability.effects)
             {
-                if (effect.Apply(effectable))
-                {
-                    
-                }
+                effect.Apply(effectable);
             }
         }
 
@@ -71,11 +68,18 @@ public abstract class AbilityProjectile : MonoBehaviour
         var playerBuffer = new HashSet<IEffectable>();
         var otherBuffer = new HashSet<IEffectable>();
 
+        // Track root GameObjects already processed to avoid double-hitting
+        var seen = new HashSet<GameObject>();
+
         var colliders = Physics.OverlapSphere(transform.position, MaxEffectRadius);
 
         foreach (var col in colliders)
         {
-            var effectables = col.GetComponents<IEffectable>();
+            // Use the root GameObject as the unique key
+            var root = col.transform.root.gameObject;
+            if (!seen.Add(root)) continue; // already processed this enemy
+
+            var effectables = root.GetComponents<IEffectable>();
             foreach (var e in effectables)
             {
                 if (e is IPlayerEffectable)
