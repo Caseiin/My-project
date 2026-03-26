@@ -12,10 +12,14 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public InputSystem_Actions Input;
     public Vector2 MoveDirection{get;private set;}
     public Vector2 LookDirection{get;private set;}
+    public bool IsAimming {get; private set;}
 
     public event Action OnShootTriggered;
     public event Action OnEscapeTriggered;
+    public event Action OnAttackTriggered;
+
     public event Action<ScreenType> OnMenuActivated;
+
     public event Action OnInteractTriggered;
 
     public void EnableInputMap()
@@ -39,7 +43,10 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         }
     }
 
-    public void OnAttack(InputAction.CallbackContext context){}
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        OnAttackTriggered?.Invoke();
+    }
 
 
     public void OnCrouch(InputAction.CallbackContext context){}
@@ -114,5 +121,10 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public void OnMenu(InputAction.CallbackContext context)
     {
         OnMenuActivated?.Invoke(ScreenType.MainMenu);
+    }
+
+    public void OnAim(InputAction.CallbackContext context)
+    {
+        IsAimming = context.action.IsPressed();
     }
 }

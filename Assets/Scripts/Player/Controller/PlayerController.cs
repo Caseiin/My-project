@@ -25,6 +25,10 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     public float _verticalClamp = 80f;
     public float _lookSmoothTime = 0.05f; // small = snappy, large = more smooth
 
+    [Header("Throw")]
+    public GameObject _hand;
+    public  ProjectileThrow Throw{get; set;}
+    
     // Camera motion logic
     [Header("Camera Behaviour")]
     [Range(0,100)]
@@ -38,6 +42,7 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     {
         Input.EnableInputMap();
         RB = GetComponent<Rigidbody>();
+        Throw = GetComponent<ProjectileThrow>();
         DeclareStateInformation();
         SetCameraLogic(new FPSCameraLogic(this)); 
     }
@@ -60,10 +65,12 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
         // Declare states
         var motionstate = new PlayerMotionState(this);
         var idlestate = new PlayerIdleState(this);
+        var throwstate = new PlayerThrowState(this);
 
         // Define transitions
         At(idlestate,motionstate,new FuncPredicate(()=> _input.MoveDirection.sqrMagnitude > _movementThreshold));
         At(motionstate,idlestate,new FuncPredicate(()=> _input.MoveDirection.sqrMagnitude <= _movementThreshold));
+        Any(throwstate, new FuncPredicate(() => _input.IsAimming));
 
         machine.SetState(idlestate);
     }

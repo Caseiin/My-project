@@ -4,10 +4,11 @@ public class TrajectorPredictor : MonoBehaviour
 {
     [SerializeField] LineRenderer line;
     [SerializeField] int steps = 30;
-    [SerializeField] float timeStep = 0.1f;
+    [SerializeField] float timeStep = 0.1f; 
 
     public void Predict(Vector3 startPos, Vector3 startVelocity)
     {
+        line.enabled = true;
         Vector3[] points = new Vector3[steps];
 
         Vector3 pos = startPos;
@@ -23,5 +24,10 @@ public class TrajectorPredictor : MonoBehaviour
 
         line.positionCount = steps;
         line.SetPositions(points);
+    }
+
+    public void StopPrediction()
+    {
+        line.enabled = false;
     }
 }
