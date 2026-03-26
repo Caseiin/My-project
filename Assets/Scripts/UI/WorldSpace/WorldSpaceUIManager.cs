@@ -1,17 +1,25 @@
 // WorldSpaceUIManager.cs
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class WorldSpaceUIManager : Singleton<WorldSpaceUIManager>
 {
+    [Header("Container")]
     [SerializeField] RectTransform WorldSpaceRoot;
+
+    [Header("Components")]
+    public WorldSpaceUIFollower DamagePrefab;
+    
     Camera _camera;
     readonly List<WorldSpaceUIFollower> _followerList = new();
+
 
     protected override void Awake()
     {
         base.Awake();
         _camera = Camera.main;
+
     }
 
     public void RegisterFollower(WorldSpaceUIFollower follower)
@@ -41,4 +49,6 @@ public class WorldSpaceUIManager : Singleton<WorldSpaceUIManager>
         RegisterFollower(ui);
         return ui;
     }
+
+
 }
