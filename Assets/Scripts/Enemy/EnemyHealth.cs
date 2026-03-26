@@ -24,7 +24,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         _health -= dmg;
         var dmgUI = WorldSpaceUIManager.Instance.SpawnUI(DamagePrefab,transform);
-        
+        dmgUI.SetDamage(dmg);
         OnHealthTaken?.Invoke(dmg);
 
         // OnDeath?.Invoke();

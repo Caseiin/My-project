@@ -5,7 +5,8 @@ using UnityEngine.EventSystems;
 public class FPSCameraLogic : CameraLogic
 {
     InteractiveProjectile _currentTarget;
-    
+    InteractiveProjectileUI _currentUI;
+
     public FPSCameraLogic(PlayerController player) : base(player)
     {
         SetUp();
@@ -52,8 +53,11 @@ public class FPSCameraLogic : CameraLogic
                     ClearTarget();
 
                     _currentTarget = interactive;
-                    InteractionProjectileUI.Instance.SetSpriteIcon(_currentTarget.InteractIcon);
-                    InteractionProjectileUI.Instance.Show();
+                    // InteractionProjectileUI.Instance.SetSpriteIcon(_currentTarget.InteractIcon);
+                    // InteractionProjectileUI.Instance.Show();
+                    _currentUI  = WorldSpaceUIManager.Instance.SpawnUI(_currentTarget.interactivePrefab, _currentTarget.transform);
+                    _currentUI.Show();
+                    
                 }
 
                 return;
@@ -62,6 +66,8 @@ public class FPSCameraLogic : CameraLogic
 
         ClearTarget();
     }
+
+
 
     void TriggerInteractiveProjectile()
     {
@@ -75,7 +81,13 @@ public class FPSCameraLogic : CameraLogic
     {
         if (_currentTarget != null)
         {
-            InteractionProjectileUI.Instance.Hide();
+            // Remove UI
+            if (_currentUI != null)
+            {
+                WorldSpaceUIManager.Instance.UnregisterFollower(_currentUI);
+                _currentUI = null;
+            }
+
             _currentTarget = null;
         }
     }

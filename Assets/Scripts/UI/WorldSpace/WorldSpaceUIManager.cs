@@ -8,9 +8,6 @@ public class WorldSpaceUIManager : Singleton<WorldSpaceUIManager>
     [Header("Container")]
     [SerializeField] RectTransform WorldSpaceRoot;
 
-    [Header("Components")]
-    public WorldSpaceUIFollower DamagePrefab;
-    
     Camera _camera;
     readonly List<WorldSpaceUIFollower> _followerList = new();
 

@@ -50,5 +50,5 @@ public class EffectPopUpManager : Singleton<EffectPopUpManager>
         {
             popup.DisplayImmediate(()=> _pool.Release(popup));
         }
-    }
+    }   
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class InteractiveProjectile : AbilityProjectile
 {
     public Sprite InteractIcon;
+    public InteractiveProjectileUI interactivePrefab;
     protected override void Awake()
     {
         base.Awake();
