@@ -1,3 +1,4 @@
+// WorldSpaceUIManager.cs
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,13 +10,16 @@ public class WorldSpaceUIManager : Singleton<WorldSpaceUIManager>
 
     protected override void Awake()
     {
-       base.Awake();
-       _camera = Camera.main; 
+        base.Awake();
+        _camera = Camera.main;
     }
+
     public void RegisterFollower(WorldSpaceUIFollower follower)
     {
-        _followerList.Add(follower);
+        if (!_followerList.Contains(follower))
+            _followerList.Add(follower);
     }
+
     public void UnregisterFollower(WorldSpaceUIFollower follower)
     {
         _followerList.Remove(follower);
@@ -24,9 +28,9 @@ public class WorldSpaceUIManager : Singleton<WorldSpaceUIManager>
 
     void LateUpdate()
     {
-        foreach (var follower in _followerList)
+        for (int i = _followerList.Count - 1; i >= 0; i--)
         {
-            follower.Tick(_camera);
+            _followerList[i].Tick(_camera);
         }
     }
 
@@ -34,7 +38,7 @@ public class WorldSpaceUIManager : Singleton<WorldSpaceUIManager>
     {
         var ui = Instantiate(prefab, WorldSpaceRoot);
         ui.Initialize(target, _camera);
-        RegisterFollower(ui); 
+        RegisterFollower(ui);
         return ui;
     }
 }

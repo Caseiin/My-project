@@ -1,38 +1,46 @@
+// DamageNumberUI.cs
 using TMPro;
 using UnityEngine;
 
 public class DamageNumberUI : WorldSpaceUIFollower
 {
     [SerializeField] TextMeshProUGUI _text;
+    [SerializeField] float _lifetime = 1.2f;
+    [SerializeField] float _floatSpeed = 2f;
 
-    float _lifetime = 1.2f;
     float _timer;
-    float _floatSpeed = 40f;
+    float _floatOffset;
 
     public void SetDamage(int amount)
     {
         _text.text = amount.ToString();
     }
 
-    public override void Tick(Camera cam)
+    // Only override OnInitialize if you need setup logic
+    protected override void OnInitialize()
     {
-        base.Tick(cam); 
+        _timer = 0f;
+        _floatOffset = 0f;
+    }
 
-        // float upward (screen space)
-        transform.position += Vector3.up * _floatSpeed * Time.deltaTime;
+    // Only put what's UNIQUE to damage numbers here
+    protected override void OnTick()
+    {
+        _floatOffset += _floatSpeed * Time.deltaTime;
 
-        // lifetime
+        // Modify the offset so base.UpdatePosition() uses it
+        _offset = new Vector3(_offset.x, 2f + _floatOffset, _offset.z);
+
         _timer += Time.deltaTime;
-
         if (_timer >= _lifetime)
         {
             WorldSpaceUIManager.Instance.UnregisterFollower(this);
         }
     }
 
+    // CleanUp is called by UnregisterFollower — base handles destroy
     public override void CleanUp()
     {
-        _timer = 0;
         base.CleanUp();
     }
 }
