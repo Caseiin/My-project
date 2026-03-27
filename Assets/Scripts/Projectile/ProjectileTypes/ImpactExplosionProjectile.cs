@@ -8,7 +8,4 @@ public class ImpactExplosionProjectile : AbilityProjectile
         Activate();
     }
 
-    public override void Launch(Vector3 direction)
-    {
-    }
 }

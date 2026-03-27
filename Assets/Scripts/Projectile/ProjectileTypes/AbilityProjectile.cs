@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public abstract class AbilityProjectile : MonoBehaviour
 {
-    public float speed;
+    public float speed = 20f;
     public float MaxEffectRadius = 5f;
     public AbilitySO ability;
     protected Rigidbody _rb;
@@ -16,9 +16,14 @@ public abstract class AbilityProjectile : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
     }
 
-    public virtual void Launch(Vector3 direction)
+    public void Launch(Vector3 impulse)
     {
-        _rb.linearVelocity = direction;
+        Rigidbody rb = GetComponent<Rigidbody>();
+
+        rb.isKinematic = false;  // now physics activates
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.AddForce(impulse, ForceMode.Impulse);
     }
 
     protected void Activate()

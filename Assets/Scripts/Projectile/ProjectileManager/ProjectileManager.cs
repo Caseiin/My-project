@@ -27,12 +27,25 @@ public class ProjectileManager : Singleton<ProjectileManager>
         GameObject projectileObj = Instantiate(projectilePrefab);
         projectileObj.transform.position = _initialPosition.position;
         projectileObj.SetActive(false);
+
+        Rigidbody rb = projectileObj.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true;  // physics won’t run until we enable it
+        }
+
         return projectileObj.GetComponent<AbilityProjectile>();
     }
 
     private void OnGetFromPool(AbilityProjectile abilityProjectile)
     {
         abilityProjectile.gameObject.SetActive(true);
+
+        Rigidbody rb = abilityProjectile.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true; // still kinematic until we launch
+        }
     }
 
     private void OnReleaseToPool(AbilityProjectile abilityProjectile)

@@ -15,5 +15,4 @@ public class InteractiveProjectile : AbilityProjectile
         Activate();
     }
     
-    public override void Launch(Vector3 direction){}
 }
