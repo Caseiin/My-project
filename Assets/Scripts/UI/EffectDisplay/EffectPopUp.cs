@@ -8,7 +8,7 @@ public class EffectPopUp : MonoBehaviour
     [SerializeField] Image _icon;
     [SerializeField] Image _timer;
     [SerializeField] Image _background;
-    [SerializeField] float immediateDuration = 0.3f;
+    [SerializeField] float immediateDuration = 0.9f;
     
     Color _pendingColour;
     public void SetIcon(Sprite icon)
