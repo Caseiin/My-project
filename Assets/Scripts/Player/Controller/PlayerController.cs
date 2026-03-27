@@ -27,7 +27,9 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
 
     [Header("Throw")]
     public GameObject Hand;
-    public  ProjectileThrow Throw{get; set;}
+    public  ProjectileThrow ThrowLogic{get; set;}
+    public  TrajectorPredictor Trajectory{get; set;}
+
     
     // Camera motion logic
     [Header("Camera Behaviour")]
@@ -42,7 +44,8 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     {
         Input.EnableInputMap();
         RB = GetComponent<Rigidbody>();
-        Throw = Hand?.GetComponent<ProjectileThrow>();
+        ThrowLogic = Hand.GetComponent<ProjectileThrow>();
+        Trajectory = Hand.GetComponentInChildren<TrajectorPredictor>();
 
 
         DeclareStateInformation();
@@ -87,18 +90,25 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
 
     public void HandleThrow()
     {
-        Debug.Log("Throwing");
-        Throw.Throw();
+        ThrowLogic.Throw();
+    }
+
+    public void Aim(bool IsAimming)
+    {
+        // if (IsAimming)
+        // {
+        //     Trajectory.Predict(Hand,)
+        // }
     }
 
     void OnEnable()
     {
-        Input.OnAttackTriggered += HandleThrow;
+        // Input.OnAttackTriggered += HandleThrow;
     }
 
     void OnDisable()
     {
-        Input.OnAttackTriggered -= HandleThrow; 
+        // Input.OnAttackTriggered -= HandleThrow; 
     }
 
     // Helper Methods

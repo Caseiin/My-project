@@ -53,11 +53,8 @@ public class FPSCameraLogic : CameraLogic
                     ClearTarget();
 
                     _currentTarget = interactive;
-                    // InteractionProjectileUI.Instance.SetSpriteIcon(_currentTarget.InteractIcon);
-                    // InteractionProjectileUI.Instance.Show();
                     _currentUI  = WorldSpaceUIManager.Instance.SpawnUI(_currentTarget.interactivePrefab, _currentTarget.transform);
-                    _currentUI.Show();
-                    
+                    _currentUI.Show();    
                 }
 
                 return;

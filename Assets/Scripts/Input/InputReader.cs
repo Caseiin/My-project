@@ -22,6 +22,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public event Action OnInteractTriggered;
 
+
     public void EnableInputMap()
     {
         if (Input == null)
@@ -55,7 +56,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if(context.performed)
+        if(context.started)
         OnInteractTriggered?.Invoke();
     }
 

@@ -20,7 +20,7 @@ public abstract class AbilityProjectile : MonoBehaviour
     {
         Rigidbody rb = GetComponent<Rigidbody>();
 
-        rb.isKinematic = false;  // now physics activates
+        rb.isKinematic = false;
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.AddForce(impulse, ForceMode.Impulse);
