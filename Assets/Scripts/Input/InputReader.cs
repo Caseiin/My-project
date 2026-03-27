@@ -45,6 +45,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public void OnAttack(InputAction.CallbackContext context)
     {
+        if(context.performed)
         OnAttackTriggered?.Invoke();
     }
 
@@ -54,6 +55,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public void OnInteract(InputAction.CallbackContext context)
     {
+        if(context.performed)
         OnInteractTriggered?.Invoke();
     }
 

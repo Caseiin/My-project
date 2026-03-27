@@ -16,7 +16,10 @@ public abstract class AbilityProjectile : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
     }
 
-    public abstract void Launch(Vector3 direction);
+    public virtual void Launch(Vector3 direction)
+    {
+        _rb.linearVelocity = direction;
+    }
 
     protected void Activate()
     {

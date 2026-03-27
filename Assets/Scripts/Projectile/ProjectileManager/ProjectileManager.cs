@@ -24,7 +24,8 @@ public class ProjectileManager : Singleton<ProjectileManager>
 
     AbilityProjectile CreateProjectile()
     {
-        GameObject projectileObj = Instantiate(projectilePrefab,_initialPosition);
+        GameObject projectileObj = Instantiate(projectilePrefab);
+        projectileObj.transform.position = _initialPosition.position;
         projectileObj.SetActive(false);
         return projectileObj.GetComponent<AbilityProjectile>();
     }

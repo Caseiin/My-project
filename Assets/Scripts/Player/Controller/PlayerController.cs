@@ -26,7 +26,7 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     public float _lookSmoothTime = 0.05f; // small = snappy, large = more smooth
 
     [Header("Throw")]
-    public GameObject _hand;
+    public GameObject Hand;
     public  ProjectileThrow Throw{get; set;}
     
     // Camera motion logic
@@ -42,7 +42,9 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     {
         Input.EnableInputMap();
         RB = GetComponent<Rigidbody>();
-        Throw = GetComponent<ProjectileThrow>();
+        Throw = Hand?.GetComponent<ProjectileThrow>();
+
+
         DeclareStateInformation();
         SetCameraLogic(new FPSCameraLogic(this)); 
     }
@@ -67,10 +69,13 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
         var idlestate = new PlayerIdleState(this);
         var throwstate = new PlayerThrowState(this);
 
+        // Any(throwstate, new FuncPredicate(() => _input.IsAimming));
+
         // Define transitions
         At(idlestate,motionstate,new FuncPredicate(()=> _input.MoveDirection.sqrMagnitude > _movementThreshold));
         At(motionstate,idlestate,new FuncPredicate(()=> _input.MoveDirection.sqrMagnitude <= _movementThreshold));
-        Any(throwstate, new FuncPredicate(() => _input.IsAimming));
+        // At(throwstate, idlestate, new FuncPredicate(() => !_input.IsAimming && _input.MoveDirection.sqrMagnitude <= _movementThreshold));
+        // At(throwstate, motionstate, new FuncPredicate(() => !_input.IsAimming && _input.MoveDirection.sqrMagnitude > _movementThreshold));
 
         machine.SetState(idlestate);
     }
@@ -80,7 +85,21 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
         _cameraLogic = logic;
     }
 
+    public void HandleThrow()
+    {
+        Debug.Log("Throwing");
+        Throw.Throw();
+    }
 
+    void OnEnable()
+    {
+        Input.OnAttackTriggered += HandleThrow;
+    }
+
+    void OnDisable()
+    {
+        Input.OnAttackTriggered -= HandleThrow; 
+    }
 
     // Helper Methods
     void At(IState from, IState to, IPredicate condition) => machine.AddTransitions(from,to,condition);
