@@ -55,6 +55,7 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     void Update()
     {
         _cameraLogic.HandleLook();
+        Aim(Input.IsAimming);
         machine?.Update();
     }
 
@@ -95,10 +96,15 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
 
     public void Aim(bool IsAimming)
     {
-        // if (IsAimming)
-        // {
-        //     Trajectory.Predict(Hand,)
-        // }
+        if (IsAimming)
+        {
+            var velocity = ThrowLogic.CalculateThrowVelocity();
+            Trajectory.Predict(Hand.transform.position,velocity);
+        }
+        else
+        {
+            Trajectory.StopPrediction();
+        }
     }
 
     void OnEnable()

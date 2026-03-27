@@ -15,6 +15,13 @@ public class ProjectileThrow : MonoBehaviour
             throwPoint = transform;
         }
     }
+
+    public Vector3 CalculateThrowVelocity()
+    {
+        Vector3 dir = Camera.main.transform.forward;
+        return dir * throwForce + Vector3.up * upwardForce;
+    }
+    
     public void Throw()
     {
         AbilityProjectile proj = ProjectileManager.Instance.GetProjectile();

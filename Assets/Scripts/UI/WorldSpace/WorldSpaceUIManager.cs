@@ -11,7 +11,6 @@ public class WorldSpaceUIManager : Singleton<WorldSpaceUIManager>
     Camera _camera;
     readonly List<WorldSpaceUIFollower> _followerList = new();
 
-
     protected override void Awake()
     {
         base.Awake();

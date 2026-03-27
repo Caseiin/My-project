@@ -9,17 +9,34 @@ public class TrajectorPredictor : MonoBehaviour
     public void Predict(Vector3 startPos, Vector3 startVelocity)
     {
         line.enabled = true;
+
         Vector3[] points = new Vector3[steps];
 
-        Vector3 pos = startPos;
-        Vector3 vel = startVelocity;
+        Vector3 currentPos = startPos;
+        Vector3 currentVel = startVelocity;
 
-        for(int i = 0; i < steps; i++)
+        for (int i = 0; i < steps; i++)
         {
-            points[i] = pos;
+            points[i] = currentPos;
 
-            vel += Physics.gravity * timeStep;
-            pos += vel * timeStep;
+            // Predict next position
+            Vector3 nextVel = currentVel + Physics.gravity * timeStep;
+            Vector3 nextPos = currentPos + nextVel * timeStep;
+
+            Vector3 segment = nextPos - currentPos;
+            if (Physics.Raycast(currentPos, segment.normalized, out RaycastHit hit, segment.magnitude))
+            {
+                points[i] = hit.point;
+
+                // Clamp rest of line to hit point
+                for (int j = i + 1; j < steps; j++)
+                    points[j] = hit.point;
+
+                break;
+            }
+
+            currentPos = nextPos;
+            currentVel = nextVel;
         }
 
         line.positionCount = steps;
