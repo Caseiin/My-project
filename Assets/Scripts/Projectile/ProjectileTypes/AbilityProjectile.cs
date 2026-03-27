@@ -1,10 +1,10 @@
 using System.Collections.Generic;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public abstract class AbilityProjectile : MonoBehaviour
 {
-    public float speed = 20f;
     public float MaxEffectRadius = 5f;
     public AbilitySO ability;
     protected Rigidbody _rb;
@@ -99,5 +99,12 @@ public abstract class AbilityProjectile : MonoBehaviour
 
         playerList = new List<IEffectable>(playerBuffer);
         otherList = new List<IEffectable>(otherBuffer);
+    }
+
+    public void ResetPhysics()
+    {
+        _rb.isKinematic = true;
+        _rb.linearVelocity = Vector3.zero;
+        _rb.angularVelocity = Vector3.zero;
     }
 }

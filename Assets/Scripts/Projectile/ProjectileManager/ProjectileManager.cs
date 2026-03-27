@@ -29,10 +29,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
         projectileObj.SetActive(false);
 
         Rigidbody rb = projectileObj.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.isKinematic = true;  // physics won’t run until we enable it
-        }
+        if (rb != null) rb.isKinematic = true;
 
         return projectileObj.GetComponent<AbilityProjectile>();
     }
@@ -51,6 +48,7 @@ public class ProjectileManager : Singleton<ProjectileManager>
     private void OnReleaseToPool(AbilityProjectile abilityProjectile)
     {
         abilityProjectile.gameObject.SetActive(false);
+        abilityProjectile.ResetPhysics();
     }
 
     private void OnDestroyPoolObject(AbilityProjectile abilityProjectile)
