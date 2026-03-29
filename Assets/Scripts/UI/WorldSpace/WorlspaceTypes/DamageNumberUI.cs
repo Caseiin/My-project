@@ -13,7 +13,7 @@ public class DamageNumberUI : WorldSpaceUIFollower
 
     public void SetDamage(int amount)
     {
-        _text.text = amount.ToString();
+        _text.text = $"-{amount.ToString()} hp";
     }
 
     // Only override OnInitialize if you need setup logic
