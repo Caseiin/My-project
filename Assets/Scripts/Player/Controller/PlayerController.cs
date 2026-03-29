@@ -109,12 +109,12 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
 
     void OnEnable()
     {
-        Input.OnAttackTriggered += HandleThrow;
+        // Input.OnAttackTriggered += HandleThrow;
     }
 
     void OnDisable()
     {
-        Input.OnAttackTriggered -= HandleThrow; 
+        // Input.OnAttackTriggered -= HandleThrow; 
     }
 
     // Helper Methods
