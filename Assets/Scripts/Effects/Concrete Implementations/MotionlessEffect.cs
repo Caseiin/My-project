@@ -12,7 +12,7 @@ public class MotionlessEffect : GenEffect<IMoveable>
     {
         if (target != null)
         {
-            Message = $"{this.GetType()}: cannot move for {motionlessDuration} seconds";
+            Message = $"{this.GetType()}: Damnit! I'm stuck";
             var _runner = target as MonoBehaviour;
             _runner.StartCoroutine(SlowedCouroutine(target));
         }

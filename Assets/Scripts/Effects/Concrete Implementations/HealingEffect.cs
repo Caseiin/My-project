@@ -8,7 +8,7 @@ public class HealingEffect: GenEffect<IDamageable>
 
     protected override void ApplyEffect(IDamageable target)
     {
-        Message = $"{this.GetType()}:gained +{healingAmount} hp";
+        Message = $"{this.GetType()}: That feels amazing!";
         target?.RestoreHealth(healingAmount);
     }
 }

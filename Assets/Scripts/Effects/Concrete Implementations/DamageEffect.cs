@@ -9,6 +9,6 @@ public class DamageEffect : GenEffect<IDamageable>
     protected override void ApplyEffect(IDamageable target)
     {
         target?.TakeDamage(dmgAmount);
-        Message = $"{this.GetType()}:lost -{dmgAmount} hp";
+        Message = $"{this.GetType()}: Damn! I Took some Damage!";
     }
 }

@@ -38,6 +38,7 @@ public abstract class AbilityProjectile : MonoBehaviour
                 if (effect.Apply(effectable))
                 {
                     EffectPopUpManager.Instance.DisplayEffect(effect);
+                    Messenger.AddEffectMessage(effect.Message);
                 }
             }
         }
