@@ -55,7 +55,7 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     void Update()
     {
         _cameraLogic.HandleLook();
-        Aim(Input.IsAimming);
+        // Aim(Input.IsAimming);
         machine?.Update();
     }
 

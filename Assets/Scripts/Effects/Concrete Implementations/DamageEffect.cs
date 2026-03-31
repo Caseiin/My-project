@@ -10,5 +10,7 @@ public class DamageEffect : GenEffect<IDamageable>
     {
         target?.TakeDamage(dmgAmount);
         Message = $"{this.GetType()}: Damn! I Took some Damage!";
+        // Messenger.AddEffectMessage(Message);
+
     }
 }

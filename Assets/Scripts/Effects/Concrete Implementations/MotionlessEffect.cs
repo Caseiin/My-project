@@ -13,6 +13,7 @@ public class MotionlessEffect : GenEffect<IMoveable>
         if (target != null)
         {
             Message = $"{this.GetType()}: Damnit! I'm stuck";
+            // Messenger.AddEffectMessage(Message);
             var _runner = target as MonoBehaviour;
             _runner.StartCoroutine(SlowedCouroutine(target));
         }

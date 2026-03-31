@@ -9,6 +9,8 @@ public class HealingEffect: GenEffect<IDamageable>
     protected override void ApplyEffect(IDamageable target)
     {
         Message = $"{this.GetType()}: That feels amazing!";
+        // Messenger.AddEffectMessage(Message);
+
         target?.RestoreHealth(healingAmount);
     }
 }
