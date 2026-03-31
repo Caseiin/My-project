@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -17,8 +18,15 @@ public class TempDialogueManager : MonoBehaviour
 
     void DisplayEffectDialogue(string msg)
     {
-        text.text = msg;
         Debug.Log($"Displayed the effect:{msg}");
+        StartCoroutine(DisplayEffect(msg));
+    }
+
+    IEnumerator DisplayEffect(string msg)
+    {
+        text.text = msg;
+        yield return new WaitForSeconds(3f);
+        text.text ="";
     }
 
 
