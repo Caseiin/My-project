@@ -4,14 +4,7 @@ using UnityEngine;
 
 public class TempDialogueManager : MonoBehaviour
 {
-    TextMeshProUGUI text;
-    String message;
-    void Awake()
-    {
-        text = GetComponent<TextMeshProUGUI>();
-        message = "Me:";
-    }
-
+    [SerializeField] TextMeshProUGUI text;
     void OnEnable()
     {
         Messenger.OnEffectMessage += DisplayEffectDialogue;
@@ -25,6 +18,7 @@ public class TempDialogueManager : MonoBehaviour
     void DisplayEffectDialogue(string msg)
     {
         text.text = msg;
+        Debug.Log($"Displayed the effect:{msg}");
     }
 
 
