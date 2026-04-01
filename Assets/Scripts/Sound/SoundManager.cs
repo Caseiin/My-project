@@ -1,18 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
-public class SoundManager : Singleton<SoundManager>
+public class SoundManager : PersistentSingleton<SoundManager>
 {
-
-    [Header("Sound Library")]
-    [SerializeField] private SoundData[] _soundDataLibrary;
-
-    [Header("Audio Sources")]
-    [SerializeField] private AudioSource _musicSource;
-    [SerializeField] private AudioSource _sfxSource;
-    [SerializeField] private AudioSource _loopedSfxSource;
-
-    private Dictionary<SoundType, List<SoundData>> _soundDictionary = new();
+    IObjectPool<SoundEmitter> _soundPool;
 
     protected override void Awake()
     {

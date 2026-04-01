@@ -129,8 +129,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         // OnMenuActivated?.Invoke(ScreenType.MainMenu);
         if (context.started)
         OnResetTabTrigger?.Invoke();
-
-
     }
 
     public void OnAim(InputAction.CallbackContext context)
