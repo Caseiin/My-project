@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
     [Header("Health Info")]
-    [SerializeField] DamageNumberUI DamagePrefab;
+    [SerializeField] FloatingNumberUI HealthPrefab;
     [Range(0,150)]
     [SerializeField] int _health;
     public int Health => _health;
@@ -17,13 +17,15 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public void RestoreHealth(int health)
     {
         _health += health;
+        var healthUI = WorldSpaceUIManager.Instance.SpawnUI(HealthPrefab,transform);
+        healthUI.SetHealth(health);
         OnHealthRestored?.Invoke(health);
     }
 
     public void TakeDamage(int dmg)
     {
         _health -= dmg;
-        var dmgUI = WorldSpaceUIManager.Instance.SpawnUI(DamagePrefab,transform);
+        var dmgUI = WorldSpaceUIManager.Instance.SpawnUI(HealthPrefab,transform);
         dmgUI.SetDamage(dmg);
         OnHealthTaken?.Invoke(dmg);
 

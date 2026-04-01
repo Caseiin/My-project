@@ -1,8 +1,8 @@
-// DamageNumberUI.cs
+// FloatingNumberUI.cs
 using TMPro;
 using UnityEngine;
 
-public class DamageNumberUI : WorldSpaceUIFollower
+public class FloatingNumberUI : WorldSpaceUIFollower
 {
     [SerializeField] TextMeshProUGUI _text;
     [SerializeField] float _lifetime = 1.2f;
@@ -14,6 +14,11 @@ public class DamageNumberUI : WorldSpaceUIFollower
     public void SetDamage(int amount)
     {
         _text.text = $"-{amount.ToString()} hp";
+    }
+
+    public void SetHealth(int amount)
+    {
+        _text.text = $"+{amount.ToString()} hp";
     }
 
     // Only override OnInitialize if you need setup logic

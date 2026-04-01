@@ -146,7 +146,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2592225135794663580}
-  - component: {fileID: 2706337023241877486}
+  - component: {fileID: 1495021848732839364}
   m_Layer: 5
   m_Name: DmgUI
   m_TagString: Untagged
@@ -174,7 +174,7 @@ RectTransform:
   m_AnchoredPosition: {x: -132.35474, y: 62.127686}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2706337023241877486
+--- !u!114 &1495021848732839364
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -188,3 +188,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DamageNumberUI
   _offset: {x: 0, y: 2, z: 0}
   _text: {fileID: 3403408121865661521}
+  _lifetime: 1.2
+  _floatSpeed: 2
