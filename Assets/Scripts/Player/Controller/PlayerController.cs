@@ -42,6 +42,8 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
 
     void Awake()
     {
+        Registry<PlayerController>.TryAdd(this);
+
         Input.EnableInputMap();
         RB = GetComponent<Rigidbody>();
         ThrowLogic = Hand.GetComponent<ProjectileThrow>();
@@ -105,6 +107,11 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
         {
             Trajectory.StopPrediction();
         }
+    }
+
+    void OnDestroy()
+    {
+        Registry<PlayerController>.Remove(this);
     }
 
     void OnEnable()

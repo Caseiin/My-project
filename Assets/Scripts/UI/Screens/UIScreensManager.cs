@@ -7,13 +7,18 @@ public class UIScreensManager : Singleton<UIScreensManager>
     [SerializeField] InputReader _input;
     private Dictionary<ScreenType,UIScreens> _screensMap;
     private ScreenType? _currentScreen;
-
+    PlayerController _player;
 
     protected override void Awake()
     {
         base.Awake();
         InitializeDictionary();
         _input.EnableInputMap();
+    }
+
+    void Start()
+    {
+        _player = Registry<PlayerController>.GetFirst();
     }
 
     void InitializeDictionary()
@@ -30,12 +35,15 @@ public class UIScreensManager : Singleton<UIScreensManager>
     {
         HideAllScreens();
         _screensMap[type].Show();
+        _player?.SetCameraLogic(new IdleCameraLogic(_player));
     }
 
     public void HideAllScreens()
     {
         // hides all screens
         foreach(var screen in _screensMap.Values) screen.Hide();
+        _player?.SetCameraLogic(new FPSCameraLogic(_player));
+
     }
 
 

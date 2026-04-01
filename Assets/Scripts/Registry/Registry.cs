@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public delegate T SelectionStrategy<T>(IEnumerable<T> items); 
@@ -21,5 +22,9 @@ public static class Registry<T> where T : class
     }
 
     public static T Get(SelectionStrategy<T> strategy) => strategy(items);
+    public static T GetFirst()
+    {
+        return items.FirstOrDefault();
+    }
     public static IEnumerable<T> GetMany(FilterStrategy<T> filter) => filter(items);
 }

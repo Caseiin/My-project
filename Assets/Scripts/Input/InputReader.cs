@@ -123,7 +123,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public void OnMenu(InputAction.CallbackContext context)
     {
-        OnMenuActivated?.Invoke(ScreenType.MainMenu);
+        // OnMenuActivated?.Invoke(ScreenType.MainMenu);
     }
 
     public void OnAim(InputAction.CallbackContext context)
