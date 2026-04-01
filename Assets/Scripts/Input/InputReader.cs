@@ -17,6 +17,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public event Action OnShootTriggered;
     public event Action OnEscapeTriggered;
     public event Action OnAttackTriggered;
+    public event Action OnResetTabTrigger;
 
     public event Action<ScreenType> OnMenuActivated;
 
@@ -111,11 +112,13 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public void OnShoot(InputAction.CallbackContext context)
     {
+        if (context.started)
         OnShootTriggered?.Invoke();
     }
 
     public void OnEscape(InputAction.CallbackContext context)
     {
+        if (context.started)
         OnMenuActivated?.Invoke(ScreenType.PauseMenu);  
 
         OnEscapeTriggered?.Invoke();
@@ -124,6 +127,10 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public void OnMenu(InputAction.CallbackContext context)
     {
         // OnMenuActivated?.Invoke(ScreenType.MainMenu);
+        if (context.started)
+        OnResetTabTrigger?.Invoke();
+
+
     }
 
     public void OnAim(InputAction.CallbackContext context)

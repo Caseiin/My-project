@@ -60,6 +60,15 @@ public class UIScreensManager : Singleton<UIScreensManager>
             _currentScreen = type;
         }
     }
+
+    public void OnExitClick()
+    {
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+    #endif 
+        Application.Quit();
+    }
+    
     void OnEnable()
     {
         _input.OnMenuActivated += ToggleScreen;

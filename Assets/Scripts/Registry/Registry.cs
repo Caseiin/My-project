@@ -13,7 +13,7 @@ public static class Registry<T> where T : class
 
     public static bool TryAdd(T item)
     {
-        return item != null & items.Add(item);
+        return item != null && items.Add(item);
     }
 
     public static bool Remove(T item)
