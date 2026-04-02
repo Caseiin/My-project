@@ -29,7 +29,7 @@ public class SoundEmitter : MonoBehaviour
         }
 
         _audioSource.Play();
-        StartCoroutine(WaitForSoundEnd());
+        _playingCoroutine = StartCoroutine(WaitForSoundEnd());
     }
 
     private IEnumerator WaitForSoundEnd()
