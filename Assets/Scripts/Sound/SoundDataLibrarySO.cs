@@ -5,18 +5,28 @@ using UnityEngine;
 public class SoundDataLibrarySO : ScriptableObject
 {
     [SerializeField] List<SoundData> sounds;
-    public Dictionary<string, SoundData> soundLibrary = new();
+    Dictionary<string, SoundData> _soundLibrary = new();
 
     public void Initialize()
     {
         foreach (var sound in sounds)
         {
-            soundLibrary[sound.name] = sound;
 
-            if (soundLibrary.ContainsKey(sound.name))
+            if (_soundLibrary.ContainsKey(sound.name))
             {
                 Debug.LogWarning($"Duplicate sound name: {sound.name}");
+                continue;
             }
+
+            _soundLibrary[sound.name] = sound;
         }
+    }
+
+    public SoundData Get(string soundName)
+    {
+        if (_soundLibrary.TryGetValue(soundName, out var data)) return data;
+
+        Debug.LogWarning($"Sound not found: {soundName}");
+        return null;
     }
 }
