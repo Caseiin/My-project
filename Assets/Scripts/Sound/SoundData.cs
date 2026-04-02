@@ -8,4 +8,7 @@ public class SoundData : ScriptableObject
     public AudioMixerGroup mixerGroup;
     public bool Loop;
     public bool PlayonAwake;
+    public bool FrequentSound;
+    [Range(0,1)]
+    public float SpatialBlend;
 }
