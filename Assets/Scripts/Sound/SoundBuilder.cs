@@ -5,6 +5,7 @@ public class SoundBuilder
     readonly SoundManager _soundManager;
     SoundData soundData;
     Vector3 position = Vector3.zero;
+    Transform transform = null;
     bool randomPitch;
 
     public SoundBuilder(SoundManager manager)
@@ -24,6 +25,12 @@ public class SoundBuilder
         return this;
     }
 
+    public SoundBuilder WithParent(Transform transform)
+    {
+        this.transform = transform;
+        return this;
+    }
+
     public SoundBuilder WithRandomSound(bool pitch)
     {
         randomPitch = pitch;
@@ -37,7 +44,7 @@ public class SoundBuilder
         var soundEmitter = _soundManager.Get();
         soundEmitter.InitializeSound(soundData);
         soundEmitter.transform.position = position;
-        soundEmitter.transform.parent = SoundManager.Instance.transform;
+        soundEmitter.transform.parent = transform;
 
         if (randomPitch)
         {
