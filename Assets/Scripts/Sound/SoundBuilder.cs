@@ -32,7 +32,7 @@ public class SoundBuilder
 
     public void Play()
     {
-        if(_soundManager.CanPlaySound(soundData)) return;
+        if(!_soundManager.CanPlaySound(soundData)) return;
 
         var soundEmitter = _soundManager.Get();
         soundEmitter.InitializeSound(soundData);
