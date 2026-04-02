@@ -37,9 +37,9 @@ public class SoundBuilder
         return this;
     }
 
-    public void Play()
+    public SoundEmitter Play()
     {
-        if(!_soundManager.CanPlaySound(soundData)) return;
+        if(!_soundManager.CanPlaySound(soundData)) return null;
 
         var soundEmitter = _soundManager.Get();
         soundEmitter.InitializeSound(soundData);
@@ -53,5 +53,6 @@ public class SoundBuilder
 
         _soundManager.Counts[soundData] = (_soundManager.Counts.TryGetValue(soundData, out var count))? count + 1: 1;
         soundEmitter.Play();
+        return soundEmitter;
     }
 }
