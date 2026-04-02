@@ -15,10 +15,13 @@ public class SoundManager : PersistentSingleton<SoundManager>
     [SerializeField] int defaultSoundCapacity = 10;
     [SerializeField] int maxSoundCapacity = 30;
 
+
     void Start()
     {
         InitializePool();
     }
+
+    public SoundBuilder CreateSound() => new SoundBuilder(this);
 
     public SoundEmitter Get()
     {
