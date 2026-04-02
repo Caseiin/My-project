@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-[System.Serializable]
-public class SoundData
+[CreateAssetMenu(fileName ="Sound",menuName ="Sound/Data")]
+public class SoundData : ScriptableObject
 {
     public AudioClip Clip;
     public AudioMixerGroup mixerGroup;

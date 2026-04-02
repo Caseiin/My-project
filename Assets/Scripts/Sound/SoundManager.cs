@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Mono.Cecil.Cil;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -10,7 +9,6 @@ public class SoundManager : PersistentSingleton<SoundManager>
     readonly List<SoundEmitter> _activeSoundEmitters = new();
     public readonly Dictionary<SoundData, int> Counts = new();
 
- 
     [SerializeField] SoundEmitter soundEmitterPrefab;
     [SerializeField] bool collectionCheck = true;
     [SerializeField] int defaultSoundCapacity = 10;
