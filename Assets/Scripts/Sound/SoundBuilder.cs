@@ -3,16 +3,48 @@ using UnityEngine;
 public class SoundBuilder
 {
     readonly SoundManager _soundManager;
+    SoundData soundData;
     Vector3 position = Vector3.zero;
+    bool randomPitch;
 
     public SoundBuilder(SoundManager manager)
     {
         _soundManager = manager;
     }
 
+    public SoundBuilder WithSound(SoundData data)
+    {
+        soundData = data;
+        return this;
+    }
+
     public SoundBuilder WithPosition(Vector3 position)
     {
         this.position = position;
         return this;
+    }
+
+    public SoundBuilder WithRandomSound(bool pitch)
+    {
+        randomPitch = pitch;
+        return this;
+    }
+
+    public void Play()
+    {
+        if(_soundManager.CanPlaySound(soundData)) return;
+
+        var soundEmitter = _soundManager.Get();
+        soundEmitter.InitializeSound(soundData);
+        soundEmitter.transform.position = position;
+        soundEmitter.transform.parent = SoundManager.Instance.transform;
+
+        if (randomPitch)
+        {
+            soundEmitter.RandomizePitch();
+        } 
+
+        _soundManager.Counts[soundData] = (_soundManager.Counts.TryGetValue(soundData, out var count))? count + 1: 1;
+        soundEmitter.Play();
     }
 }

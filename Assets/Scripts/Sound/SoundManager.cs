@@ -43,6 +43,11 @@ public class SoundManager : PersistentSingleton<SoundManager>
 
     private void OnReturnToPool(SoundEmitter emitter)
     {
+        if (Counts.TryGetValue(emitter.Data, out var count))
+        {
+            Counts[emitter.Data] -= count > 0? 1 : 0; 
+        }
+
         emitter.gameObject.SetActive(false);
         _activeSoundEmitters.Remove(emitter);
     }
