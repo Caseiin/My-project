@@ -47,7 +47,7 @@ public class SoundManager : PersistentSingleton<SoundManager>
     {
         if (Counts.TryGetValue(emitter.Data, out var count))
         {
-            Counts[emitter.Data] -= count > 0? 1 : 0; 
+            Counts[emitter.Data] = Mathf.Max(0, count - 1);
         }
 
         emitter.gameObject.SetActive(false);
