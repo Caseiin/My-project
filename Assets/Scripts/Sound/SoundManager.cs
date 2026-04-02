@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Mono.Cecil.Cil;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -72,14 +73,6 @@ public class SoundManager : PersistentSingleton<SoundManager>
     // Helper method for SoundData count managment
     public bool CanPlaySound(SoundData data)
     {
-        if (Counts.TryGetValue(data, out var count))
-        {
-            if (count >= maxSoundCapacity)
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return !(Counts.TryGetValue(data, out var count)) || count < maxSoundCapacity;
     }
 }
