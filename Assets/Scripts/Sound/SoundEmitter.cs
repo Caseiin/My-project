@@ -35,6 +35,8 @@ public class SoundEmitter : MonoBehaviour
     private IEnumerator WaitForSoundEnd()
     {
         yield return new WaitWhile(()=> _audioSource.isPlaying);
+        if (Data.FrequentSound) SoundManager.Instance.FrequentSoundEmitters.TryDequeue(out _);
+            // rebuild without this emitter if it finished naturally
         SoundManager.Instance.ReturnToPool(this);
     }
 

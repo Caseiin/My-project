@@ -7,12 +7,12 @@ public class SoundManager : PersistentSingleton<SoundManager>
 {
     IObjectPool<SoundEmitter> _soundEmitterPool;
     readonly List<SoundEmitter> _activeSoundEmitters = new();
-    public readonly Dictionary<SoundData, int> Counts = new();
-
+    public readonly Queue<SoundEmitter> FrequentSoundEmitters = new();
     [SerializeField] SoundEmitter soundEmitterPrefab;
     [SerializeField] bool collectionCheck = true;
     [SerializeField] int defaultSoundCapacity = 10;
     [SerializeField] int maxSoundCapacity = 30;
+    [SerializeField] int frequentSoundCap = 3;
 
 
     void Start()
@@ -34,8 +34,7 @@ public class SoundManager : PersistentSingleton<SoundManager>
 
     private void InitializePool()
     {
-        _soundEmitterPool = new ObjectPool<SoundEmitter>(CreateSoundEmitter, OnTakefromPool, OnReturnToPool, OnDestroyFromPool,collectionCheck,defaultSoundCapacity,maxSoundCapacity
-);
+        _soundEmitterPool = new ObjectPool<SoundEmitter>(CreateSoundEmitter, OnTakefromPool, OnReturnToPool, OnDestroyFromPool,collectionCheck,defaultSoundCapacity,maxSoundCapacity);
     }
 
     private void OnDestroyFromPool(SoundEmitter emitter)
@@ -45,11 +44,6 @@ public class SoundManager : PersistentSingleton<SoundManager>
 
     private void OnReturnToPool(SoundEmitter emitter)
     {
-        if (Counts.TryGetValue(emitter.Data, out var count))
-        {
-            Counts[emitter.Data] = Mathf.Max(0, count - 1);
-        }
-
         emitter.gameObject.SetActive(false);
         _activeSoundEmitters.Remove(emitter);
     }
@@ -71,6 +65,12 @@ public class SoundManager : PersistentSingleton<SoundManager>
     // Helper method for SoundData count managment
     public bool CanPlaySound(SoundData data)
     {
-        return !(Counts.TryGetValue(data, out var count)) || count < maxSoundCapacity;
+        if (FrequentSoundEmitters.Count >= frequentSoundCap)
+        {
+            if (FrequentSoundEmitters.TryDequeue(out var emitter))
+                emitter.Stop();
+        }
+
+        return true;
     }
 }
