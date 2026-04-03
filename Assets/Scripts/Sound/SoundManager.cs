@@ -8,6 +8,7 @@ public class SoundManager : PersistentSingleton<SoundManager>
     IObjectPool<SoundEmitter> _soundEmitterPool;
     readonly List<SoundEmitter> _activeSoundEmitters = new();
     public readonly Queue<SoundEmitter> FrequentSoundEmitters = new();
+    public SoundDataLibrarySO SoundLibrary;
     [SerializeField] SoundEmitter soundEmitterPrefab;
     [SerializeField] bool collectionCheck = true;
     [SerializeField] int defaultSoundCapacity = 10;
@@ -18,6 +19,7 @@ public class SoundManager : PersistentSingleton<SoundManager>
     void Start()
     {
         InitializePool();
+        SoundLibrary.Initialize();
     }
 
     public SoundBuilder CreateSound() => new SoundBuilder(this);
