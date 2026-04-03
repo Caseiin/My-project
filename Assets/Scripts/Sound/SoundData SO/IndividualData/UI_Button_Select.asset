@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0a22655d7ab9114697206e060093b1f, type: 3}
   m_Name: UI_Button_Select
   m_EditorClassIdentifier: Assembly-CSharp::SoundData
-  Clip: {fileID: 8300000, guid: b34aabe7bd29a2a43a0e76554c72e44f, type: 3}
-  mixerGroup: {fileID: 478356676248252331, guid: 8fe4341d278a2574ab77c76a2ba4bd14, type: 2}
-  Loop: 1
+  Clip: {fileID: 8300000, guid: 32d4b1811dda14a6cb9e059ee8ad17d2, type: 3}
+  mixerGroup: {fileID: 3719632793612858041, guid: 8fe4341d278a2574ab77c76a2ba4bd14, type: 2}
+  Loop: 0
   PlayonAwake: 0
   FrequentSound: 1
   SpatialBlend: 0
