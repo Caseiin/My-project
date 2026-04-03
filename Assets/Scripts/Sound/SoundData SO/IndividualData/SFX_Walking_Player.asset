@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0a22655d7ab9114697206e060093b1f, type: 3}
-  m_Name: SFX_Footstep_Player
+  m_Name: SFX_Walking_Player
   m_EditorClassIdentifier: Assembly-CSharp::SoundData
-  Clip: {fileID: 8300000, guid: 4c04605d4d874604b875e295f52f7da7, type: 3}
+  Clip: {fileID: 8300000, guid: b34aabe7bd29a2a43a0e76554c72e44f, type: 3}
   mixerGroup: {fileID: 478356676248252331, guid: 8fe4341d278a2574ab77c76a2ba4bd14, type: 2}
   Loop: 1
   PlayonAwake: 0
