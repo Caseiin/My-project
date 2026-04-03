@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -18,10 +19,11 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public event Action OnEscapeTriggered;
     public event Action OnAttackTriggered;
     public event Action OnResetTabTrigger;
-
     public event Action<ScreenType> OnMenuActivated;
-
     public event Action OnInteractTriggered;
+
+    readonly PointerEventData _pointerEventData = new PointerEventData(EventSystem.current);
+    readonly List<RaycastResult> _raycastResults = new List<RaycastResult>(); 
 
 
     public void EnableInputMap()
@@ -45,10 +47,12 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         }
     }
 
+    // PlayerActions
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if(context.performed)
-        OnAttackTriggered?.Invoke();
+        var pointer = Pointer.current;
+        if (pointer != null && IsPointerOverUI(pointer.position.ReadValue())) return;
+        if(context.performed) OnAttackTriggered?.Invoke();
     }
 
 
@@ -74,46 +78,12 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         MoveDirection = context.ReadValue<Vector2>();
     }
 
-
-    public void OnNext(InputAction.CallbackContext context){}
-
-
-    public void OnPrevious(InputAction.CallbackContext context){}
-
-
-    public void OnSprint(InputAction.CallbackContext context){}
-
-    public void OnNavigate(InputAction.CallbackContext context){}
-
-    public void OnSubmit(InputAction.CallbackContext context){}
- 
-
-    public void OnCancel(InputAction.CallbackContext context){}
-
-
-    public void OnPoint(InputAction.CallbackContext context){}
-
-    public void OnClick(InputAction.CallbackContext context){}
- 
-
-    public void OnRightClick(InputAction.CallbackContext context){}
-
-
-    public void OnMiddleClick(InputAction.CallbackContext context){}
-
-
-    public void OnScrollWheel(InputAction.CallbackContext context){}
-
-
-    public void OnTrackedDevicePosition(InputAction.CallbackContext context){}
-
-
-    public void OnTrackedDeviceOrientation(InputAction.CallbackContext context){}
-
     public void OnShoot(InputAction.CallbackContext context)
     {
-        if (context.started)
-        OnShootTriggered?.Invoke();
+        var pointer = Pointer.current;
+        if (pointer != null && IsPointerOverUI(pointer.position.ReadValue())) return;
+
+        if (context.started) OnShootTriggered?.Invoke();
     }
 
     public void OnEscape(InputAction.CallbackContext context)
@@ -133,6 +103,33 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public void OnAim(InputAction.CallbackContext context)
     {
+        var pointer = Pointer.current;
+        if (pointer != null && IsPointerOverUI(pointer.position.ReadValue())) return;
+
         IsAimming = context.action.IsPressed();
+    }
+
+    // UIActions
+    public void OnNext(InputAction.CallbackContext context){}
+    public void OnPrevious(InputAction.CallbackContext context){}
+    public void OnSprint(InputAction.CallbackContext context){}
+    public void OnNavigate(InputAction.CallbackContext context){}
+    public void OnSubmit(InputAction.CallbackContext context){}
+    public void OnCancel(InputAction.CallbackContext context){}
+    public void OnPoint(InputAction.CallbackContext context){}
+    public void OnClick(InputAction.CallbackContext context){}
+    public void OnRightClick(InputAction.CallbackContext context){}
+    public void OnMiddleClick(InputAction.CallbackContext context){}
+    public void OnScrollWheel(InputAction.CallbackContext context){}
+    public void OnTrackedDevicePosition(InputAction.CallbackContext context){}
+    public void OnTrackedDeviceOrientation(InputAction.CallbackContext context){}
+
+    // Helper methods
+    bool IsPointerOverUI(Vector2 screenPosition)
+    {
+        _pointerEventData.position =screenPosition;
+        _raycastResults.Clear();
+        EventSystem.current.RaycastAll(_pointerEventData, _raycastResults);
+        return _raycastResults.Count > 0;
     }
 }
