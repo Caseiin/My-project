@@ -31,7 +31,7 @@ public class SoundBuilder
         return this;
     }
 
-    public SoundBuilder WithRandomSound(bool pitch)
+    public SoundBuilder WithRandomPitch(bool pitch)
     {
         randomPitch = pitch;
         return this;
@@ -55,6 +55,7 @@ public class SoundBuilder
             SoundManager.Instance.FrequentSoundEmitters.Enqueue(soundEmitter);
         }
 
+        Debug.Log($"Playing sound: {soundData.name} | Emitter active: {soundEmitter.gameObject.activeSelf}");
         soundEmitter.Play();
         return soundEmitter;
     }

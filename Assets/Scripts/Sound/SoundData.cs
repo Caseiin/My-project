@@ -11,4 +11,7 @@ public class SoundData : ScriptableObject
     public bool FrequentSound;
     [Range(0,1)]
     public float SpatialBlend;
+    public float MinDistance = 1f;
+    public float MaxDistance = 20f;
+    public AudioRolloffMode RolloffMode = AudioRolloffMode.Logarithmic;
 }

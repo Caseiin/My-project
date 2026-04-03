@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0a22655d7ab9114697206e060093b1f, type: 3}
-  m_Name: SFX_Footstep
+  m_Name: SFX_Footstep_Player
   m_EditorClassIdentifier: Assembly-CSharp::SoundData
-  Clip: {fileID: 0}
-  mixerGroup: {fileID: 0}
-  Loop: 0
+  Clip: {fileID: 8300000, guid: 50fe22de92be911459b9883f51dd6fbb, type: 3}
+  mixerGroup: {fileID: 478356676248252331, guid: 8fe4341d278a2574ab77c76a2ba4bd14, type: 2}
+  Loop: 1
   PlayonAwake: 0
-  FrequentSound: 0
+  FrequentSound: 1
   SpatialBlend: 0
+  MinDistance: 0
+  MaxDistance: 0
+  RolloffMode: 0

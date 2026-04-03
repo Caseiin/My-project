@@ -73,6 +73,7 @@ public class SoundManager : PersistentSingleton<SoundManager>
                 emitter.Stop();
         }
 
+        Debug.Log($"CanPlaySound: {data.name}");
         return true;
     }
 }
