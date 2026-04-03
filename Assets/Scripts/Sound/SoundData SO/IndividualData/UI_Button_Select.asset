@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0a22655d7ab9114697206e060093b1f, type: 3}
+  m_Name: UI_Button_Select
+  m_EditorClassIdentifier: Assembly-CSharp::SoundData
+  Clip: {fileID: 8300000, guid: b34aabe7bd29a2a43a0e76554c72e44f, type: 3}
+  mixerGroup: {fileID: 478356676248252331, guid: 8fe4341d278a2574ab77c76a2ba4bd14, type: 2}
+  Loop: 1
+  PlayonAwake: 0
+  FrequentSound: 1
+  SpatialBlend: 0
+  MinDistance: 0
+  MaxDistance: 0
+  RolloffMode: 0
