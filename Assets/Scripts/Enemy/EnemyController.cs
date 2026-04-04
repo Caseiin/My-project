@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class EnemyController : EntityController, IMoveable
 {
-    public Transform PlayerPosition; 
+    public Transform PlayerPosition {get;private set;} = null;
     [SerializeField]float _detectionRange = 15f; 
     [SerializeField]float _attackRange = 2.5f; 
 
@@ -23,6 +23,10 @@ public class EnemyController : EntityController, IMoveable
         RB = GetComponent<Rigidbody>();
         _enemyHealth = GetComponent<EnemyHealth>();
         DeclareStateInformation();
+    }
+
+    void Start(){
+        PlayerPosition =  Registry<PlayerController>.GetFirst().transform;
     }
 
     void Update()
