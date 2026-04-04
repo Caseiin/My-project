@@ -1,7 +1,9 @@
 
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyController : EntityController, IMoveable
 {
     public Transform PlayerPosition {get;private set;} = null;
