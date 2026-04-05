@@ -10,6 +10,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable,IPlayerEffectable
     [SerializeField] Slider HealthSlider;
     [SerializeField] TextMeshProUGUI HealthText;
     public int Health => _health;
+
+    public int MaxHealth{get; private set;}
+
     int _totalHealth;
     public event Action OnDeath;
     public event Action<int> OnHealthRestored;
@@ -19,6 +22,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable,IPlayerEffectable
     void Awake()
     {
         _totalHealth = _health;
+        MaxHealth = _totalHealth;
         HealthText.text = $"{_health}/{_totalHealth}";
     }
 

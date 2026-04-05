@@ -8,11 +8,16 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     [Range(0,150)]
     [SerializeField] int _health;
     public int Health => _health;
+    public int MaxHealth{get; private set;}
     
     public event Action OnDeath;
     public event Action<int> OnHealthRestored;
     public event Action<int> OnHealthTaken;
 
+    void Start()
+    {
+        MaxHealth = _health;
+    }
 
     public void RestoreHealth(int health)
     {
