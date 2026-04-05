@@ -3,8 +3,10 @@ using UnityEngine;
 
 [RequireComponent(typeof(SphereCollider))]
 public class Sensor : MonoBehaviour{
-    [SerializeField] float detectionRadius = 5f;
+    [SerializeField] float sensorRadius = 5f;
     [SerializeField] float timerInterval = 1f;
+
+    public float Radius => sensorRadius;
     Timer timer;
     SphereCollider dectectionRange;
     public event Action OnTargetChanged = delegate {};
@@ -12,13 +14,13 @@ public class Sensor : MonoBehaviour{
     Vector3 lastKnownPosition;
 
     public Vector3 TargetPosition => target? target.transform.position: Vector3.zero;
-    public bool IsTargetInRange => TargetPosition != Vector3.zero;
+    public bool IsTargetInRange => target != null;
     
     void Awake()
     {
         dectectionRange = GetComponent<SphereCollider>();
         dectectionRange.isTrigger = true;
-        dectectionRange.radius = detectionRadius;
+        dectectionRange.radius = sensorRadius;
     }
 
     void Start()
@@ -61,6 +63,6 @@ public class Sensor : MonoBehaviour{
     void OnDrawGizmos()
     {
         Gizmos.color = IsTargetInRange? Color.red : Color.green;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        Gizmos.DrawWireSphere(transform.position, sensorRadius);
     }
 }

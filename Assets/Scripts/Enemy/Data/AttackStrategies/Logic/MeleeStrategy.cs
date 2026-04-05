@@ -3,11 +3,22 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MeleeStrategy", menuName = "Enemy/Attack/Melee")]
 public class MeleeStrategy : AttackStrategy
 {
-    public float damage;
-    public float range;
+    [SerializeField] int damage = 10;
+    [SerializeField] float cooldown = 1.5f;
+    
+    float _lastAttackTime;
 
     public override void Attack(EnemyController enemy)
     {
-        // 
+        if (Time.time - _lastAttackTime < cooldown) return;
+        _lastAttackTime = Time.time;
+
+        // Simple overlap sphere hit
+        var hits = Physics.OverlapSphere(enemy.transform.position, enemy.AttackSensor.Radius);
+        foreach (var hit in hits)
+        {
+            if (hit.TryGetComponent<PlayerHealth>(out var health))
+                health.TakeDamage(damage);
+        }
     }
 }

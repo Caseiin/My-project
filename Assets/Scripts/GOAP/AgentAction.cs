@@ -18,7 +18,7 @@ public class AgentAction
     {
         Name = name;
     }
-    public AgentAction WithCost(int cost)
+    public AgentAction WithCost(float cost)
     {
         Cost = cost;
         return this;
