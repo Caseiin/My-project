@@ -8,12 +8,17 @@ public class MeleeStrategy : AttackStrategy
     
     float _lastAttackTime;
 
+    void OnEnable()
+    {
+        // Resets every time the asset is loaded — including entering Play mode
+        _lastAttackTime = -999f;
+    }
+
     public override void Attack(EnemyController enemy)
     {
         if (Time.time - _lastAttackTime < cooldown) return;
         _lastAttackTime = Time.time;
 
-        // Simple overlap sphere hit
         var hits = Physics.OverlapSphere(enemy.transform.position, enemy.AttackSensor.Radius);
         foreach (var hit in hits)
         {

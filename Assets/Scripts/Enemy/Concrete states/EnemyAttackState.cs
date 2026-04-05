@@ -19,7 +19,9 @@ public class EnemyAttackState : BaseState
     public override void OnEnter()
     {
         Debug.Log("Enemy is attacking");
-        _goap.NavAgent.ResetPath();
+
+        if (_goap.NavAgent.isActiveAndEnabled && _goap.NavAgent.isOnNavMesh)
+            _goap.NavAgent.ResetPath();
 
         _attackAction = new AgentAction("AttackPlayer")
             .WithCost(1f)
@@ -31,34 +33,27 @@ public class EnemyAttackState : BaseState
             .WithCompletion(() => !_enemy.AttackSensor.IsTargetInRange);
 
         _goap.Actions.Add(_attackAction);
-        _goap.CurrentGoal = _goap.Goals.First(g => g.Name == "KillPlayer");
-
-        // Directly queue
-        _goap.ActionPlan = new Queue<AgentAction>();
-        _goap.ActionPlan.Enqueue(_attackAction);
-        _goap.CurrentAction = null;
+        _goap.CurrentAction = _attackAction;  // set directly, no queue needed
     }
 
     public override void Update()
     {
-        if (_goap.CurrentAction == null || _goap.CurrentAction.IsDone())
+        if (_goap.CurrentAction == null) return;
+
+        // Action finished — player left range
+        if (_goap.CurrentAction.IsDone())
         {
-            if (_goap.ActionPlan.Count == 0) return;
-            _goap.CurrentAction = _goap.ActionPlan.Dequeue();
+            _goap.CurrentAction = null;
+            return;
         }
 
-        if (!_goap.CurrentAction.Perform())
-        {
-            _goap.ActionPlan = GoapPlanner.Plan(_goap, _goap.CurrentGoal);
-            _goap.CurrentAction = null;
-        }
+        // Keep performing every frame — Attack() handles its own cooldown internally
+        _goap.CurrentAction.Perform();
     }
 
     public override void OnExit()
     {
-        // Clean up attack action so it doesn't persist into other states
-        _goap.Actions.RemoveWhere(a => a.Name == "AttackPlayer");
+        _goap.Actions.Remove(_attackAction);
         _goap.CurrentAction = null;
-        _goap.ActionPlan.Clear();
     }
 }
