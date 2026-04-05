@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -17,8 +18,8 @@ public class EnemyController : EntityController, IMoveable
     public bool IsMovementBlocked { get;set;} = false;
 
     EnemyHealth _enemyHealth;
-
     StateMachine machine;
+    GoapAgent goapAgent;
 
     void Awake()
     {
@@ -45,22 +46,57 @@ public class EnemyController : EntityController, IMoveable
     {
         machine = new StateMachine();
 
+        // Build GOAP agent
+        var NavAgent = GetComponent<NavMeshAgent>();
+        goapAgent = new GoapAgent(transform, NavAgent);
+        SetupBeliefs(goapAgent);
+        SetupActions(goapAgent);
+        SetupGoals(goapAgent);
+
+        // FSM states
         var trackState = new EnemyTrackState(this);
         var idlestate = new EnemyIdleState(this);
         var attackState = new EnemyAttackState(this);
         var deathState = new EnemyDeathState(this);
 
         At(idlestate, trackState, new FuncPredicate(() => DistanceToPlayer() < _detectionRange));
-
         At(trackState, attackState, new FuncPredicate(() => DistanceToPlayer() <= _attackRange));
-
         At(attackState, trackState, new FuncPredicate(() =>  DistanceToPlayer() > _attackRange && DistanceToPlayer()< _detectionRange));
-
         At(trackState, idlestate, new FuncPredicate(() =>  DistanceToPlayer() >=  _detectionRange));
-
         Any(deathState, new FuncPredicate(()=> _enemyHealth.Health <= 0f));
 
         machine.SetState(idlestate);
+    }
+
+    private void SetupGoals(GoapAgent goapAgent)
+    {
+        var killGoal = new AgentGoal("KillPlayer", priority: 10);
+        killGoal.DesiredEffects[goapAgent.Beliefs["PlayerInSight"]] = false; // player dead = out of sight
+        goapAgent.Goals.Add(killGoal);
+    }
+
+    private void SetupActions(GoapAgent goapAgent)
+    {
+        var nav = GetComponent<NavMeshAgent>();
+
+        goapAgent.Actions.Add(new AgentAction("MoveToPlayer")
+                                    .WithCost(1f)
+                                    .WithPerformance(()=> {nav.SetDestination(PlayerPosition.position); return true;})
+                                    .WithCompletion(()=> DistanceToPlayer()<= _attackRange));
+    }
+
+    private void SetupBeliefs(GoapAgent goapAgent)
+    {
+        var factory = new BeliefFactory(goapAgent, goapAgent.Beliefs);
+
+        factory.AddBelief("PlayerInSight",
+            () => PlayerPosition != null && DistanceToPlayer() < _detectionRange);
+
+        // factory.AddSensorBelief("PlayerInAttackRange",
+        //     new ProximitySensor(this, _attackRange));   // your existing sensor type
+
+        // factory.AddBelief("LowHealth",
+        //     () => _enemyHealth.Health < _enemyHealth.MaxHealth * 0.3f);
     }
 
     float DistanceToPlayer()

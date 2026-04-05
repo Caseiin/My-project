@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 
 public abstract class Timer {
-    public float Duration {get; protected set;}
     public float CurrentTime { get; protected set; }
     public bool IsRunning { get; protected set; }
     protected float initialTime;
