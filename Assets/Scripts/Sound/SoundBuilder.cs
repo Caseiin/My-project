@@ -55,7 +55,7 @@ public class SoundBuilder
             SoundManager.Instance.FrequentSoundEmitters.Enqueue(soundEmitter);
         }
 
-        Debug.Log($"Playing sound: {soundData.name} | Emitter active: {soundEmitter.gameObject.activeSelf}");   
+        // Debug.Log($"Playing sound: {soundData.name} | Emitter active: {soundEmitter.gameObject.activeSelf}");   
         soundEmitter.Play();
         return soundEmitter;
     }
