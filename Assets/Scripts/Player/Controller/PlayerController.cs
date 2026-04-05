@@ -43,15 +43,17 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     void Awake()
     {
         Registry<PlayerController>.TryAdd(this);
-
-        Input.EnableInputMap();
         RB = GetComponent<Rigidbody>();
         ThrowLogic = Hand.GetComponent<ProjectileThrow>();
         Trajectory = Hand.GetComponentInChildren<TrajectorPredictor>();
+    }
 
-
+    void Start()
+    {
         DeclareStateInformation();
         SetCameraLogic(new FPSCameraLogic(this)); 
+        Input.EnableInputMap();
+        
     }
 
     void Update()
