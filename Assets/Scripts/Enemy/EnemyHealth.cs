@@ -17,7 +17,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public void RestoreHealth(int health)
     {
         _health += health;
-        var healthUI = WorldSpaceUIManager.Instance.SpawnUI(HealthPrefab,transform);
+        var healthUI = WorldSpaceUIManager.Instance.Spawn(HealthPrefab,transform);
         healthUI.SetHealth(health);
         OnHealthRestored?.Invoke(health);
     }
@@ -25,7 +25,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public void TakeDamage(int dmg)
     {
         _health -= dmg;
-        var dmgUI = WorldSpaceUIManager.Instance.SpawnUI(HealthPrefab,transform);
+        var dmgUI = WorldSpaceUIManager.Instance.Spawn(HealthPrefab,transform);
         dmgUI.SetDamage(dmg);
         OnHealthTaken?.Invoke(dmg);
 

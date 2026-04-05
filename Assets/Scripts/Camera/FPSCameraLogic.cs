@@ -54,7 +54,7 @@ public class FPSCameraLogic : CameraLogic
 
                     _currentTarget = interactive;
                     _currentTarget.EnableRange();
-                    _currentUI  = WorldSpaceUIManager.Instance.SpawnUI(_currentTarget.interactivePrefab, _currentTarget.transform);
+                    _currentUI  = WorldSpaceUIManager.Instance.Spawn(_currentTarget.interactivePrefab, _currentTarget.transform);
                     _currentUI.Show();    
                 }
 
@@ -84,7 +84,7 @@ public class FPSCameraLogic : CameraLogic
             // Remove UI
             if (_currentUI != null)
             {
-                WorldSpaceUIManager.Instance.UnregisterFollower(_currentUI);
+                _currentUI.CleanUp();
                 _currentUI = null;
             }
 

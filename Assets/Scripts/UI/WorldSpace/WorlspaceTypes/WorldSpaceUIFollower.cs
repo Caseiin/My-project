@@ -3,6 +3,7 @@ using UnityEngine;
 
 public abstract class WorldSpaceUIFollower : MonoBehaviour
 {
+    public WorldSpaceUIFollower Prefab{get; private set;}
     protected Transform _target;
     protected Camera _camera;
 
@@ -13,6 +14,11 @@ public abstract class WorldSpaceUIFollower : MonoBehaviour
         _target = target;
         _camera = camera;
         OnInitialize();
+    }
+
+    public void SetPrefab(WorldSpaceUIFollower prefab)
+    {
+        Prefab = prefab;
     }
 
     protected virtual void OnInitialize() { }
@@ -45,7 +51,6 @@ public abstract class WorldSpaceUIFollower : MonoBehaviour
 
     public virtual void CleanUp()
     {
-        SetVisible(false);
-        Destroy(gameObject); // Default: destroy unless pooling
+        WorldSpaceUIManager.Instance.UnregisterFollower(this);
     }
 }
