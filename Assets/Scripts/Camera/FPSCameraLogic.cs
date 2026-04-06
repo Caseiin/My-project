@@ -6,6 +6,7 @@ public class FPSCameraLogic : CameraLogic
 {
     InteractiveProjectile _currentTarget;
     InteractiveProjectileUI _currentUI;
+    LayerMask interactableLayer = LayerMask.GetMask("Interactable");
 
     public FPSCameraLogic(PlayerController player) : base(player)
     {
@@ -42,7 +43,7 @@ public class FPSCameraLogic : CameraLogic
         RaycastHit hit;
         Transform _head = _player._headTransform;
         
-        if (Physics.Raycast(_head.position, _head.forward, out hit, _player.ViewRange))
+        if (Physics.Raycast(_head.position, _head.forward, out hit, _player.ViewRange,interactableLayer))
         {
             Debug.DrawRay(_head.position, _head.forward * hit.distance, Color.red);
 

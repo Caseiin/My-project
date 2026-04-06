@@ -13,24 +13,16 @@ public class EnemyIdleState : BaseState
 
     public override void OnEnter()
     {
-        Debug.Log("Enemy is idling");
 
-        // Stop the agent when entering idle
-        _goap.NavAgent.ResetPath();
-
-        // GOAP: register a wait/patrol action only valid in idle
-        _idleAction = new AgentAction("WaitInIdle")
-            .WithCost(1f)
-            .WithPerformance(() => true)                           // do nothing, just stand
-            .WithCompletion(() => _enemy.DetectionSensor.IsTargetInRange); // done when player detected
-
-        _goap.Actions.Add(_idleAction);
+        _goap.CurrentGoal = null;
+        _goap.CurrentAction = null;
     }
 
     public override void OnExit()
     {
-        _goap.Actions.Remove(_idleAction);
+        _goap.CurrentAction?.Stop();
+        _goap.CurrentAction = null;
+        _goap.CurrentGoal = null;
     }
 
-    AgentAction _idleAction;
 }

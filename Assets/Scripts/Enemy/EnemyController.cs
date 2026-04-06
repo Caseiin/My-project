@@ -1,6 +1,7 @@
 
     using System;
-    using Unity.VisualScripting;
+using System.Collections.Generic;
+using Unity.VisualScripting;
     using UnityEngine;
     using UnityEngine.AI;
 
@@ -31,23 +32,30 @@
         EnemyHealth _enemyHealth;
         StateMachine machine;
         GoapAgent goapAgent;
+        NavMeshAgent NavAgent;
         public Transform PlayerPosition {get;private set;} = null;
 
         void Awake()
         {
             RB = GetComponent<Rigidbody>();
             RB.isKinematic = true;
+            RB.freezeRotation = true;
             _enemyHealth = GetComponent<EnemyHealth>();
+            NavAgent = GetComponent<NavMeshAgent>();
+
         }
 
         void Start(){
+            goapAgent = new GoapAgent(transform, NavAgent); // Build GOAP agent
             PlayerPosition =  Registry<PlayerController>.GetFirst().transform;
-            DeclareStateInformation();
+            DeclareStateAndGOAPInfo();
         }
 
         void Update()
         {
             machine?.Update();
+            goapAgent?.Update(Time.deltaTime);
+
         }
 
         void FixedUpdate()
@@ -55,16 +63,14 @@
             machine?.FixedUpdate();
         }
 
-        void DeclareStateInformation()
+        void DeclareStateAndGOAPInfo()
         {
             machine = new StateMachine();
 
-            // Build GOAP agent
-            var NavAgent = GetComponent<NavMeshAgent>();
-            goapAgent = new GoapAgent(transform, NavAgent);
             SetupBeliefs(goapAgent);
             SetupActions(goapAgent);
             SetupGoals(goapAgent);
+
 
             // FSM states
             var trackState = new EnemyTrackState(this, goapAgent);
@@ -72,42 +78,76 @@
             var attackState = new EnemyAttackState(this, goapAgent); 
             var deathState = new EnemyDeathState(this);
 
-            At(idlestate,   trackState,  new FuncPredicate(() => detectionSensor.IsTargetInRange));
-            At(trackState,  attackState, new FuncPredicate(() => attackSensor.IsTargetInRange));
-            At(attackState, trackState,  new FuncPredicate(() => !attackSensor.IsTargetInRange && detectionSensor.IsTargetInRange));
-            At(trackState,  idlestate,   new FuncPredicate(() => !detectionSensor.IsTargetInRange));
-            Any(deathState, new FuncPredicate(()=> _enemyHealth.Health <= 0f));
+            At(idlestate,   trackState,  new FuncPredicate(() => goapAgent.Beliefs["PlayerDetected"].Evaluate()));
+            At(trackState,  attackState, new FuncPredicate(() => goapAgent.Beliefs["PlayerInAttackRange"].Evaluate()));
+            At(attackState, trackState,  new FuncPredicate(() => !goapAgent.Beliefs["PlayerInAttackRange"].Evaluate()&& goapAgent.Beliefs["PlayerDetected"].Evaluate()));
+            At(trackState,  idlestate,   new FuncPredicate(() => !goapAgent.Beliefs["PlayerDetected"].Evaluate()));
 
             machine.SetState(idlestate);
         }
 
-        private void SetupGoals(GoapAgent goapAgent)
+        void SetupBeliefs(GoapAgent goapAgent)
         {
-            var killGoal = new AgentGoal("KillPlayer", priority: 10);
-            killGoal.DesiredEffects[goapAgent.Beliefs["PlayerInSight"]] = false; // player dead = out of sight
-            goapAgent.Goals.Add(killGoal);
+            BeliefFactory factory = new BeliefFactory(goapAgent, goapAgent.Beliefs);
+
+            factory.AddBelief("Nothing",() => false);
+            factory.AddBelief("AgentIdle",() => !NavAgent.hasPath);
+            factory.AddBelief("AgentMoving",() => NavAgent.hasPath);
+            factory.AddBelief("PlayerDetected", () => detectionSensor.IsTargetInRange);
+            factory.AddBelief("PlayerInAttackRange", () => attackSensor.IsTargetInRange);
+            factory.AddBelief("PlayerDead", () => PlayerPosition == null || PlayerPosition.GetComponent<PlayerHealth>().Health <= 0f);
+            factory.AddBelief("AgentStuck", () => IsMovementBlocked);
         }
 
-        private void SetupActions(GoapAgent goapAgent)
+        void SetupGoals(GoapAgent goapAgent)
         {
-            // no op rn
+            goapAgent.Goals.Add(new AgentGoal.Builder("ChillOut")
+                .WithPriority(1)
+                .WithDesiredEffect(goapAgent.Beliefs["Nothing"])
+                .Build());
+
+            goapAgent.Goals.Add(new AgentGoal.Builder("Wander")
+                .WithPriority(1)
+                .WithDesiredEffect(goapAgent.Beliefs["AgentMoving"])
+                .Build());
+
+            goapAgent.Goals.Add(new AgentGoal.Builder("KillPlayer")
+                .WithPriority(3)
+                .WithDesiredEffect(goapAgent.Beliefs["PlayerDead"])
+                .Build());
         }
 
-        private void SetupBeliefs(GoapAgent goapAgent)
+        void SetupActions(GoapAgent goapAgent)
         {
-            var factory = new BeliefFactory(goapAgent, goapAgent.Beliefs);
-            factory.AddBelief("LowHealth",() => _enemyHealth.Health < _enemyHealth.MaxHealth * 0.3f);
+            goapAgent.Actions.Add(new AgentAction.Builder("Relax")
+                .WithStrategy(new IdleStrategy(5))
+                .AddEffect(goapAgent.Beliefs["Nothing"])
+                .Build());
 
-            factory.AddSensorBelief("PlayerInSight", detectionSensor);
-            factory.AddSensorBelief("PlayerInAttackRange", attackSensor);  
+            goapAgent.Actions.Add(new AgentAction.Builder("Wander")
+                .WithStrategy(new WanderStrategy(NavAgent, 10)) 
+                .AddEffect(goapAgent.Beliefs["AgentMoving"])
+                .Build());
 
+            goapAgent.Actions.Add(new AgentAction.Builder("ChasePlayer")
+                .WithStrategy(new ChaseStrategy(NavAgent,PlayerPosition,() => attackSensor.IsTargetInRange)) // truth comes from sensor, same as belief
+                .AddPreCondition(goapAgent.Beliefs["PlayerDetected"])
+                .AddEffect(goapAgent.Beliefs["PlayerInAttackRange"])
+                .Build());
+
+            goapAgent.Actions.Add(new AgentAction.Builder("AttackPlayer")
+                .WithStrategy(new AttackActionStrategy(attackStrategy,this))
+                .AddPreCondition(goapAgent.Beliefs["PlayerInAttackRange"])
+                .AddEffect(goapAgent.Beliefs["PlayerDead"])
+                .Build());
         }
 
-        float DistanceToPlayer()
-        {
-            if (PlayerPosition == null) return Mathf.Infinity;
-            return Vector3.Distance(transform.position, PlayerPosition.position);
-        }
+
+        // float DistanceToPlayer()
+        // {
+        //     if (PlayerPosition == null) return Mathf.Infinity;
+        //     return Vector3.Distance(transform.position, PlayerPosition.position);
+        // }
 
         // Helper Methods
         void At(IState from, IState to, IPredicate condition) => machine.AddTransitions(from,to,condition);

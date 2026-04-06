@@ -4,12 +4,36 @@ using UnityEngine;
 public class AgentGoal
 {
     public string Name {get;}
-    public int Priority{get;}
-    public Dictionary<AgentBelief, bool> DesiredEffects {get;} = new();
+    public float Priority{get;private set;}
+    public HashSet<AgentBelief> DesiredEffects {get;} = new();
 
-    public AgentGoal(string name, int priority)
+    public AgentGoal(string name)
     {
         Name = name;
-        Priority = priority;
+    }
+
+    public class Builder
+    {
+        readonly AgentGoal goal;
+        
+        public Builder(string name){
+            goal = new AgentGoal(name);
+        }
+
+        public Builder WithPriority(float Priority)
+        {
+            goal.Priority = Priority;
+            return this;
+        }
+
+        public Builder WithDesiredEffect(AgentBelief effect)
+        {
+            goal.DesiredEffects.Add(effect);
+            return this;
+        }
+
+        public AgentGoal Build(){
+            return goal;
+        }
     }
 }
