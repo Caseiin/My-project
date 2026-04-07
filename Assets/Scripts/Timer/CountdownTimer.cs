@@ -16,5 +16,7 @@ public class CountdownTimer : Timer
     {
         if(!IsRunning || IsFinished) return;
         CurrentTime -= deltaTime;
+
+        if(IsFinished) Stop();
     }
 }

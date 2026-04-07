@@ -10,7 +10,7 @@ public class GoapPlanner : IGoapPlanner
         // Order goals by priority, descending
         List<AgentGoal> orderedGoals = goals
             .Where(g => g.DesiredEffects.Any(b => !b.Evaluate()))
-            .OrderByDescending(g => g == mostRecentGoal? g.Priority -0.01 : g.Priority)
+            .OrderByDescending(g => g == mostRecentGoal? g.Priority - 1 : g.Priority)
             .ToList();
 
         // Try to solve each goal in order
@@ -25,7 +25,12 @@ public class GoapPlanner : IGoapPlanner
             if(FindPath(goalNode, agent.Actions))
             {
                 // if the goalNode has no leaves and no action to perform try a different goal
-                if(goalNode.IsLeafDead) continue;
+                if (goalNode.IsLeafDead)
+                {
+                    Debug.Log($"Goal {goal.Name} has dead leaf, skipping");
+                    continue;
+                }
+                Debug.Log($"Found plan for goal: {goal.Name}");
 
                 Stack<AgentAction> actionStack = new();
                 while (goalNode.Leaves.Count > 0){
@@ -35,6 +40,10 @@ public class GoapPlanner : IGoapPlanner
                 }
 
                 return new ActionPlan(goal, actionStack, goalNode.Cost);
+            }
+            else
+            {
+                Debug.Log($"No path found for goal: {goal.Name}");
             }
         }
 
@@ -61,7 +70,7 @@ public class GoapPlanner : IGoapPlanner
                 newRequiredEffects.UnionWith(action.Preconditions);
 
                 var newAvailableActions = new HashSet<AgentAction>(actions);
-                // newAvailableActions.Remove(action);
+                newAvailableActions.Remove(action);
 
                 var newNode = new Node(parent, action, newRequiredEffects, parent.Cost + action.Cost);
 

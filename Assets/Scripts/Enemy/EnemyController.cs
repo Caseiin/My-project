@@ -107,7 +107,7 @@ using Unity.VisualScripting;
                 .Build());
 
             goapAgent.Goals.Add(new AgentGoal.Builder("Wander")
-                .WithPriority(1)
+                .WithPriority(2)
                 .WithDesiredEffect(goapAgent.Beliefs["AgentMoving"])
                 .Build());
 
