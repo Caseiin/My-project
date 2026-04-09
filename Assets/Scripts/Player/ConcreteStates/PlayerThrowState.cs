@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerThrowState : BaseState
@@ -10,10 +9,27 @@ public class PlayerThrowState : BaseState
         _player = player;
     }
 
-    public override void OnExit()
+    public override void Update()
     {
-        Debug.Log("Exit Throw");
+        // Aim(Input.IsAimming);
     }
 
+    public override void OnExit()
+    {
+        
+    }
+
+    public void Aim(bool IsAimming)
+    {
+        if (IsAimming)
+        {
+            var velocity = _player.ThrowLogic.CalculateThrowVelocity();
+            _player.Trajectory.Predict(_player.Hand.transform.position,velocity);
+        }
+        else
+        {
+            _player.Trajectory.StopPrediction();
+        }
+    }
 
 }
