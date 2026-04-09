@@ -9,14 +9,24 @@ public class PlayerThrowState : BaseState
         _player = player;
     }
 
+    public override void OnEnter()
+    {
+        Debug.Log("In the throw state");
+        _player.Input.OnAttackTriggered -= HandleThrow;
+        _player.Input.OnAttackTriggered += HandleThrow;
+
+    }
+
     public override void Update()
     {
-        // Aim(Input.IsAimming);
+        Aim(_player.Input.IsAimming);
     }
 
     public override void OnExit()
     {
-        
+        _player.Trajectory.StopPrediction();
+        _player.Input.OnAttackTriggered -= HandleThrow;
+
     }
 
     public void Aim(bool IsAimming)
@@ -30,6 +40,12 @@ public class PlayerThrowState : BaseState
         {
             _player.Trajectory.StopPrediction();
         }
+    }
+
+    public void HandleThrow()
+    {
+        _player.ThrowLogic.Throw();
+        Debug.Log("Player is throwing");
     }
 
 }

@@ -59,7 +59,6 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     void Update()
     {
         _cameraLogic.HandleLook();
-        // Aim(Input.IsAimming);
         machine?.Update();
     }
 
@@ -77,13 +76,13 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
         var idlestate = new PlayerIdleState(this);
         var throwstate = new PlayerThrowState(this);
 
-        // Any(throwstate, new FuncPredicate(() => _input.IsAimming));
+        Any(throwstate, new FuncPredicate(() => _input.IsAimming));
 
         // Define transitions
         At(idlestate,motionstate,new FuncPredicate(()=> _input.MoveDirection.sqrMagnitude > _movementThreshold));
         At(motionstate,idlestate,new FuncPredicate(()=> _input.MoveDirection.sqrMagnitude <= _movementThreshold));
-        // At(throwstate, idlestate, new FuncPredicate(() => !_input.IsAimming && _input.MoveDirection.sqrMagnitude <= _movementThreshold));
-        // At(throwstate, motionstate, new FuncPredicate(() => !_input.IsAimming && _input.MoveDirection.sqrMagnitude > _movementThreshold));
+        At(throwstate, idlestate, new FuncPredicate(() => !_input.IsAimming && _input.MoveDirection.sqrMagnitude <= _movementThreshold));
+        At(throwstate, motionstate, new FuncPredicate(() => !_input.IsAimming && _input.MoveDirection.sqrMagnitude > _movementThreshold));
 
         machine.SetState(idlestate);
     }
@@ -93,24 +92,6 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
         _cameraLogic = logic;
     }
 
-    public void HandleThrow()
-    {
-        ThrowLogic.Throw();
-    }
-
-    public void Aim(bool IsAimming)
-    {
-        if (IsAimming)
-        {
-            var velocity = ThrowLogic.CalculateThrowVelocity();
-            Trajectory.Predict(Hand.transform.position,velocity);
-        }
-        else
-        {
-            Trajectory.StopPrediction();
-        }
-    }
-
     void OnDestroy()
     {
         Registry<PlayerController>.Remove(this);
@@ -118,7 +99,6 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
 
     void OnEnable()
     {
-        // Input.OnAttackTriggered += HandleThrow;
     }
 
     void OnDisable()

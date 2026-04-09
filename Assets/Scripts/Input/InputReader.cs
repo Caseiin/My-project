@@ -50,8 +50,8 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     // PlayerActions
     public void OnAttack(InputAction.CallbackContext context)
     {
-        var pointer = Pointer.current;
-        if (pointer != null && IsPointerOverUI(pointer.position.ReadValue())) return;
+        // var pointer = Pointer.current;
+        // if (pointer != null && IsPointerOverUI(pointer.position.ReadValue())) return;
         if(context.performed) OnAttackTriggered?.Invoke();
     }
 
@@ -80,8 +80,8 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public void OnShoot(InputAction.CallbackContext context)
     {
-        var pointer = Pointer.current;
-        if (pointer != null && IsPointerOverUI(pointer.position.ReadValue())) return;
+        // var pointer = Pointer.current;
+        // if (pointer != null && IsPointerOverUI(pointer.position.ReadValue())) return;
 
         if (context.started) OnShootTriggered?.Invoke();
     }
@@ -103,9 +103,9 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public void OnAim(InputAction.CallbackContext context)
     {
-        var pointer = Pointer.current;
-        if (pointer != null && IsPointerOverUI(pointer.position.ReadValue())) return;
-
+        // var pointer = Pointer.current;
+        // if (pointer != null && IsPointerOverUI(pointer.position.ReadValue())) return;
+        Debug.Log("Aim input read");
         IsAimming = context.action.IsPressed();
     }
 

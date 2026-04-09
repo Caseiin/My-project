@@ -3,6 +3,9 @@ using UnityEngine;
 
 [RequireComponent(typeof(SphereCollider))]
 public class Sensor : MonoBehaviour{
+    [SerializeField] Color defaultColour = Color.green;
+    [SerializeField] Color changedColour= Color.red;
+
     [SerializeField] float sensorRadius = 5f;
     [SerializeField] float timerInterval = 1f;
 
@@ -62,7 +65,7 @@ public class Sensor : MonoBehaviour{
 
     void OnDrawGizmos()
     {
-        Gizmos.color = IsTargetInRange? Color.red : Color.green;
+        Gizmos.color = IsTargetInRange? changedColour : defaultColour;
         Gizmos.DrawWireSphere(transform.position, sensorRadius);
     }
 }
