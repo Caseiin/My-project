@@ -47,6 +47,19 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         }
     }
 
+    public void EnablePlayerMap()
+    {
+        Input.UI.Disable();        
+        Input.Player.Enable();
+    }
+    public void EnableUIMap()
+    {
+        Input.Player.Disable();
+        Input.UI.Enable();
+    }
+
+
+
     // PlayerActions
     public void OnAttack(InputAction.CallbackContext context)
     {
@@ -91,7 +104,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         if (context.started)
         OnMenuActivated?.Invoke(ScreenType.PauseMenu);  
 
-        OnEscapeTriggered?.Invoke();
+        // OnEscapeTriggered?.Invoke();
     }
 
     public void OnMenu(InputAction.CallbackContext context)
@@ -130,6 +143,12 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         _pointerEventData.position =screenPosition;
         _raycastResults.Clear();
         EventSystem.current.RaycastAll(_pointerEventData, _raycastResults);
-        return _raycastResults.Count > 0;
+        foreach (var result in _raycastResults)
+        {
+            // Only block if it's tagged as blocking, not just any UI
+            if (result.gameObject.CompareTag("BlocksInput"))
+                return true;
+        }
+        return false;
     }
 }
