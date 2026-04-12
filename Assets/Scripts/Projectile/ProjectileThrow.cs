@@ -1,19 +1,21 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileThrow : MonoBehaviour
 {
-    [SerializeField] Transform throwPoint;
+    [Header("Throw Info")]
+    [SerializeField] List<AbilityProjectile> projectiles;
+    [SerializeField] InputReader _input;
     [SerializeField] float throwForce = 10f;
     [SerializeField] float upwardForce = 2f;
     public float ThrowForce => throwForce;
+    Transform throwPoint;
+
+    int currentIndex = 0;
 
     void Awake()
     {
-        if (throwPoint == null)
-        {
-            Debug.LogError("throwPoint is not assigned on ProjectileThrow!");
-            throwPoint = transform;
-        }
+        throwPoint = transform;
     }
 
     public Vector3 CalculateThrowVelocity()
@@ -21,10 +23,20 @@ public class ProjectileThrow : MonoBehaviour
         Vector3 dir = Camera.main.transform.forward;
         return dir * throwForce + Vector3.up * upwardForce;
     }
-    
+
+    void OnEnable()
+    {
+        
+    }
+
+    void OnDisable()
+    {
+        
+    }
+
     public void Throw()
     {
-        AbilityProjectile proj = ProjectileManager.Instance.GetProjectile();
+        AbilityProjectile proj = ProjectileManager.Instance.GetProjectile(projectiles[currentIndex]);
 
         Rigidbody rb = proj.GetComponent<Rigidbody>();
         
@@ -36,5 +48,10 @@ public class ProjectileThrow : MonoBehaviour
 
         Debug.DrawRay(throwPoint.position, dir * 5f, Color.green, 2f);
 
+    }
+
+    void ChangeIndex(int newIndex)
+    {
+        currentIndex = newIndex;
     }
 }

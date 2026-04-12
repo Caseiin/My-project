@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public abstract class AbilityProjectile : MonoBehaviour
 {
+    [HideInInspector] public int PrefabInstanceID;
     public float MaxEffectRadius = 5f;
     public AbilitySO ability;
     protected Rigidbody _rb;
@@ -70,11 +71,6 @@ public abstract class AbilityProjectile : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, MaxEffectRadius);
     }
-
-    /// <summary>
-    /// Finds all effectables in range. 
-    /// Filtering by type and faction happens inside each effect.
-    /// </summary>
     void FindEffectablesWithinRange(out List<IEffectable> playerList, out List<IEffectable> otherList)
     {
         var playerBuffer = new HashSet<IEffectable>();
@@ -109,6 +105,5 @@ public abstract class AbilityProjectile : MonoBehaviour
     {
         _rb.isKinematic = true;
         _rb.linearVelocity = Vector3.zero;
-        _rb.angularVelocity = Vector3.zero;
     }
 }

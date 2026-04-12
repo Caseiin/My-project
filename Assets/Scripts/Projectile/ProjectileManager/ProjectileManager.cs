@@ -1,67 +1,88 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public class ProjectileManager : Singleton<ProjectileManager>
 {
     [SerializeField] Transform _initialPosition;
-    [SerializeField] GameObject projectilePrefab;
-    ObjectPool<AbilityProjectile> _pool;
+    
+    readonly Dictionary<int,ObjectPool<AbilityProjectile>> _pools = new();
 
     protected override void Awake()
     {
         base.Awake();
-        _pool = new ObjectPool<AbilityProjectile>(
-            CreateProjectile,
-            OnGetFromPool,
-            OnReleaseToPool,
-            OnDestroyPoolObject,
-            collectionCheck: false,
-            defaultCapacity: 5,
-            maxSize: 10
-        );
     }
 
-
-    AbilityProjectile CreateProjectile()
+    public T GetProjectile<T>(T prefab) where T: AbilityProjectile
     {
-        GameObject projectileObj = Instantiate(projectilePrefab);
-        projectileObj.transform.position = _initialPosition.position;
-        projectileObj.SetActive(false);
-
-        Rigidbody rb = projectileObj.GetComponent<Rigidbody>();
-        if (rb != null) rb.isKinematic = true;
-
-        return projectileObj.GetComponent<AbilityProjectile>();
+        var pool = GetOrCreatePool(prefab);
+        return (T) pool.Get();
     }
 
-    private void OnGetFromPool(AbilityProjectile abilityProjectile)
+    public void ReturnProjectile(AbilityProjectile proj)
     {
-        abilityProjectile.gameObject.SetActive(true);
-
-        Rigidbody rb = abilityProjectile.GetComponent<Rigidbody>();
-        if (rb != null)
+        if(_pools.TryGetValue(proj.PrefabInstanceID, out var pool))
         {
-            rb.isKinematic = true; // still kinematic until we launch
+            pool.Release(proj);
         }
+        else 
+            Destroy(proj.gameObject);
     }
 
-    private void OnReleaseToPool(AbilityProjectile abilityProjectile)
+
+    ObjectPool<AbilityProjectile> GetOrCreatePool(AbilityProjectile prefab)
     {
-        abilityProjectile.gameObject.SetActive(false);
-        abilityProjectile.ResetPhysics();
+        int key = prefab.GetInstanceID();
+
+        if (!_pools.TryGetValue(key, out var pool))
+        {
+            pool = new ObjectPool<AbilityProjectile>(
+                createFunc:       () => CreateProjectile(prefab, key),
+                actionOnGet:      OnGetFromPool,
+                actionOnRelease:  OnReleaseToPool,
+                actionOnDestroy:  OnDestroyPoolObject,
+                collectionCheck:  false,
+                defaultCapacity:  5,
+                maxSize:          20
+            );
+            _pools[key] = pool;
+        }
+
+        return pool;
     }
 
-    private void OnDestroyPoolObject(AbilityProjectile abilityProjectile)
+    AbilityProjectile CreateProjectile(AbilityProjectile prefab, int prefabKey)
     {
-        Destroy(abilityProjectile.gameObject);
-    }
-    public AbilityProjectile GetProjectile()
-    {
-        return _pool.Get();
+        var instance = Instantiate(prefab, _initialPosition.position, Quaternion.identity);
+        instance.PrefabInstanceID = prefabKey;   // so it can find its own pool later
+        instance.gameObject.SetActive(false);
+
+        if (instance.TryGetComponent<Rigidbody>(out var rb))
+            rb.isKinematic = true;
+
+        return instance;
     }
 
-    public void ReturnProjectile(AbilityProjectile projectile)
+    void OnGetFromPool(AbilityProjectile projectile)
     {
-        _pool.Release(projectile);
+        projectile.transform.position = _initialPosition.position;
+        projectile.gameObject.SetActive(true);
+
+        if (projectile.TryGetComponent<Rigidbody>(out var rb))
+            rb.isKinematic = true;
     }
+
+    void OnReleaseToPool(AbilityProjectile projectile)
+    {
+        projectile.gameObject.SetActive(false);
+        projectile.ResetPhysics();
+    }
+
+    void OnDestroyPoolObject(AbilityProjectile projectile)
+    {
+        Destroy(projectile.gameObject);
+    }
+
+
+
 }

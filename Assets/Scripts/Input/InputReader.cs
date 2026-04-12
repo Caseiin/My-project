@@ -16,7 +16,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public bool IsAimming {get; private set;}
 
     public event Action OnShootTriggered;
-    public event Action OnEscapeTriggered;
     public event Action OnAttackTriggered;
     public event Action OnResetTabTrigger;
     public event Action<ScreenType> OnMenuActivated;
@@ -26,7 +25,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     readonly PointerEventData _pointerEventData = new PointerEventData(EventSystem.current);
     readonly List<RaycastResult> _raycastResults = new List<RaycastResult>(); 
 
-    bool IsUIopen = false;
 
     public void EnableInputMap()
     {
@@ -117,8 +115,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     {
         if (context.started)
         OnMenuActivated?.Invoke(ScreenType.PauseMenu);  
-
-        // OnEscapeTriggered?.Invoke();
     }
 
     public void OnMenu(InputAction.CallbackContext context)

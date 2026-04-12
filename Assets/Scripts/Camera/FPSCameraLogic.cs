@@ -54,7 +54,6 @@ public class FPSCameraLogic : CameraLogic
                     ClearTarget();
 
                     _currentTarget = interactive;
-                    _currentTarget.EnableRange();
                     _currentUI  = WorldSpaceUIManager.Instance.Spawn(_currentTarget.interactivePrefab, _currentTarget.transform);
                     _currentUI.Show();    
                 }
@@ -80,8 +79,6 @@ public class FPSCameraLogic : CameraLogic
     {
         if (_currentTarget != null)
         {
-            _currentTarget.DisableRange();
-
             // Remove UI
             if (_currentUI != null)
             {
