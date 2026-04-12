@@ -53,7 +53,6 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
         DeclareStateInformation();
         SetCameraLogic(new FPSCameraLogic(this)); 
         Input.EnableInputMap();
-        
     }
 
     void Update()

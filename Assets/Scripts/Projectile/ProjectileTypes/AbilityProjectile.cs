@@ -61,6 +61,10 @@ public abstract class AbilityProjectile : MonoBehaviour
         ProjectileManager.Instance.ReturnProjectile(this);
     }
 
+    public void ShowImpactRange(){
+        
+    }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

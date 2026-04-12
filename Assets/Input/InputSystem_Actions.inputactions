@@ -28,7 +28,7 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "Hold",
                     "initialStateCheck": false
@@ -100,6 +100,33 @@
                     "name": "Aim",
                     "type": "Button",
                     "id": "c9f819c7-9b6d-41b7-bbed-87d830526189",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OnHotbar1",
+                    "type": "Button",
+                    "id": "3942ce14-6dd0-42f1-8a0b-07d2c724d505",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OnHotbar2",
+                    "type": "Button",
+                    "id": "ab64bd37-3d8f-4c80-9038-a5a9a54dce43",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OnHotbar3",
+                    "type": "Button",
+                    "id": "9797f00b-d002-4058-81f9-d633f9ad012c",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -511,6 +538,39 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Aim",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a14df3e0-dd22-4f42-9155-a2afc135009f",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "OnHotbar1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cbb50232-2811-42b3-a39f-3327b140797b",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "OnHotbar2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b7ac13da-d50c-49e9-92c9-6f1fa237d8ef",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "OnHotbar3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

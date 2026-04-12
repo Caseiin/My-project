@@ -21,10 +21,12 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public event Action OnResetTabTrigger;
     public event Action<ScreenType> OnMenuActivated;
     public event Action OnInteractTriggered;
+    public event Action<int> OnHotBarTriggered;
 
     readonly PointerEventData _pointerEventData = new PointerEventData(EventSystem.current);
     readonly List<RaycastResult> _raycastResults = new List<RaycastResult>(); 
 
+    bool IsUIopen = false;
 
     public void EnableInputMap()
     {
@@ -46,19 +48,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
             Input.Disable();
         }
     }
-
-    public void EnablePlayerMap()
-    {
-        Input.UI.Disable();        
-        Input.Player.Enable();
-    }
-    public void EnableUIMap()
-    {
-        Input.Player.Disable();
-        Input.UI.Enable();
-    }
-
-
 
     // PlayerActions
     public void OnAttack(InputAction.CallbackContext context)
@@ -99,6 +88,31 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         if (context.started) OnShootTriggered?.Invoke();
     }
 
+
+    public void OnAim(InputAction.CallbackContext context)
+    {
+        // var pointer = Pointer.current;
+        // if (pointer != null && IsPointerOverUI(pointer.position.ReadValue())) return;
+        Debug.Log("Aim input read");
+        IsAimming = context.action.IsPressed();
+    }
+
+    public void OnOnHotbar1(InputAction.CallbackContext context)
+    {
+        if(context.started) OnHotBarTriggered?.Invoke(0);
+    }
+
+    public void OnOnHotbar2(InputAction.CallbackContext context)
+    {
+        if(context.started) OnHotBarTriggered?.Invoke(1);
+    } 
+
+    public void OnOnHotbar3(InputAction.CallbackContext context)
+    {
+        if(context.started) OnHotBarTriggered?.Invoke(2);
+    }
+
+    // UIActions
     public void OnEscape(InputAction.CallbackContext context)
     {
         if (context.started)
@@ -113,16 +127,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         if (context.started)
         OnResetTabTrigger?.Invoke();
     }
-
-    public void OnAim(InputAction.CallbackContext context)
-    {
-        // var pointer = Pointer.current;
-        // if (pointer != null && IsPointerOverUI(pointer.position.ReadValue())) return;
-        Debug.Log("Aim input read");
-        IsAimming = context.action.IsPressed();
-    }
-
-    // UIActions
     public void OnNext(InputAction.CallbackContext context){}
     public void OnPrevious(InputAction.CallbackContext context){}
     public void OnSprint(InputAction.CallbackContext context){}
@@ -151,4 +155,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         }
         return false;
     }
+
+
 }
