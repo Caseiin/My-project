@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class ImpactExplosionProjectile : AbilityProjectile
 {
-
     void OnCollisionEnter(Collision collision)
     {
-        Activate();
+        if (collision.collider.CompareTag("Obstacle"))
+        {
+            Activate();
+        }
     }
-
 }
