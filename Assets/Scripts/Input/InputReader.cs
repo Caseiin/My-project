@@ -107,7 +107,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public void OnOnHotbar3(InputAction.CallbackContext context)
     {
-        if(context.started) OnHotBarTriggered?.Invoke(2);
+        // if(context.started) OnHotBarTriggered?.Invoke(2);
     }
 
     // UIActions
@@ -115,6 +115,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     {
         if (context.started)
         OnMenuActivated?.Invoke(ScreenType.PauseMenu);  
+
     }
 
     public void OnMenu(InputAction.CallbackContext context)

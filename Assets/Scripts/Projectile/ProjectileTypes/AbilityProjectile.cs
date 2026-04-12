@@ -22,7 +22,6 @@ public abstract class AbilityProjectile : MonoBehaviour
 
         rb.isKinematic = false;
         rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
         rb.AddForce(impulse, ForceMode.Impulse);
     }
 

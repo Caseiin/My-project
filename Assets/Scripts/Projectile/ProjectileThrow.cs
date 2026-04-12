@@ -26,12 +26,12 @@ public class ProjectileThrow : MonoBehaviour
 
     void OnEnable()
     {
-        
+        _input.OnHotBarTriggered += ChangeIndex;
     }
 
     void OnDisable()
     {
-        
+        _input.OnHotBarTriggered -= ChangeIndex;
     }
 
     public void Throw()
