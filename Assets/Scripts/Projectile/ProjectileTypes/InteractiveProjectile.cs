@@ -13,5 +13,9 @@ public class InteractiveProjectile : AbilityProjectile
     {
         Activate();
     }
- 
+
+    public override void ShowImpactRange()
+    {
+        // throw new System.NotImplementedException();
+    }
 }

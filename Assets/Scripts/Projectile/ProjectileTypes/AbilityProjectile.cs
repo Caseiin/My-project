@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public abstract class AbilityProjectile : MonoBehaviour
 {
     [HideInInspector] public int PrefabInstanceID;
+    [SerializeField] protected GameObject Range;
     public float MaxEffectRadius = 5f;
     public AbilitySO ability;
     protected Rigidbody _rb;
@@ -14,6 +16,11 @@ public abstract class AbilityProjectile : MonoBehaviour
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+    }
+
+    void Start()
+    {
+        Range.SetActive(false);
     }
 
     public void Launch(Vector3 impulse)
@@ -58,11 +65,15 @@ public abstract class AbilityProjectile : MonoBehaviour
     public virtual void ReturnToPool()
     {
         _rb.linearVelocity = Vector3.zero;
+        ResetRange();
         ProjectileManager.Instance.ReturnProjectile(this);
     }
 
-    public void ShowImpactRange(){
-        
+    public abstract void ShowImpactRange();
+
+    void ResetRange()
+    {
+        Range.transform.localScale = Vector3.zero;
     }
 
     void OnDrawGizmosSelected()
