@@ -1,5 +1,6 @@
 using UnityEngine.UI;
 using UnityEngine;
+using DG.Tweening;
 
 public class InteractiveProjectile : AbilityProjectile
 {
@@ -11,11 +12,14 @@ public class InteractiveProjectile : AbilityProjectile
     }
     public void ToInteract()
     {
-        Activate();
+        ShowImpactRange();
     }
 
     public override void ShowImpactRange()
     {
-        // throw new System.NotImplementedException();
+        Range.SetActive(true);
+        var scale = 2 * MaxEffectRadius;
+        Range.transform.DOScale(new Vector3(scale,scale,scale),3f)
+                .OnComplete(()=>Activate());
     }
 }

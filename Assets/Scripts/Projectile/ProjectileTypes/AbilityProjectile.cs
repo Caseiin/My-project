@@ -10,17 +10,34 @@ public abstract class AbilityProjectile : MonoBehaviour
     public float MaxEffectRadius = 5f;
     public AbilitySO ability;
     protected Rigidbody _rb;
+
+    // Effect searching
     List<IEffectable> _playerEffectables;
     List<IEffectable> _otherEffectables;
+
+    // Material Property block
+    Material _projectileMat;
+    MaterialPropertyBlock _rangeMBP;
+    MaterialPropertyBlock _mbp;
+
+    Renderer _rangeRenderer;
+    static readonly int ColorID = Shader.PropertyToID("_Color");
 
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _projectileMat = GetComponent<Material>();
+        _rangeRenderer = Range.GetComponent<Renderer>();
+        _rangeMBP = new();
+        _mbp = new();
+
     }
 
     void Start()
     {
         Range.SetActive(false);
+        var abilityColor =ability.abilityMaterial.color; 
+        SetRangeColor(abilityColor);   
     }
 
     public void Launch(Vector3 impulse)
@@ -58,7 +75,6 @@ public abstract class AbilityProjectile : MonoBehaviour
             }
         }
 
-
         ReturnToPool();
     }
 
@@ -70,6 +86,14 @@ public abstract class AbilityProjectile : MonoBehaviour
     }
 
     public abstract void ShowImpactRange();
+
+    void SetRangeColor(Color color)
+    {
+        // Read current block first to avoid wiping other properties
+        _rangeRenderer.GetPropertyBlock(_rangeMBP);
+        _rangeMBP.SetColor(ColorID, color);
+        _rangeRenderer.SetPropertyBlock(_rangeMBP);
+    }
 
     void ResetRange()
     {
