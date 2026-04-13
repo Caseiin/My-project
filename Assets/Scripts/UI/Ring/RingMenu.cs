@@ -9,10 +9,11 @@ public class RingMenu : MonoBehaviour
     [SerializeField] float  gapWidth = 1f;
     protected RingMenu Parent;
     protected RingSlice[] slices;
+    float stepLength;
 
     void Start()
     {
-        var stepLength = 360f/ data.Elements.Length;
+        stepLength = 360f/ data.Elements.Length;
         var iconDist = Vector3.Distance(ringSlicePrefab.Icon.transform.position, ringSlicePrefab.CakeSlice.transform.position);
 
         slices = new RingSlice[data.Elements.Length];
@@ -36,8 +37,15 @@ public class RingMenu : MonoBehaviour
             slices[i].Icon.sprite = data.Elements[i].Icon;
 
         }
-
-        Debug.Log($"icon distance:{iconDist}");
     }
 
+
+    float NormalizeAngle(float angle)=> (angle + 360f) % 360f;
+
+    public void  FindMouseAngle(Vector2 direction){
+        var mouseAngle = NormalizeAngle(Vector3.SignedAngle(Vector3.up, direction, Vector3.forward) + stepLength/ 2f);
+        int selectedIndex = Mathf.FloorToInt(mouseAngle / stepLength) % slices.Length;
+        Debug.Log($"Angle: {mouseAngle:F1}  →  Slice: {selectedIndex}");
+    }
+    
 }

@@ -18,6 +18,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public event Action OnShootTriggered;
     public event Action OnAttackTriggered;
     public event Action OnResetTabTrigger;
+    public event Action OnAbilityHolsterTriggered;
     public event Action<ScreenType> OnMenuActivated;
     public event Action OnInteractTriggered;
     public event Action<int> OnHotBarTriggered;
@@ -123,6 +124,12 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         // OnMenuActivated?.Invoke(ScreenType.MainMenu);
         if (context.started)
         OnResetTabTrigger?.Invoke();
+    }
+
+    public void OnAbilityHolster(InputAction.CallbackContext context)
+    {
+        if(context.started)
+            OnAbilityHolsterTriggered?.Invoke();
     }
     public void OnNext(InputAction.CallbackContext context){}
     public void OnPrevious(InputAction.CallbackContext context){}
