@@ -6,10 +6,12 @@ public class AbilityHolster : MonoBehaviour
     [SerializeField] RingMenu menu;
     bool menuVisible;
     Vector2 _accumulatedDirection;
+    PlayerController _player;
 
     void Start()
     {
         menu.gameObject.SetActive(false);
+        _player = Registry<PlayerController>.GetFirst();
     }
     void OnEnable(){
         _input.OnAbilityHolsterTriggered += SetMenuVisibility;
@@ -42,6 +44,10 @@ public class AbilityHolster : MonoBehaviour
 
         if(menuVisible){
             _accumulatedDirection = Vector2.zero;
+            ActionEventBus<CameraLogic>.Invoke(new IdleCameraLogic(_player));
         }
+        else 
+            ActionEventBus<CameraLogic>.Invoke(new FPSCameraLogic(_player));
+            
     }
 }

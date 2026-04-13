@@ -11,8 +11,16 @@ public class RingMenu : MonoBehaviour
     protected RingSlice[] slices;
     float stepLength;
 
+    // Camera logic
+    PlayerController _player;
+
+
     void Start()
     {
+        // Camera
+        _player = Registry<PlayerController>.GetFirst();
+
+        //Ring logic 
         stepLength = 360f/ data.Elements.Length;
         var iconDist = Vector3.Distance(ringSlicePrefab.Icon.transform.position, ringSlicePrefab.CakeSlice.transform.position);
 
@@ -40,12 +48,24 @@ public class RingMenu : MonoBehaviour
     }
 
 
-    float NormalizeAngle(float angle)=> (angle + 360f) % 360f;
 
     public void  FindMouseAngle(Vector2 direction){
         var mouseAngle = NormalizeAngle(Vector3.SignedAngle(Vector3.up, direction, Vector3.forward) + stepLength/ 2f);
         int selectedIndex = Mathf.FloorToInt(mouseAngle / stepLength) % slices.Length;
+        SelectActiveElement(selectedIndex);
         Debug.Log($"Angle: {mouseAngle:F1}  →  Slice: {selectedIndex}");
     }
     
+    float NormalizeAngle(float angle)=> (angle + 360f) % 360f;
+    void SelectActiveElement(int elementidx){
+        for(int i = 0; i < data.Elements.Length; i++){
+            if(i == elementidx)
+            {
+                slices[i].CakeSlice.color = new Color(1f,1f,1f,.75f);
+            }
+            else 
+                slices[i].CakeSlice.color = new Color(1f,1f,1f,.5f);
+
+        }
+    }
 }
