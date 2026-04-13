@@ -93,6 +93,11 @@ public abstract class AbilityProjectile : MonoBehaviour
 
     public abstract void ShowImpactRange();
 
+    public void SetAbility(AbilitySO ability)
+    {
+        this.ability = ability;
+    }
+
     void SetRangeColor(Color color)
     {
 
@@ -103,7 +108,6 @@ public abstract class AbilityProjectile : MonoBehaviour
 
     void SetProjectileColor(Color color)
     {
-
         _renderer.GetPropertyBlock(_mbp);
         _mbp.SetColor(ColorID, color);
         _renderer.SetPropertyBlock(_mbp);
