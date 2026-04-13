@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -8,6 +9,7 @@ public class EffectPopUpManager : Singleton<EffectPopUpManager>
 
 
     ObjectPool<EffectPopUp> _pool;
+    // public event Action<float> OnEffectTriggered;
 
     protected override void Awake()
     {
@@ -45,10 +47,13 @@ public class EffectPopUpManager : Singleton<EffectPopUpManager>
         if(effect.Duration > 0f)
         {
             popup.DisplayTimed(effect.Duration, ()=> _pool.Release(popup));
+            // OnEffectTriggered?.Invoke(effect.Duration);
         }
         else
         {
             popup.DisplayImmediate(()=> _pool.Release(popup));
+            // OnEffectTriggered?.Invoke(popup.ImmediateDuration);
+
         }
     }   
 }

@@ -21,13 +21,17 @@ public abstract class AbilityProjectile : MonoBehaviour
     MaterialPropertyBlock _mbp;
 
     Renderer _rangeRenderer;
-    static readonly int ColorID = Shader.PropertyToID("_Color");
+    Renderer _renderer;
+    static readonly int RangeColorID = Shader.PropertyToID("_Color");
+    static readonly int ColorID = Shader.PropertyToID("_BaseColor");
+
 
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();
         _projectileMat = GetComponent<Material>();
         _rangeRenderer = Range.GetComponent<Renderer>();
+        _renderer = GetComponent<Renderer>();
         _rangeMBP = new();
         _mbp = new();
 
@@ -37,7 +41,8 @@ public abstract class AbilityProjectile : MonoBehaviour
     {
         Range.SetActive(false);
         var abilityColor =ability.abilityMaterial.color; 
-        SetRangeColor(abilityColor);   
+        SetRangeColor(abilityColor);
+        SetProjectileColor(abilityColor);   
     }
 
     public void Launch(Vector3 impulse)
@@ -48,6 +53,7 @@ public abstract class AbilityProjectile : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(impulse, ForceMode.Impulse);
     }
+
 
     protected void Activate()
     {
@@ -89,10 +95,18 @@ public abstract class AbilityProjectile : MonoBehaviour
 
     void SetRangeColor(Color color)
     {
-        // Read current block first to avoid wiping other properties
+
         _rangeRenderer.GetPropertyBlock(_rangeMBP);
-        _rangeMBP.SetColor(ColorID, color);
+        _rangeMBP.SetColor(RangeColorID, color);
         _rangeRenderer.SetPropertyBlock(_rangeMBP);
+    }
+
+    void SetProjectileColor(Color color)
+    {
+
+        _renderer.GetPropertyBlock(_mbp);
+        _mbp.SetColor(ColorID, color);
+        _renderer.SetPropertyBlock(_mbp);
     }
 
     void ResetRange()
