@@ -53,6 +53,7 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
         DeclareStateInformation();
         SetCameraLogic(new FPSCameraLogic(this)); 
         Input.EnableInputMap();
+        ActionEventBus<CameraLogic>.AddListener(SetCameraLogic);
     }
 
     void Update()
@@ -94,6 +95,7 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     void OnDestroy()
     {
         Registry<PlayerController>.Remove(this);
+        ActionEventBus<CameraLogic>.RemoveListener(SetCameraLogic);
     }
 
     void OnEnable()

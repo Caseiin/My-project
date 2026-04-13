@@ -35,14 +35,15 @@ public class UIScreensManager : Singleton<UIScreensManager>
     {
         HideAllScreens();
         _screensMap[type].Show();
-        _player?.SetCameraLogic(new IdleCameraLogic(_player));
+        ActionEventBus<CameraLogic>.Invoke(new IdleCameraLogic(_player));
+
     }
 
     public void HideAllScreens()
     {
         // hides all screens
         foreach(var screen in _screensMap.Values) screen.Hide();
-        _player?.SetCameraLogic(new FPSCameraLogic(_player));
+        ActionEventBus<CameraLogic>.Invoke(new FPSCameraLogic(_player));
 
     }
 
