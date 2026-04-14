@@ -13,15 +13,18 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public InputSystem_Actions Input;
     public Vector2 MoveDirection{get;private set;}
     public Vector2 LookDirection{get;private set;}
+    public Vector2 UIPointDirection{get;private set;}
     public bool IsAimming {get; private set;}
 
     public event Action OnShootTriggered;
     public event Action OnAttackTriggered;
     public event Action OnResetTabTrigger;
     public event Action OnAbilityHolsterTriggered;
+    public event Action OnClickTriggered;
     public event Action<ScreenType> OnMenuActivated;
     public event Action OnInteractTriggered;
     public event Action<int> OnHotBarTriggered;
+
 
     readonly PointerEventData _pointerEventData = new PointerEventData(EventSystem.current);
     readonly List<RaycastResult> _raycastResults = new List<RaycastResult>(); 
@@ -116,7 +119,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     {
         if (context.started)
         OnMenuActivated?.Invoke(ScreenType.PauseMenu);  
-
     }
 
     public void OnMenu(InputAction.CallbackContext context)
@@ -131,15 +133,22 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         if(context.started)
             OnAbilityHolsterTriggered?.Invoke();
     }
+
+    public void OnClick(InputAction.CallbackContext context){
+        if (context.started)
+            OnClickTriggered?.Invoke();
+    }
+
+    public void OnPoint(InputAction.CallbackContext context){
+        UIPointDirection = context.ReadValue<Vector2>();    
+    }
+    public void OnRightClick(InputAction.CallbackContext context){}
     public void OnNext(InputAction.CallbackContext context){}
     public void OnPrevious(InputAction.CallbackContext context){}
     public void OnSprint(InputAction.CallbackContext context){}
     public void OnNavigate(InputAction.CallbackContext context){}
     public void OnSubmit(InputAction.CallbackContext context){}
     public void OnCancel(InputAction.CallbackContext context){}
-    public void OnPoint(InputAction.CallbackContext context){}
-    public void OnClick(InputAction.CallbackContext context){}
-    public void OnRightClick(InputAction.CallbackContext context){}
     public void OnMiddleClick(InputAction.CallbackContext context){}
     public void OnScrollWheel(InputAction.CallbackContext context){}
     public void OnTrackedDevicePosition(InputAction.CallbackContext context){}

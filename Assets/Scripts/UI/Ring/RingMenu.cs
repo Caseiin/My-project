@@ -10,17 +10,11 @@ public class RingMenu : MonoBehaviour
     protected RingMenu Parent;
     protected RingSlice[] slices;
     float stepLength;
-
-    // Camera logic
-    PlayerController _player;
-
+    int selectedIndex;
+    public static Action<AbilitySO> onAbiiltySelected;
 
     void Start()
     {
-        // Camera
-        _player = Registry<PlayerController>.GetFirst();
-
-        //Ring logic 
         stepLength = 360f/ data.Elements.Length;
         var iconDist = Vector3.Distance(ringSlicePrefab.Icon.transform.position, ringSlicePrefab.CakeSlice.transform.position);
 
@@ -38,7 +32,7 @@ public class RingMenu : MonoBehaviour
             slices[i].CakeSlice.fillAmount = 1f/ data.Elements.Length - gapWidth/360f;
             slices[i].CakeSlice.transform.localPosition = Vector3.zero;
             slices[i].CakeSlice.transform.localRotation = Quaternion.Euler(0,0, stepLength/ 2f + gapWidth/ 2f + i* stepLength);
-            slices[i].CakeSlice.color = new Color(1f,1f,1f,.5f);
+            slices[i].CakeSlice.color = new Color(.1f,.1f,.1f,.5f);
 
             // Set Icon
             slices[i].Icon.transform.localPosition = slices[i].CakeSlice.transform.localPosition + Quaternion.AngleAxis(i * stepLength, Vector3.forward) * Vector3.up * iconDist;
@@ -51,9 +45,9 @@ public class RingMenu : MonoBehaviour
 
     public void  FindMouseAngle(Vector2 direction){
         var mouseAngle = NormalizeAngle(Vector3.SignedAngle(Vector3.up, direction, Vector3.forward) + stepLength/ 2f);
-        int selectedIndex = Mathf.FloorToInt(mouseAngle / stepLength) % slices.Length;
+        selectedIndex = Mathf.FloorToInt(mouseAngle / stepLength) % slices.Length;
         SelectActiveElement(selectedIndex);
-        Debug.Log($"Angle: {mouseAngle:F1}  →  Slice: {selectedIndex}");
+        // Debug.Log($"Angle: {mouseAngle:F1}  →  Slice: {selectedIndex}");
     }
     
     float NormalizeAngle(float angle)=> (angle + 360f) % 360f;
@@ -61,11 +55,18 @@ public class RingMenu : MonoBehaviour
         for(int i = 0; i < data.Elements.Length; i++){
             if(i == elementidx)
             {
-                slices[i].CakeSlice.color = new Color(1f,1f,1f,.75f);
+                slices[i].CakeSlice.color = new Color(.1f,.1f,.1f,.75f);
             }
             else 
-                slices[i].CakeSlice.color = new Color(1f,1f,1f,.5f);
+                slices[i].CakeSlice.color = new Color(.1f,.1f,.1f,.5f);
 
         }
+    }
+
+    public void SelectAbilityElement()
+    {
+        var selectedAbility = data.Elements[selectedIndex].Ability;
+        onAbiiltySelected?.Invoke(selectedAbility);
+        Debug.Log($" Selected Ability: {selectedAbility}");
     }
 }
