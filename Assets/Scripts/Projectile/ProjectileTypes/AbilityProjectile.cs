@@ -99,9 +99,18 @@ public abstract class AbilityProjectile : MonoBehaviour
     public void SetAbility(AbilitySO ability)
     {
         this.ability = ability;
-        _abilityColor = ability.abilityMaterial.color; 
-        SetRangeColor(_abilityColor);
-        SetProjectileColor(_abilityColor);  
+
+        if (ability == null) { 
+            Debug.LogError("ability is null");
+            return; 
+        }
+        if (ability.abilityMaterial == null)
+            Debug.LogError($"{ability.name}");
+
+
+        var abilityColor = ability.abilityMaterial.color; 
+        SetRangeColor(abilityColor);
+        SetProjectileColor(abilityColor);  
     }
 
     void SetRangeColor(Color color)

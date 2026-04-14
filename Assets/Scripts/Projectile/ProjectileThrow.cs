@@ -10,12 +10,18 @@ public class ProjectileThrow : MonoBehaviour
     [SerializeField] float upwardForce = 2f;
     public float ThrowForce => throwForce;
     Transform throwPoint;
-
+    AbilitySO[] _selectedAbility;
     int currentIndex = 0;
 
     void Awake()
     {
         throwPoint = transform;
+
+        // initialise with projectiles's default Ability
+        _selectedAbility = new AbilitySO[projectiles.Count];
+        for(int i = 0; i < projectiles.Count; i++){
+            _selectedAbility[i] = projectiles[i].ability;
+        }
     }
 
     public Vector3 CalculateThrowVelocity()
@@ -27,17 +33,23 @@ public class ProjectileThrow : MonoBehaviour
     void OnEnable()
     {
         _input.OnHotBarTriggered += ChangeIndex;
+        RingMenu.onAbiiltySelected += SetProjectileAbility;
     }
 
     void OnDisable()
     {
         _input.OnHotBarTriggered -= ChangeIndex;
+        RingMenu.onAbiiltySelected -= SetProjectileAbility;
     }
 
     public void Throw()
     {
         AbilityProjectile proj = ProjectileManager.Instance.GetProjectile(projectiles[currentIndex]);
 
+        if (_selectedAbility != null)
+            proj.SetAbility(_selectedAbility[currentIndex]);
+
+        
         Rigidbody rb = proj.GetComponent<Rigidbody>();
         
         proj.transform.SetPositionAndRotation(throwPoint.position, Quaternion.identity);
@@ -50,8 +62,6 @@ public class ProjectileThrow : MonoBehaviour
 
     }
 
-    void ChangeIndex(int newIndex)
-    {
-        currentIndex = newIndex;
-    }
+    void ChangeIndex(int newIndex) => currentIndex = newIndex;
+    void SetProjectileAbility(AbilitySO ability) => _selectedAbility[currentIndex] = ability;
 }
