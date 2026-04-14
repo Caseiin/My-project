@@ -24,7 +24,6 @@ public abstract class AbilityProjectile : MonoBehaviour
     Renderer _renderer;
     static readonly int RangeColorID = Shader.PropertyToID("_Color");
     static readonly int ColorID = Shader.PropertyToID("_BaseColor");
-    Color _abilityColor;
 
     protected virtual void Awake()
     {
@@ -40,7 +39,7 @@ public abstract class AbilityProjectile : MonoBehaviour
     void Start()
     {
         Range.SetActive(false);
-        _abilityColor =ability.abilityMaterial.color; 
+        var _abilityColor =ability.abilityMaterial.color; 
         SetRangeColor(_abilityColor);
         SetProjectileColor(_abilityColor);   
     }
@@ -99,15 +98,6 @@ public abstract class AbilityProjectile : MonoBehaviour
     public void SetAbility(AbilitySO ability)
     {
         this.ability = ability;
-
-        if (ability == null) { 
-            Debug.LogError("ability is null");
-            return; 
-        }
-        if (ability.abilityMaterial == null)
-            Debug.LogError($"{ability.name}");
-
-
         var abilityColor = ability.abilityMaterial.color; 
         SetRangeColor(abilityColor);
         SetProjectileColor(abilityColor);  
