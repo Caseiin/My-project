@@ -23,6 +23,8 @@ public class RingMenu : MonoBehaviour
         for(int i =0 ; i < data.Elements.Length; i++)
         {
             slices[i] = Instantiate(ringSlicePrefab,transform);
+            slices[i].CakeSlice.raycastTarget = false;
+            slices[i].Icon.raycastTarget = false;
 
             //Set root element
             slices[i].transform.localPosition = Vector3.zero;

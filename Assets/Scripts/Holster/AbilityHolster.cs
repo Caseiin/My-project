@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AbilityHolster : MonoBehaviour
 {
@@ -15,29 +16,33 @@ public class AbilityHolster : MonoBehaviour
     }
     void OnEnable(){
         _input.OnAbilityHolsterTriggered += SetMenuVisibility;
-        _input.OnClickTriggered += SetAbility;
     }
     void OnDisable(){
         _input.OnAbilityHolsterTriggered -= SetMenuVisibility;
-        _input.OnClickTriggered -= SetAbility;
     }
 
     void Update()
     {
-        _accumulatedDirection = Vector2.zero;
-        OnLook(_input.UIPointDirection);
-        if(menuVisible && _accumulatedDirection != Vector2.zero)
-            menu.FindMouseAngle(_accumulatedDirection);
-    }
-
-    void OnLook(Vector2 delta){
         if (!menuVisible) return;
-        // Add deadzoning as the sensitivity is too high
-        _accumulatedDirection += delta;
 
-        if(_accumulatedDirection.magnitude > 1f)
-            _accumulatedDirection.Normalize();
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+            SetAbility();
+
+        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Vector2 direction = _input.UIPointDirection - screenCenter;
+
+        if (direction.sqrMagnitude > 100f) // small deadzone
+            menu.FindMouseAngle(direction.normalized);
     }
+
+    // void OnLook(Vector2 delta){
+    //     if (!menuVisible) return;
+    //     // Add deadzoning as the sensitivity is too high
+    //     _accumulatedDirection += delta;
+
+    //     if(_accumulatedDirection.magnitude > 1f)
+    //         _accumulatedDirection.Normalize();
+    // }
 
     void SetMenuVisibility()
     {
@@ -45,13 +50,13 @@ public class AbilityHolster : MonoBehaviour
         menu.gameObject.SetActive(menuVisible);
 
         if(menuVisible){
-            _input.Input.Player.Disable();
+            _input.Input?.Player.Disable();
             _accumulatedDirection = Vector2.zero;
-            ActionEventBus<CameraLogic>.Invoke(new SemiIdleCameraLogic(_player));
+            ActionEventBus<CameraLogic>.Invoke(new IdleCameraLogic(_player));
         }
         else
         {
-            _input.Input.Player.Disable();
+            _input.Input?.Player.Enable(); // fixed
             ActionEventBus<CameraLogic>.Invoke(new FPSCameraLogic(_player));    
         } 
             
@@ -59,8 +64,10 @@ public class AbilityHolster : MonoBehaviour
 
     void SetAbility()
     {
+        Debug.Log($"SetAbility called. menuVisible: {menuVisible}");
         if (!menuVisible) return;
 
+        Debug.Log($"Calling SelectAbilityElement");
         menu.SelectAbilityElement();
         SetMenuVisibility(); //Close menu
     }
