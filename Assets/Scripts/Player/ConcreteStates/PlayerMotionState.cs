@@ -65,14 +65,14 @@
 
         void StartFootsteps()
         {
-            var footstepData = SoundManager.Instance.SoundLibrary.Get("SFX_Footstep_Player");
-            if (footstepData == null) return;
+            // var footstepData = SoundManager.Instance.SoundLibrary.Get("SFX_Footstep_Player");
+            // if (footstepData == null) return;
 
-            _footstepEmitter = SoundManager.Instance.CreateSound()
-                .WithSound(footstepData)
-                .WithParent(_player.transform)
-                .WithRandomPitch(false)
-                .Play();
+            // _footstepEmitter = SoundManager.Instance.CreateSound()
+            //     .WithSound(footstepData)
+            //     .WithParent(_player.transform)
+            //     .WithRandomPitch(false)
+            //     .Play();
         }
 
         void StopFootsteps()

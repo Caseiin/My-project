@@ -62,6 +62,11 @@ public class ProjectileThrow : MonoBehaviour
 
     }
 
-    void ChangeIndex(int newIndex) => currentIndex = newIndex;
     void SetProjectileAbility(AbilitySO ability) => _selectedAbility[currentIndex] = ability;
+    void ChangeIndex(int newIndex) {
+        currentIndex = newIndex;
+        string msg = (newIndex > 0)? "Impact Bomb": "Interactive Bomb";
+        Debug.Log($"Equipped: {msg}");
+        Messenger.AddEquipMessage(msg);
+    }
 }

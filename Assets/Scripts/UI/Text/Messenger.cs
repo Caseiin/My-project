@@ -5,6 +5,8 @@ public static class Messenger
 {
     public static event System.Action<String> OnEffectMessage;
     public static event System.Action<String> OnMessage;
+    public static event System.Action<String> OnEquipMessage;
+
 
     public static  void AddEffectMessage(string msg)
     {
@@ -14,5 +16,9 @@ public static class Messenger
     public static  void AddMessage(string msg)
     {
         OnMessage?.Invoke(msg);
+    }
+    public static  void AddEquipMessage(string msg)
+    {
+        OnEquipMessage?.Invoke(msg);
     }
 }
