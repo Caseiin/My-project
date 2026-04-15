@@ -35,14 +35,6 @@ public class AbilityHolster : MonoBehaviour
             menu.FindMouseAngle(direction.normalized);
     }
 
-    // void OnLook(Vector2 delta){
-    //     if (!menuVisible) return;
-    //     // Add deadzoning as the sensitivity is too high
-    //     _accumulatedDirection += delta;
-
-    //     if(_accumulatedDirection.magnitude > 1f)
-    //         _accumulatedDirection.Normalize();
-    // }
 
     void SetMenuVisibility()
     {

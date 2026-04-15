@@ -123,9 +123,10 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public void OnMenu(InputAction.CallbackContext context)
     {
-        // OnMenuActivated?.Invoke(ScreenType.MainMenu);
         if (context.started)
-        OnResetTabTrigger?.Invoke();
+        OnMenuActivated?.Invoke(ScreenType.MainMenu);
+
+        // OnResetTabTrigger?.Invoke();
     }
 
     public void OnAbilityHolster(InputAction.CallbackContext context)
