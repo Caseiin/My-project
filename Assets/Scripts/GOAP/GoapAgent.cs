@@ -40,6 +40,7 @@ public class GoapAgent
         var potentialPlan = Planner.Plan(this, goalsToCheck, lastGoal);
         if(potentialPlan != null){
             Debug.Log($"Selected goal: {potentialPlan.AgentGoal.Name}");
+            Messenger.AddMessage($"Selected goal: {potentialPlan.AgentGoal.Name}");
             ActionPlan = potentialPlan;
         }
     }

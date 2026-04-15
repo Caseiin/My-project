@@ -142,13 +142,6 @@ using Unity.VisualScripting;
                 .Build());
         }
 
-
-        // float DistanceToPlayer()
-        // {
-        //     if (PlayerPosition == null) return Mathf.Infinity;
-        //     return Vector3.Distance(transform.position, PlayerPosition.position);
-        // }
-
         // Helper Methods
         void At(IState from, IState to, IPredicate condition) => machine.AddTransitions(from,to,condition);
         void Any(IState to, IPredicate condition) => machine.AddAnyTransition(to,condition);
