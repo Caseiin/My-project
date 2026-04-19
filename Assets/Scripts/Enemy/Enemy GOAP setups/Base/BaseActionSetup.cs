@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BaseActioSetup", menuName = "Enemy/Actions")]
-public class BaseActionSetup : ScriptableObject
+public abstract class BaseActionSetup : ScriptableObject
 {
     public AttackStrategy attackStrategy;
 
@@ -21,12 +21,6 @@ public class BaseActionSetup : ScriptableObject
                 .WithStrategy(new ChaseStrategy(enemy.NavAgent,enemy.PlayerPosition,() => enemy.AttackSensor.IsTargetInRange)) 
                 .AddPreCondition(agent.Beliefs["PlayerDetected"])
                 .AddEffect(agent.Beliefs["PlayerInAttackRange"])
-                .Build());
-
-            agent.Actions.Add(new AgentAction.Builder("AttackPlayer")
-                .WithStrategy(new AttackActionStrategy(attackStrategy,enemy))
-                .AddPreCondition(agent.Beliefs["PlayerInAttackRange"])
-                .AddEffect(agent.Beliefs["PlayerDead"])
                 .Build());
     }
 }

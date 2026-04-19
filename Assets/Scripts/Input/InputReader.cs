@@ -18,7 +18,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public event Action OnShootTriggered;
     public event Action OnAttackTriggered;
-    public event Action OnResetTabTrigger;
     public event Action OnAbilityHolsterTriggered;
     public event Action OnClickTriggered;
     public event Action<ScreenType> OnMenuActivated;

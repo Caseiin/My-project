@@ -1,9 +1,9 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BaseGoalsSetup", menuName = "Enemy/Goals")]
-public class BaseGoalsSetup : ScriptableObject
+public abstract class BaseGoalsSetup : ScriptableObject
 {
-    public void InitialiseGoals(GoapAgent agent){
+    public virtual void InitialiseGoals(GoapAgent agent){
         agent.Goals.Add(new AgentGoal.Builder("ChillOut")
             .WithPriority(1)
             .WithDesiredEffect(agent.Beliefs["Nothing"])
