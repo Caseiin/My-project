@@ -17,6 +17,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     void Start()
     {
         MaxHealth = _health;
+        Debug.Log($"Enemy Max Health: {MaxHealth}");       
     }
 
     public void RestoreHealth(int health)

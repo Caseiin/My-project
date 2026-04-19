@@ -32,6 +32,7 @@
         [SerializeField] BaseGoalsSetup goals;
 
         EnemyHealth _enemyHealth;
+        public EnemyHealth Health => _enemyHealth;
         StateMachine machine;
         GoapAgent goapAgent;
         public Transform PlayerPosition {get;private set;} = null;
