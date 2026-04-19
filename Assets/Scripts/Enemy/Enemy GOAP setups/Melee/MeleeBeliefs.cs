@@ -1,10 +1,10 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MeleeBeliefs", menuName = "Enemy/Beliefs/Melee")]
-public class MeleeBeliefs : BaseGoalsSetup
+public class MeleeBeliefs : BaseBeliefSetUps
 {
-    public override void InitialiseGoals(GoapAgent agent)
+    public override void InitialiseBelief(GoapAgent agent, EnemyController enemy)
     {
-        base.InitialiseGoals(agent);
+        base.InitialiseBelief(agent, enemy);
     }
 }

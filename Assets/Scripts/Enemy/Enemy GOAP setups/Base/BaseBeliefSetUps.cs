@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BaseBeliefSetUps", menuName = "Enemy/Belief")]
 public abstract class BaseBeliefSetUps : ScriptableObject
 {
-    public void InitialiseBelief(GoapAgent agent, EnemyController enemy){
+    public virtual void InitialiseBelief(GoapAgent agent, EnemyController enemy){
         BeliefFactory factory = new BeliefFactory(agent, agent.Beliefs);
 
         factory.AddBelief("Nothing",() => false);
