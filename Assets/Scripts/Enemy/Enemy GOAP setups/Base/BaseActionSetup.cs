@@ -24,8 +24,9 @@ public abstract class BaseActionSetup : ScriptableObject
             .Build());
 
         agent.Actions.Add(new AgentAction.Builder("Flee")
-            .WithStrategy(new FleeStrategy(enemy.NavAgent, enemy, 15))
+            .WithStrategy(new FleeStrategy(enemy.NavAgent, enemy, 1.5f))
             .AddPreCondition(agent.Beliefs["AgentNearDeath"])
+            .AddPreCondition(agent.Beliefs["PlayerDetected"])
             .AddEffect(agent.Beliefs["AgentFleeing"])
             .Build());
     }

@@ -7,11 +7,10 @@ public class GoapPlanner : IGoapPlanner
 {
     public ActionPlan Plan(GoapAgent agent, HashSet<AgentGoal> goals, AgentGoal mostRecentGoal = null)
     {
-        // Order goals by priority, descending
-        List<AgentGoal> orderedGoals = goals
-            .Where(g => g.DesiredEffects.Any(b => !b.Evaluate()))
-            .OrderByDescending(g => g == mostRecentGoal? g.Priority - 1 : g.Priority)
-            .ToList();
+    List<AgentGoal> orderedGoals = goals
+        .Where(g => g.DesiredEffects.Any(b => b.Evaluate() == false))   
+        .OrderByDescending(g => g == mostRecentGoal ? g.Priority - 1 : g.Priority)
+        .ToList();
 
         // Try to solve each goal in order
         foreach(var goal in orderedGoals)
