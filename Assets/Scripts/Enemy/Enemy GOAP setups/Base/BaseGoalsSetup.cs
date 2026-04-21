@@ -18,10 +18,5 @@ public abstract class BaseGoalsSetup : ScriptableObject
             .WithPriority(3)
             .WithDesiredEffect(agent.Beliefs["PlayerDead"])
             .Build());
-
-        agent.Goals.Add(new AgentGoal.Builder("FleeForLife")
-            .WithPriority(5)
-            .WithDesiredEffect(agent.Beliefs["AgentFleeing"])
-            .Build());
     }
 }

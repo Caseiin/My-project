@@ -17,17 +17,5 @@ public abstract class BaseActionSetup : ScriptableObject
             .AddEffect(agent.Beliefs["AgentMoving"])
             .Build());
 
-        agent.Actions.Add(new AgentAction.Builder("ChasePlayer")
-            .WithStrategy(new ChaseStrategy(enemy.NavAgent,enemy.PlayerPosition,() => enemy.AttackSensor.IsTargetInRange)) 
-            .AddPreCondition(agent.Beliefs["PlayerDetected"])
-            .AddEffect(agent.Beliefs["PlayerInAttackRange"])
-            .Build());
-
-        agent.Actions.Add(new AgentAction.Builder("Flee")
-            .WithStrategy(new FleeStrategy(enemy.NavAgent, enemy, 1.5f))
-            .AddPreCondition(agent.Beliefs["AgentNearDeath"])
-            .AddPreCondition(agent.Beliefs["PlayerDetected"])
-            .AddEffect(agent.Beliefs["AgentFleeing"])
-            .Build());
     }
 }

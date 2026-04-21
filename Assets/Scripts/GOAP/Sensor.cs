@@ -9,7 +9,18 @@ public class Sensor : MonoBehaviour{
     [SerializeField] float sensorRadius = 5f;
     [SerializeField] float timerInterval = 1f;
 
-    public float Radius => sensorRadius;
+    public float Radius
+    {
+        get => sensorRadius;
+        set
+        {
+            if((value > 0))
+            {
+                sensorRadius = value;
+            }
+        }
+    }
+    
     Timer timer;
     SphereCollider dectectionRange;
     public event Action OnTargetChanged = delegate {};

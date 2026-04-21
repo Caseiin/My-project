@@ -37,7 +37,9 @@
         GoapAgent goapAgent;
         public Transform PlayerPosition {get;private set;} = null;
 
-        void Awake()
+        public Transform Transform => transform;
+
+    void Awake()
         {
             RB = GetComponent<Rigidbody>();
             RB.isKinematic = true;

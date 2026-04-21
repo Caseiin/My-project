@@ -29,8 +29,9 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     public GameObject Hand;
     public  ProjectileThrow ThrowLogic{get; set;}
     public  TrajectorPredictor Trajectory{get; set;}
+    public Transform Transform => transform;
 
-    
+
     // Camera motion logic
     [Header("Camera Behaviour")]
     [Range(0,100)]

@@ -27,10 +27,8 @@ public class WanderStrategy : IActionStrategy
        } 
     }
 
-    public void Stop()
-    {
-        agent.ResetPath();
-    }
+        
+    public void Stop() => agent.ResetPath();
 
     
 }

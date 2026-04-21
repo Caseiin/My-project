@@ -6,5 +6,10 @@ public class MeleeGoals : BaseGoalsSetup
     public override void InitialiseGoals(GoapAgent agent)
     {
         base.InitialiseGoals(agent);
+
+        agent.Goals.Add(new AgentGoal.Builder("FleeForLife")
+            .WithPriority(5)
+            .WithDesiredEffect(agent.Beliefs["AgentFleeing"])
+            .Build());
     }
 }

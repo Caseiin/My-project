@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0346407407db584291d2960758b9b04, type: 3}
-  m_Name: Motionless
+  m_Name: Knockback
   m_EditorClassIdentifier: Assembly-CSharp::AbilitySO
-  abilityMaterial: {fileID: 2100000, guid: 3d7a68763afae3246901f002f70966bb, type: 2}
+  abilityMaterial: {fileID: 2100000, guid: fcb3ba2500a134e48b4f97a1d538390f, type: 2}
   effects:
-  - rid: 6007473254814449817
+  - rid: 8931648975822913536
   references:
     version: 2
     RefIds:
-    - rid: 6007473254814449817
-      type: {class: MotionlessEffect, ns: , asm: Assembly-CSharp}
+    - rid: 8931648975822913536
+      type: {class: KnockBackEffect, ns: , asm: Assembly-CSharp}
       data:
-        EffectIcon: {fileID: 21300000, guid: ebe31f9c45f372144917589cf23b04c6, type: 3}
-        EffectColour: {r: 0.124692, g: 0.21731766, b: 0.79622644, a: 1}
-        motionlessDuration: 4
+        EffectIcon: {fileID: 21300000, guid: b0b13fccedbbc0243acde6180912a042, type: 3}
+        EffectColour: {r: 0.98490566, g: 0.98490566, b: 0.98490566, a: 0}
+        knockbackForce: 100

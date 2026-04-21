@@ -8,7 +8,7 @@ public class MotionlessEffect : GenEffect<IMoveable>
     [SerializeField] float motionlessDuration = 2.5f;
     public override float Duration => motionlessDuration;
 
-    protected override void ApplyEffect(IMoveable target)
+    protected override void ApplyEffect(IMoveable target, EffectContext context)
     {
         if (target != null)
         {

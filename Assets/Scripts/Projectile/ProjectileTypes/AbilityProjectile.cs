@@ -60,13 +60,13 @@ public abstract class AbilityProjectile : MonoBehaviour
     protected void Activate()
     {
         FindEffectablesWithinRange(out var _playerEffectables, out var _otherEffectables);
-
+        var context = new EffectContext(transform);
         // player
         foreach (var effectable in _playerEffectables)
         {
             foreach (var effect in ability.effects)
             {
-                if (effect.Apply(effectable))
+                if (effect.Apply(effectable, context))
                 {
                     EffectPopUpManager.Instance.DisplayEffect(effect);
                     Messenger.AddEffectMessage(effect.Message);
@@ -79,7 +79,7 @@ public abstract class AbilityProjectile : MonoBehaviour
         {
             foreach (var effect in ability.effects)
             {
-                effect.Apply(effectable);
+                effect.Apply(effectable,context);
             }
         }
 

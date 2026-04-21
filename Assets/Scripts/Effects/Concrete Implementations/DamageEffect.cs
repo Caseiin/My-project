@@ -6,7 +6,7 @@ public class DamageEffect : GenEffect<IDamageable>
 {
     [SerializeField] int dmgAmount;
 
-    protected override void ApplyEffect(IDamageable target)
+    protected override void ApplyEffect(IDamageable target, EffectContext context)
     {
         target?.TakeDamage(dmgAmount);
         Message = $"{this.GetType()}: Damn! I Took some Damage!";

@@ -8,5 +8,5 @@ public abstract class Effect
     public Color EffectColour;
     public string Message{get; protected set;}
     public virtual float Duration{get; protected set;} = 0f;
-    public abstract bool Apply(IEffectable target);
+    public abstract bool Apply(IEffectable target, EffectContext context);
 }
