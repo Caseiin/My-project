@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BaseBeliefSetUps", menuName = "Enemy/Belief")]
 public abstract class BaseBeliefSetUps : ScriptableObject
 {
     public virtual void InitialiseBelief(GoapAgent agent, EnemyController enemy){

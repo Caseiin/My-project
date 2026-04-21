@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393ec90c0b618204fafab29245ba02fc, type: 3}
   m_Name: ProjectileStrategy
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileStrategy
-  projectile: {fileID: 0}
+  projectile: {fileID: 6962090274974333881, guid: 814492c5b61d2fd439a6a5e444cf04f5, type: 3}
+  forwardMag: 32
+  UpwardMag: 8

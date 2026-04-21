@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BaseActioSetup", menuName = "Enemy/Actions")]
+
 public abstract class BaseActionSetup : ScriptableObject
 {
     public AttackStrategy attackStrategy;

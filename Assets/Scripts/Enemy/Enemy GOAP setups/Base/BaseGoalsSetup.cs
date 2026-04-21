@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BaseGoalsSetup", menuName = "Enemy/Goals")]
 public abstract class BaseGoalsSetup : ScriptableObject
 {
     public virtual void InitialiseGoals(GoapAgent agent){
