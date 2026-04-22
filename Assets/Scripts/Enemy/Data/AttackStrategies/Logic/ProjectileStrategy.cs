@@ -13,13 +13,18 @@ public class ProjectileStrategy : AttackStrategy
         var agent = enemy.NavAgent;
         agent.SetDestination(enemy.transform.position);
 
-        // enemy.transform.LookAt()
+        var spawnPosition = enemy.transform.position + enemy.transform.forward * 1.5f;
 
-        var rb = Instantiate(projectile,enemy.transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+        // Face player before shooting
+        if( enemy.PlayerPosition != null){
+            enemy.transform.LookAt(enemy.PlayerPosition);
+        }
+
+        var rb = Instantiate(projectile,spawnPosition, Quaternion.identity).GetComponent<Rigidbody>();
         rb.AddForce(enemy.transform.forward * forwardMag, ForceMode.Impulse);
         rb.AddForce(enemy.transform.up * UpwardMag, ForceMode.Impulse);
 
-        // Decrease attack radius forcing goap to replan its action
-        enemy.AttackSensor.Radius = 1f;
+        // trigger reposition cycle
+        enemy.AttackSensor.Radius = .2f;
     }
 }

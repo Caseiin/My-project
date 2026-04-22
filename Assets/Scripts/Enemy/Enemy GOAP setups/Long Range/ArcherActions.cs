@@ -7,15 +7,18 @@ public class ArcherActions : BaseActionSetup
     {
         base.InitializeActions(agent, enemy);
 
+        // Repostion produces belief Agent repositions
         agent.Actions.Add(new AgentAction.Builder("Reposition")
             .WithStrategy(new RepositionStrategy(agent.NavAgent, enemy.DetectionSensor.Radius, enemy.AttackSensor,enemy.DetectionSensor.Radius))
             .AddPreCondition(agent.Beliefs["PlayerDetected"])
-            .AddEffect(agent.Beliefs["PlayerInAttackRange"])
+            .AddEffect(agent.Beliefs["AgentRepositioned"])
             .Build());
 
+        // After enemy repositions and still sees the player shoots the player
         agent.Actions.Add(new AgentAction.Builder("ShootPlayer")
             .WithStrategy(new AttackActionStrategy(attackStrategy,enemy))
-            .AddPreCondition(agent.Beliefs["PlayerInAttackRange"])
+            .AddPreCondition(agent.Beliefs["AgentRepositioned"])
+            .AddPreCondition(agent.Beliefs["PlayerDetected"])
             .AddEffect(agent.Beliefs["PlayerDead"])
             .Build());
     }

@@ -8,10 +8,10 @@ public class RepositionStrategy : IActionStrategy
     readonly Sensor attackSensor;
     readonly float repositionRadius;
     readonly float newAttackRadius;
-
+    bool _started = false;
 
     public bool CanPerform  => !Complete;
-    public bool Complete => agent.hasPath && agent.remainingDistance <= 2f && !agent.pathPending;
+    public bool Complete => _started && !agent.pathPending && agent.hasPath && agent.remainingDistance <= 1f;
 
     public RepositionStrategy(NavMeshAgent agent,float radius, Sensor sensor, float sensorRadius){
         this.agent = agent;
@@ -21,6 +21,7 @@ public class RepositionStrategy : IActionStrategy
     }
 
     public void Start(){
+        _started  = false;
         var random2D = Random.insideUnitCircle* repositionRadius;
         var randomDirection = new Vector3(random2D.x,0f, random2D.y);
 
@@ -28,6 +29,7 @@ public class RepositionStrategy : IActionStrategy
         if(NavMesh.SamplePosition(agent.transform.position + randomDirection, out hit, repositionRadius, 1))
         {
             agent.SetDestination(hit.position);
+            _started = true;
         }
     }
 
