@@ -16,7 +16,7 @@ public class ArcherActions : BaseActionSetup
 
         // After enemy repositions and still sees the player shoots the player
         agent.Actions.Add(new AgentAction.Builder("ShootPlayer")
-            .WithStrategy(new AttackActionStrategy(attackStrategy,enemy))
+            .WithStrategy(new SingleShotActionStrategy(attackStrategy,enemy))
             .AddPreCondition(agent.Beliefs["AgentRepositioned"])
             .AddPreCondition(agent.Beliefs["PlayerDetected"])
             .AddEffect(agent.Beliefs["PlayerDead"])
