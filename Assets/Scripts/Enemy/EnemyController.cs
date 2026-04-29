@@ -71,9 +71,9 @@
             machine?.FixedUpdate();
         }
 
-        public void InitializeBehaviour(EnemySetUpSO enemySetUp){
+        public void InitializeBehaviour(EnemySetUpSO enemySetUp, System.Action onDeath = null){
             SetUp = enemySetUp;
-            _enemyHealth.InitializeHealth(SetUp);
+            _enemyHealth.InitializeHealth(SetUp, onDeath);
             goals = SetUp.Goals;
             actions = SetUp.Actions;
             beliefs = SetUp.Beliefs;

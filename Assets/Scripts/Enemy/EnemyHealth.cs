@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour, IDamageable
@@ -20,9 +21,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         // Debug.Log($"Enemy Max Health: {MaxHealth}");       
     }
 
-    public void InitializeHealth(EnemySetUpSO enemy){
-        _health = enemy.Health;
+    public void InitializeHealth(EnemySetUpSO setUp, Action onDeath = null){
+        _health = setUp.Health;
         MaxHealth = _health;
+        if (onDeath != null) OnDeath += onDeath;
     }
 
     public void RestoreHealth(int health)
@@ -35,11 +37,22 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     public void TakeDamage(int dmg)
     {
-        _health -= dmg;
-        var dmgUI = WorldSpaceUIManager.Instance.Spawn(HealthPrefab,transform);
+        _health -= dmg; // subtract first
+
+        var dmgUI = WorldSpaceUIManager.Instance.Spawn(HealthPrefab, transform);
         dmgUI.SetDamage(dmg);
         OnHealthTaken?.Invoke(dmg);
 
-        // OnDeath?.Invoke();
+        if (_health <= 0) // then check
+        {
+            WorldSpaceUIManager.Instance.ReleaseToPools(HealthPrefab, dmgUI);
+            Die();
+        }
+
+    }
+
+    void Die(){
+        OnDeath?.Invoke();
+        Destroy(gameObject);
     }
 }
