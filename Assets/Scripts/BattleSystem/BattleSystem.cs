@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] int level = 1;
     [SerializeField] int baseEnemyCount = 3;
 
+    public static Action<int> OnLevelChanged;
     EnemySpawn spawner = new();
     int _activeEnemies = 0;
 
@@ -53,6 +55,7 @@ public class BattleSystem : MonoBehaviour
     void OnWaveCleared()
     {
         level++;
+        OnLevelChanged?.Invoke(level);
         Debug.Log($"Wave cleared! Starting level {level}");
         StartCoroutine(SpawnWave());
     }
@@ -60,6 +63,6 @@ public class BattleSystem : MonoBehaviour
     EnemySetUpSO PickBehaviour()
     {
         int unlocked = Mathf.Min(level, enemyBehaviourSetUps.Count);
-        return enemyBehaviourSetUps[Random.Range(0, unlocked)];
+        return enemyBehaviourSetUps[UnityEngine.Random.Range(0, unlocked)];
     }
 }

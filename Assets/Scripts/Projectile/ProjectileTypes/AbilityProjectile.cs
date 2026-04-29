@@ -123,11 +123,7 @@ public abstract class AbilityProjectile : MonoBehaviour
         Range.transform.localScale = Vector3.zero;
     }
 
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, MaxEffectRadius);
-    }
+
     void FindEffectablesWithinRange(out List<IEffectable> playerList, out List<IEffectable> otherList)
     {
         var playerBuffer = new HashSet<IEffectable>();
@@ -162,5 +158,15 @@ public abstract class AbilityProjectile : MonoBehaviour
     {
         _rb.isKinematic = true;
         _rb.linearVelocity = Vector3.zero;
+    }
+
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, MaxEffectRadius); // actual physics range
+        
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, Range.transform.localScale.x / 2f); // visual range
     }
 }

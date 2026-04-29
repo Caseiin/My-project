@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e646dc9bb0a7515489525731f59c5bc5, type: 3}
   m_Name: MeleeEnemySetUp
   m_EditorClassIdentifier: Assembly-CSharp::EnemySetUpSO
-  Health: 150
+  Health: 60
   Actions: {fileID: 11400000, guid: b9074177acb08d14e932d559f610aaef, type: 2}
   Beliefs: {fileID: 11400000, guid: d0efab2c62246d34e938b1c4eb9a2622, type: 2}
   Goals: {fileID: 11400000, guid: 6dc69a7ac4c931d449c759b48ca2ed7c, type: 2}
