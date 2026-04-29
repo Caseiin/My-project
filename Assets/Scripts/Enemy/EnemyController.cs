@@ -9,7 +9,10 @@
     [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyController : EntityController, IMoveable
     {
-        
+        [Header("SetUp")]
+        [SerializeField] EnemySetUpSO SetUp;
+
+
         [Header("Sensor")]
         [SerializeField] Sensor detectionSensor;
         [SerializeField] Sensor attackSensor;
@@ -26,10 +29,10 @@
         NavMeshAgent _navAgent;
         public NavMeshAgent NavAgent => _navAgent;
 
-        [Header("GOAP")]
-        [SerializeField] BaseActionSetup actions;
-        [SerializeField] BaseBeliefSetUps beliefs;
-        [SerializeField] BaseGoalsSetup goals;
+        
+        BaseActionSetup actions;
+        BaseBeliefSetUps beliefs;
+        BaseGoalsSetup goals;
 
         EnemyHealth _enemyHealth;
         public EnemyHealth Health => _enemyHealth;
@@ -52,6 +55,10 @@
         void Start(){
             goapAgent = new GoapAgent(transform, _navAgent); // Build GOAP agent
             PlayerPosition =  Registry<PlayerController>.GetFirst().transform;
+            _enemyHealth.InitializeHealth(SetUp);
+            goals = SetUp.Goals;
+            actions = SetUp.Actions;
+            beliefs = SetUp.Beliefs;
             DeclareStateAndGOAPInfo();
         }
 

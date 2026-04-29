@@ -5,8 +5,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 {
     [Header("Health Info")]
     [SerializeField] FloatingNumberUI HealthPrefab;
-    [Range(0,150)]
-    [SerializeField] int _health;
+    int _health;
     public int Health => _health;
     public int MaxHealth{get; private set;}
     
@@ -17,8 +16,13 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     void Start()
     {
         // MaxHealth = _health;
-        MaxHealth = 150;
-        Debug.Log($"Enemy Max Health: {MaxHealth}");       
+        // MaxHealth = 150;
+        // Debug.Log($"Enemy Max Health: {MaxHealth}");       
+    }
+
+    public void InitializeHealth(EnemySetUpSO enemy){
+        _health = enemy.Health;
+        MaxHealth = _health;
     }
 
     public void RestoreHealth(int health)
