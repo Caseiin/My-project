@@ -9,7 +9,7 @@
     [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyController : EntityController, IMoveable
     {
-        [Header("SetUp")]
+        [Header("Behaviour SetUp")]
         [SerializeField] EnemySetUpSO SetUp;
 
 
@@ -42,7 +42,7 @@
 
         public Transform Transform => transform;
 
-    void Awake()
+        void Awake()
         {
             RB = GetComponent<Rigidbody>();
             RB.isKinematic = true;
@@ -50,16 +50,13 @@
             _enemyHealth = GetComponent<EnemyHealth>();
             _navAgent = GetComponent<NavMeshAgent>();
 
+
+            goapAgent = new GoapAgent(transform, _navAgent); // Build GOAP agent
+            PlayerPosition =  Registry<PlayerController>.GetFirst().transform;
         }
 
         void Start(){
-            goapAgent = new GoapAgent(transform, _navAgent); // Build GOAP agent
-            PlayerPosition =  Registry<PlayerController>.GetFirst().transform;
-            _enemyHealth.InitializeHealth(SetUp);
-            goals = SetUp.Goals;
-            actions = SetUp.Actions;
-            beliefs = SetUp.Beliefs;
-            DeclareStateAndGOAPInfo();
+
         }
 
         void Update()
@@ -72,6 +69,15 @@
         void FixedUpdate()
         {
             machine?.FixedUpdate();
+        }
+
+        public void InitializeBehaviour(EnemySetUpSO enemySetUp){
+            SetUp = enemySetUp;
+            _enemyHealth.InitializeHealth(SetUp);
+            goals = SetUp.Goals;
+            actions = SetUp.Actions;
+            beliefs = SetUp.Beliefs;
+            DeclareStateAndGOAPInfo();            
         }
 
         void DeclareStateAndGOAPInfo()

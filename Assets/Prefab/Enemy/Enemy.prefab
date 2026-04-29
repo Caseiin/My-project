@@ -22,7 +22,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1917209980920412868
 Transform:
   m_ObjectHideFlags: 0
@@ -159,12 +159,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b925def109c2474f94191dca5b4165c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
+  SetUp: {fileID: 0}
   detectionSensor: {fileID: 2159658418295279667}
   attackSensor: {fileID: 4860909874872314263}
   moveSpeed: 4
-  actions: {fileID: 11400000, guid: b9074177acb08d14e932d559f610aaef, type: 2}
-  beliefs: {fileID: 11400000, guid: d0efab2c62246d34e938b1c4eb9a2622, type: 2}
-  goals: {fileID: 11400000, guid: 6dc69a7ac4c931d449c759b48ca2ed7c, type: 2}
 --- !u!114 &6913047797074134885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,7 +176,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   HealthPrefab: {fileID: 1495021848732839364, guid: c4d0164323237e448b72b58b626df398, type: 3}
-  _health: 129
 --- !u!195 &6305708691816990896
 NavMeshAgent:
   m_ObjectHideFlags: 0
