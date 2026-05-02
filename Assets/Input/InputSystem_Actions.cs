@@ -217,6 +217,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponScroll"",
+                    ""type"": ""Value"",
+                    ""id"": ""4472a9fd-9c73-4b74-889e-6983640c1698"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -657,6 +666,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""OnHotbar3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""635719a9-711d-4510-bfe5-dcdf3bf0193b"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""WeaponScroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1318,6 +1338,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_OnHotbar1 = m_Player.FindAction("OnHotbar1", throwIfNotFound: true);
         m_Player_OnHotbar2 = m_Player.FindAction("OnHotbar2", throwIfNotFound: true);
         m_Player_OnHotbar3 = m_Player.FindAction("OnHotbar3", throwIfNotFound: true);
+        m_Player_WeaponScroll = m_Player.FindAction("WeaponScroll", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1428,6 +1449,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_OnHotbar1;
     private readonly InputAction m_Player_OnHotbar2;
     private readonly InputAction m_Player_OnHotbar3;
+    private readonly InputAction m_Player_WeaponScroll;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1496,6 +1518,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @OnHotbar3 => m_Wrapper.m_Player_OnHotbar3;
         /// <summary>
+        /// Provides access to the underlying input action "Player/WeaponScroll".
+        /// </summary>
+        public InputAction @WeaponScroll => m_Wrapper.m_Player_WeaponScroll;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1563,6 +1589,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @OnHotbar3.started += instance.OnOnHotbar3;
             @OnHotbar3.performed += instance.OnOnHotbar3;
             @OnHotbar3.canceled += instance.OnOnHotbar3;
+            @WeaponScroll.started += instance.OnWeaponScroll;
+            @WeaponScroll.performed += instance.OnWeaponScroll;
+            @WeaponScroll.canceled += instance.OnWeaponScroll;
         }
 
         /// <summary>
@@ -1616,6 +1645,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @OnHotbar3.started -= instance.OnOnHotbar3;
             @OnHotbar3.performed -= instance.OnOnHotbar3;
             @OnHotbar3.canceled -= instance.OnOnHotbar3;
+            @WeaponScroll.started -= instance.OnWeaponScroll;
+            @WeaponScroll.performed -= instance.OnWeaponScroll;
+            @WeaponScroll.canceled -= instance.OnWeaponScroll;
         }
 
         /// <summary>
@@ -2047,6 +2079,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnOnHotbar3(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "WeaponScroll" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnWeaponScroll(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

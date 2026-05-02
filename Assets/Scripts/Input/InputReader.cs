@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 
 [CreateAssetMenu(fileName = "InputReader", menuName = "InputReader")]
@@ -23,7 +24,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public event Action<ScreenType> OnMenuActivated;
     public event Action OnInteractTriggered;
     public event Action<int> OnHotBarTriggered;
-
+    public event Action<int> OnMouseWheelScrolled;
 
     readonly PointerEventData _pointerEventData = new PointerEventData(EventSystem.current);
     readonly List<RaycastResult> _raycastResults = new List<RaycastResult>(); 
@@ -112,13 +113,23 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     {
         // if(context.started) OnHotBarTriggered?.Invoke(2);
     }
+    public void OnWeaponScroll(InputAction.CallbackContext context)
+    {
+        // TODO: Add scroll functionality to the weapon scroll
+        var scrollValue =context.ReadValue<Vector2>().y; 
 
+        if (Math.Abs(scrollValue) > 0.01f)
+            OnMouseWheelScrolled?.Invoke((int)scrollValue);
+        
+        Debug.Log($"ScrollValue => {scrollValue}");
+    }
+    
     // UIActions
     public void OnEscape(InputAction.CallbackContext context)
     {
         if (context.started)
         OnMenuActivated?.Invoke(ScreenType.PauseMenu);  
-    }
+    }   
 
     public void OnMenu(InputAction.CallbackContext context)
     {
@@ -168,6 +179,5 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         }
         return false;
     }
-
 
 }

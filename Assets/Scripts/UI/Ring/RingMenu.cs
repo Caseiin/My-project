@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.UI;
 using UnityEngine;
 
 public class RingMenu : MonoBehaviour
@@ -45,11 +46,23 @@ public class RingMenu : MonoBehaviour
 
 
 
-    public void  FindMouseAngle(Vector2 direction){
-        var mouseAngle = NormalizeAngle(Vector3.SignedAngle(Vector3.up, direction, Vector3.forward) + stepLength/ 2f);
-        selectedIndex = Mathf.FloorToInt(mouseAngle / stepLength) % slices.Length;
+    // public void  FindMouseAngle(Vector2 direction){
+    //     var mouseAngle = NormalizeAngle(Vector3.SignedAngle(Vector3.up, direction, Vector3.forward) + stepLength/ 2f);
+    //     selectedIndex = Mathf.FloorToInt(mouseAngle / stepLength) % slices.Length;
+    //     SelectActiveElement(selectedIndex);
+    //     // Debug.Log($"Angle: {mouseAngle:F1}  →  Slice: {selectedIndex}");
+    // }
+
+
+    public void StepSelection(int step){
+        selectedIndex += step;
+        if (selectedIndex < 0){
+            selectedIndex = slices.Length -1;
+        }
+        else if (selectedIndex >= slices.Length)
+            selectedIndex = 0;
+
         SelectActiveElement(selectedIndex);
-        // Debug.Log($"Angle: {mouseAngle:F1}  →  Slice: {selectedIndex}");
     }
     
     float NormalizeAngle(float angle)=> (angle + 360f) % 360f;
