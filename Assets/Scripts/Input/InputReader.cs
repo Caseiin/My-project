@@ -51,13 +51,8 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         }
     }
 
-    public void EnablePlayerMap(){
-        Input.Player.Enable();
-    }
-
-    public void DisablePlayerMap(){
-        Input.Player.Disable();
-    }
+    public void EnablePlayerMap()=> Input.Player.Enable();
+    public void DisablePlayerMap()=> Input.Player.Disable();
 
     // PlayerActions
     public void OnAttack(InputAction.CallbackContext context)
@@ -127,8 +122,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
         if (Math.Abs(scrollValue) > 0.01f)
             OnMouseWheelScrolled?.Invoke((int)scrollValue);
-        
-        Debug.Log($"ScrollValue => {scrollValue}");
     }
     
     // UIActions
@@ -142,18 +135,9 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     {
         if (context.started)
         OnMenuActivated?.Invoke(ScreenType.MainMenu);
-
-        // OnResetTabTrigger?.Invoke();
     }
-
-    public void OnAbilityHolster(InputAction.CallbackContext context)
-    {
-        if(context.started)
-            OnAbilityHolsterTriggered?.Invoke();
-    }
-
     public void OnClick(InputAction.CallbackContext context){
-        if (context.started)
+        if (context.performed)
             OnClickTriggered?.Invoke();
     }
 

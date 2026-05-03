@@ -45,16 +45,6 @@ public class RingMenu : MonoBehaviour
         }
     }
 
-
-
-    // public void  FindMouseAngle(Vector2 direction){
-    //     var mouseAngle = NormalizeAngle(Vector3.SignedAngle(Vector3.up, direction, Vector3.forward) + stepLength/ 2f);
-    //     selectedIndex = Mathf.FloorToInt(mouseAngle / stepLength) % slices.Length;
-    //     SelectActiveElement(selectedIndex);
-    //     // Debug.Log($"Angle: {mouseAngle:F1}  →  Slice: {selectedIndex}");
-    // }
-
-
     public void StepSelection(int step){
         selectedIndex += step;
         if (selectedIndex < 0){

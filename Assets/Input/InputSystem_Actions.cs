@@ -793,15 +793,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""AbilityHolster"",
-                    ""type"": ""Button"",
-                    ""id"": ""d5c570f9-3bc3-46f8-bf80-cd31ac3e26ec"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1244,17 +1235,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""Menu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""65876501-d43d-47c4-99a6-7c05f69e9dfb"",
-                    ""path"": ""<Keyboard>/t"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""AbilityHolster"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1353,7 +1333,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_Escape = m_UI.FindAction("Escape", throwIfNotFound: true);
         m_UI_Menu = m_UI.FindAction("Menu", throwIfNotFound: true);
-        m_UI_AbilityHolster = m_UI.FindAction("AbilityHolster", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1697,7 +1676,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_Escape;
     private readonly InputAction m_UI_Menu;
-    private readonly InputAction m_UI_AbilityHolster;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1757,10 +1735,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/Menu".
         /// </summary>
         public InputAction @Menu => m_Wrapper.m_UI_Menu;
-        /// <summary>
-        /// Provides access to the underlying input action "UI/AbilityHolster".
-        /// </summary>
-        public InputAction @AbilityHolster => m_Wrapper.m_UI_AbilityHolster;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1823,9 +1797,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Menu.started += instance.OnMenu;
             @Menu.performed += instance.OnMenu;
             @Menu.canceled += instance.OnMenu;
-            @AbilityHolster.started += instance.OnAbilityHolster;
-            @AbilityHolster.performed += instance.OnAbilityHolster;
-            @AbilityHolster.canceled += instance.OnAbilityHolster;
         }
 
         /// <summary>
@@ -1873,9 +1844,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Menu.started -= instance.OnMenu;
             @Menu.performed -= instance.OnMenu;
             @Menu.canceled -= instance.OnMenu;
-            @AbilityHolster.started -= instance.OnAbilityHolster;
-            @AbilityHolster.performed -= instance.OnAbilityHolster;
-            @AbilityHolster.canceled -= instance.OnAbilityHolster;
         }
 
         /// <summary>
@@ -2178,12 +2146,5 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMenu(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "AbilityHolster" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnAbilityHolster(InputAction.CallbackContext context);
     }
 }

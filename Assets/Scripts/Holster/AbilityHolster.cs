@@ -6,7 +6,6 @@ public class AbilityHolster : MonoBehaviour
     [SerializeField] InputReader _input;
     [SerializeField] RingMenu menu;
     bool menuVisible;
-    Vector2 _accumulatedDirection;
     PlayerController _player;
 
     void Start()
@@ -15,28 +14,32 @@ public class AbilityHolster : MonoBehaviour
         _player = Registry<PlayerController>.GetFirst();
     }
     void OnEnable(){
-        // _input.OnAbilityHolsterTriggered += SetMenuVisibility;
         _input.OnMouseWheelScrolled += HandleScroll;
-        menu.onSelectedAbility += CloseMenu;
+        _input.OnClickTriggered += SetAbility;
     }
     void OnDisable(){
-        // _input.OnAbilityHolsterTriggered -= SetMenuVisibility;
+
         _input.OnMouseWheelScrolled -= HandleScroll;
-        menu.onSelectedAbility -= CloseMenu;
+        _input.OnClickTriggered -= SetAbility;
     }
 
 
     void HandleScroll(int step)
     {
+        _player.SetCameraLogic(new IdleCameraLogic(_player));
         menu?.gameObject.SetActive(true);
         menu?.StepSelection(step);
     }
 
-    void CloseMenu()=> menu?.gameObject.SetActive(false);
+    void CloseMenu(){
+        menu?.gameObject.SetActive(false);
+        _player.SetCameraLogic(new FPSCameraLogic(_player));
+    } 
 
 
     void SetAbility()
     {
+        if(!menu.gameObject.activeSelf) return;
         Debug.Log($"SetAbility called. menuVisible: {menuVisible}");
 
         Debug.Log($"Calling SelectAbilityElement");
