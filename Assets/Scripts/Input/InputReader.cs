@@ -51,6 +51,14 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         }
     }
 
+    public void EnablePlayerMap(){
+        Input.Player.Enable();
+    }
+
+    public void DisablePlayerMap(){
+        Input.Player.Disable();
+    }
+
     // PlayerActions
     public void OnAttack(InputAction.CallbackContext context)
     {
@@ -115,7 +123,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     }
     public void OnWeaponScroll(InputAction.CallbackContext context)
     {
-        // TODO: Add scroll functionality to the weapon scroll
         var scrollValue =context.ReadValue<Vector2>().y; 
 
         if (Math.Abs(scrollValue) > 0.01f)

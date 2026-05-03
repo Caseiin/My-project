@@ -13,8 +13,9 @@ public class RingMenu : MonoBehaviour
     float stepLength;
     int selectedIndex;
     public static Action<AbilitySO> onAbiiltySelected;
+    public event Action onSelectedAbility;
 
-    void Start()
+    void Awake()
     {
         stepLength = 360f/ data.Elements.Length;
         var iconDist = Vector3.Distance(ringSlicePrefab.Icon.transform.position, ringSlicePrefab.CakeSlice.transform.position);
@@ -70,7 +71,7 @@ public class RingMenu : MonoBehaviour
         for(int i = 0; i < data.Elements.Length; i++){
             if(i == elementidx)
             {
-                slices[i].CakeSlice.color = new Color(.1f,.1f,.1f,.75f);
+                slices[i].CakeSlice.color = new Color(1f,1f,.97f,.75f);
             }
             else 
                 slices[i].CakeSlice.color = new Color(.1f,.1f,.1f,.5f);
@@ -82,6 +83,7 @@ public class RingMenu : MonoBehaviour
     {
         var selectedAbility = data.Elements[selectedIndex].Ability;
         onAbiiltySelected?.Invoke(selectedAbility);
+        onSelectedAbility?.Invoke();
         Debug.Log($" Selected Ability: {selectedAbility}");
     }
 }
