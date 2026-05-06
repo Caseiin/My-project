@@ -3,12 +3,24 @@
 
     public class PlayerMotionState : BaseState
     {  
-        private PlayerController _player;
-        private SoundEmitter _footstepEmitter;
+        PlayerController _player;
+        SoundEmitter _footstepEmitter;
+        TutorialData _moveTutorial;
 
         public PlayerMotionState(PlayerController player) : base(player)
         {
             _player = player;
+            _moveTutorial = new TutorialData.Builder("Move")
+                                            .WithCompletionCondition(
+                                                subscribe: callback => _player.Input.OnMoveStarted += callback,
+                                                unsubscribe: callback => _player.Input.OnMoveStarted -= callback
+                                            )
+                                            .WithInitialCondition(()=> Debug.Log("Please use WASD to move"))
+                                            .WithEndCondition(()=> Debug.Log("Move tutorial complete"))
+                                            .Build();
+            
+            TutorialManager.Instance.AddTutorial(_moveTutorial);
+
         }
 
         public override void OnEnter() {}
@@ -82,8 +94,8 @@
         }
 
 
-        // void Jump()
-        // {
-        //     _player.RB.linearVelocity= new Vector3(_player.RB.linearVelocity.x, _player.JumpForce, _player.RB.linearVelocity.z);
-        // }
+        void Jump()
+        {
+            _player.RB.linearVelocity= new Vector3(_player.RB.linearVelocity.x, _player.JumpForce, _player.RB.linearVelocity.z);
+        }
     }

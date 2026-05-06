@@ -105,7 +105,6 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
 
     void OnDisable()
     {
-        // Input.OnAttackTriggered -= HandleThrow; 
     }
 
     // Helper Methods

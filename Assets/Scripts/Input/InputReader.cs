@@ -18,6 +18,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public bool IsAimming {get; private set;}
 
     public event Action OnShootTriggered;
+    public event Action OnMoveStarted;
     public event Action OnAttackTriggered;
     public event Action OnAbilityHolsterTriggered;
     public event Action OnClickTriggered;
@@ -83,6 +84,8 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public void OnMove(InputAction.CallbackContext context)
     {
         MoveDirection = context.ReadValue<Vector2>();
+        if (MoveDirection != Vector2.zero)
+            OnMoveStarted?.Invoke();
     }
 
     public void OnShoot(InputAction.CallbackContext context)
@@ -98,7 +101,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     {
         // var pointer = Pointer.current;
         // if (pointer != null && IsPointerOverUI(pointer.position.ReadValue())) return;
-        Debug.Log("Aim input read");
         IsAimming = context.action.IsPressed();
     }
 
