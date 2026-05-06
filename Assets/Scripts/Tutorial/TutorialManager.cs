@@ -1,21 +1,30 @@
 using System;
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class TutorialManager : Singleton<TutorialManager>
 {
     readonly List<TutorialData> _tutorials = new();
     int _index = 0;
     bool _started = false;
+    bool _idle = true;
 
-    // Called by anything that adds a tutorial — safe to call multiple times
     public void AddTutorial(TutorialData tutorial)
     {
         if (_tutorials.Contains(tutorial)) return;
         _tutorials.Add(tutorial);
 
-        // If we haven't started yet, try now (handles late registration)
         if (!_started) TryStart();
+        else if (_idle) StartStep(_index);
+    }
+
+    // Call this from anywhere a relevant fail condition occurs —
+    // e.g. player throws without aiming, walks into a wall, misses a target.
+    // The active policy decides whether to react at all.
+    public void ReportFailure()
+    {
+        if (_idle || _index >= _tutorials.Count) return;
+        _tutorials[_index].ReportFailure();
     }
 
     void TryStart()
@@ -31,13 +40,16 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         if (index >= _tutorials.Count)
         {
-            Debug.Log("Tutorial complete!");
+            _idle = true;
+            Debug.Log("Tutorial sequence complete — or waiting for more steps.");
             return;
         }
 
         _index = index;
+        _idle = false;
+
         var tut = _tutorials[index];
         tut.StartTutorial();
-        tut.Bind(() => StartStep(_index + 1)); // pass "go to next" as the callback
+        tut.Bind(() => StartStep(_index + 1));
     }
 }

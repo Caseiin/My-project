@@ -23,7 +23,7 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     public Transform _headTransform;
     public float _sensitivity = .1f;
     public float _verticalClamp = 80f;
-    public float _lookSmoothTime = 0.05f; // small = snappy, large = more smooth
+    public float _lookSmoothTime = 0.05f; 
 
     [Header("Throw")]
     public GameObject Hand;

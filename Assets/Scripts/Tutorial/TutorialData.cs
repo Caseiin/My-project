@@ -5,6 +5,8 @@ using UnityEngine;
 public class TutorialData
 {
     public string TutorialName {get;} = string.Empty;
+
+    ITutorialPhasePolicy PhasePolicy;
     Action<Action> onSubscribe;
     Action<Action> unSubscribe;
     Action onTutorialStart;
@@ -14,7 +16,12 @@ public class TutorialData
         TutorialName = name;
     }
 
-    public void StartTutorial() => onTutorialStart?.Invoke();
+    public void StartTutorial(){
+        onTutorialStart?.Invoke();
+        PhasePolicy?.OnStart();
+    }
+
+    public void ReportFailure() => PhasePolicy?.OnFailure();
     public void Bind(Action onNextStep)
     {
         onTutorialDone = () =>
@@ -33,9 +40,14 @@ public class TutorialData
     {
         readonly TutorialData tutorialData;
 
-        public Builder(string name)
+        public Builder(TutorialContextSO context)
         {
-            tutorialData = new TutorialData(name);
+            tutorialData = new TutorialData(context.TutorialName);
+        }
+
+        public Builder WithPolicy(ITutorialPhasePolicy policy){
+            tutorialData.PhasePolicy = policy;
+            return this;
         }
 
         public Builder WithCompletionCondition(Action<Action> subscribe, Action<Action> unsubscribe)

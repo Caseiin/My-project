@@ -19,6 +19,8 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public event Action OnShootTriggered;
     public event Action OnMoveStarted;
+    public event Action OnAimStarted;
+
     public event Action OnAttackTriggered;
     public event Action OnAbilityHolsterTriggered;
     public event Action OnClickTriggered;
@@ -101,6 +103,8 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     {
         // var pointer = Pointer.current;
         // if (pointer != null && IsPointerOverUI(pointer.position.ReadValue())) return;
+        if(context.started)
+            OnAimStarted?.Invoke();
         IsAimming = context.action.IsPressed();
     }
 

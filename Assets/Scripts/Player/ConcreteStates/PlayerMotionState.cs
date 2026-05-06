@@ -10,16 +10,16 @@
         public PlayerMotionState(PlayerController player) : base(player)
         {
             _player = player;
-            _moveTutorial = new TutorialData.Builder("Move")
-                                            .WithCompletionCondition(
-                                                subscribe: callback => _player.Input.OnMoveStarted += callback,
-                                                unsubscribe: callback => _player.Input.OnMoveStarted -= callback
-                                            )
-                                            .WithInitialCondition(()=> Debug.Log("Please use WASD to move"))
-                                            .WithEndCondition(()=> Debug.Log("Move tutorial complete"))
-                                            .Build();
+            // _moveTutorial = new TutorialData.Builder("Move")
+            //                                 .WithCompletionCondition(
+            //                                     subscribe: callback => _player.Input.OnMoveStarted += callback,
+            //                                     unsubscribe: callback => _player.Input.OnMoveStarted -= callback
+            //                                 )
+            //                                 .WithInitialCondition(()=> Debug.Log("Please use WASD to move"))
+            //                                 .WithEndCondition(()=> Debug.Log("Move tutorial complete"))
+            //                                 .Build();
             
-            TutorialManager.Instance.AddTutorial(_moveTutorial);
+            // TutorialManager.Instance.AddTutorial(_moveTutorial);
 
         }
 
