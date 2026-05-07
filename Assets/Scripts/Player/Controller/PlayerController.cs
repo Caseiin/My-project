@@ -38,6 +38,10 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     public float ViewRange = 30f;
     CameraLogic _cameraLogic;
 
+    // Tutorial logic
+    [Header("Tutorial Logic")]
+    [SerializeField] TutorialContextSO aimContext;
+
     // StateMachine & state declaration
     StateMachine machine;
 
@@ -75,7 +79,7 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
         // Declare states
         var motionstate = new PlayerMotionState(this);
         var idlestate = new PlayerIdleState(this);
-        var throwstate = new PlayerThrowState(this);
+        var throwstate = new PlayerThrowState(this, aimContext);
 
         Any(throwstate, new FuncPredicate(() => _input.IsAimming));
 

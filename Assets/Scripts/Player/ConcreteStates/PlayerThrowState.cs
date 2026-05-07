@@ -1,30 +1,43 @@
+using System;
 using UnityEngine;
 
 public class PlayerThrowState : BaseState
 {
-    PlayerController _player;
-    // TutorialData _aimTutorial;
-    // TutorialData _throwTutorial;
+    readonly PlayerController _player;
+    readonly TutorialContextSO _aimContext;
 
-    public PlayerThrowState(PlayerController player) : base(player)
+    public PlayerThrowState(PlayerController player, TutorialContextSO aimContext) : base(player)
     {
         _player = player;
-
-        // _aimTutorial = new TutorialData.Builder("Aim")
-        //                     .WithCompletionCondition(
-        //                         subscribe: callback => _player.Input.OnAimStarted += callback,
-        //                         unsubscribe: callback => _player.Input.OnAimStarted -= callback
-        //                     )
-        //                     .WithInitialCondition(()=>Debug.Log("Press Right Mouse Button to Aim"))
-        //                     .WithEndCondition(()=>Debug.Log("Aim tutorial Complete"))
-        //                     .Build();
-
-        // TutorialManager.Instance.AddTutorial(_aimTutorial);
+        _aimContext = aimContext;
     }
 
     public override void OnEnter()
     {
         _player.Input.OnAttackTriggered += HandleThrow;
+        RegisterTutorial();
+    }
+
+    private void RegisterTutorial()
+    {
+        var policy = new PressurePhasePolicy(
+            threshold: _aimContext.failure,
+            inactiveTime: _aimContext.inactivityTimeout,
+            showHint: ()=> Debug.Log(_aimContext.Hints),
+            hindHint: ()=>Debug.Log("Hint hidden")
+        );
+
+        var aimTutorial = new TutorialData.Builder(_aimContext)
+                            .WithPolicy(policy)
+                            .WithCompletionCondition(
+                                subscribe: cb => _player.Input.OnAimStarted += cb,
+                                unsubscribe: cb => _player.Input.OnAimStarted -= cb
+                            )
+                            .WithInitialCondition(()=>Debug.Log($"Tutorial started: {_aimContext.TutorialName}"))
+                            .WithEndCondition(()=>Debug.Log($"Tutorial completed: {_aimContext.TutorialName}"))
+                            .Build();
+        
+        TutorialManager.Instance.AddTutorial(aimTutorial);
     }
 
     public override void Update()
@@ -55,7 +68,6 @@ public class PlayerThrowState : BaseState
     public void HandleThrow()
     {
         _player.ThrowLogic.Throw();
-        Debug.Log("Player is throwing");
     }
 
 }

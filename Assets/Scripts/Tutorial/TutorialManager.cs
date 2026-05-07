@@ -9,18 +9,20 @@ public class TutorialManager : Singleton<TutorialManager>
     bool _started = false;
     bool _idle = true;
 
+    void Update()
+    {
+        if (_idle || _index >= _tutorials.Count) return;
+        _tutorials[_index].Tick(Time.deltaTime);
+    }
+
     public void AddTutorial(TutorialData tutorial)
     {
         if (_tutorials.Contains(tutorial)) return;
         _tutorials.Add(tutorial);
-
         if (!_started) TryStart();
         else if (_idle) StartStep(_index);
     }
 
-    // Call this from anywhere a relevant fail condition occurs —
-    // e.g. player throws without aiming, walks into a wall, misses a target.
-    // The active policy decides whether to react at all.
     public void ReportFailure()
     {
         if (_idle || _index >= _tutorials.Count) return;
@@ -41,12 +43,12 @@ public class TutorialManager : Singleton<TutorialManager>
         if (index >= _tutorials.Count)
         {
             _idle = true;
-            Debug.Log("Tutorial sequence complete — or waiting for more steps.");
+            Debug.Log("Tutorial sequence complete.");
             return;
         }
 
         _index = index;
-        _idle = false;
+        _idle  = false;
 
         var tut = _tutorials[index];
         tut.StartTutorial();

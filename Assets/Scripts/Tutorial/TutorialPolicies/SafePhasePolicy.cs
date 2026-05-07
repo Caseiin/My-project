@@ -5,4 +5,5 @@ public class SafePhasePolicy : ITutorialPhasePolicy
     public void OnStart(){}
     public void OnFailure(){}
     public void OnSuccess(){}
+    public void OnTick(float deltatime){}
 }

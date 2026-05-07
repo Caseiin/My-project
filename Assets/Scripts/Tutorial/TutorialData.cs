@@ -34,6 +34,7 @@ public class TutorialData
         onSubscribe?.Invoke(onTutorialDone);
     }
 
+    public void Tick(float deltaTime) => PhasePolicy?.OnTick(deltaTime);
     void Unbind()=> unSubscribe?.Invoke(onTutorialDone);
 
     public class Builder
