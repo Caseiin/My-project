@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 
 public abstract class BaseState : IState
 {
     protected readonly EntityController entity;
+    public Action OnTutorialCompleted;
     protected BaseState(EntityController entity)
     {
         this.entity = entity;

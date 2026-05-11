@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TutorialManager : Singleton<TutorialManager>
 {
+    // TODO: Make the tutorialList abit more dynamic and ordered
+
     readonly List<TutorialData> _tutorials = new();
     int _index = 0;
     bool _started = false;
