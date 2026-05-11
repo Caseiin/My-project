@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7eae90203de6a154590e75d31ec6b21e, type: 3}
-  m_Name: MoveTutorial
-  m_EditorClassIdentifier: Assembly-CSharp::TutorialContextSO
-  TutorialName: Move
-  failure: 2
-  Hints: Press WASD to Move
+  m_Script: {fileID: 11500000, guid: 9b2e2d2ace87a314097bc001dcf8ecb3, type: 3}
+  m_Name: AimTutorial
+  m_EditorClassIdentifier: Assembly-CSharp::AimTutorialContextSO
+  TutorialName: AimTutorial
+  failure: 0
+  inactivityTimeout: 1
+  Hints: Right Mouse Click To Aim

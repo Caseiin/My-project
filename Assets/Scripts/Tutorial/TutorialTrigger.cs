@@ -18,7 +18,7 @@ public class TutorialTrigger: MonoBehaviour{
 
     void OnTriggerEnter(Collider other)
     {
-        // installer.Install()
+        installer.Install(context);
     }
 
 

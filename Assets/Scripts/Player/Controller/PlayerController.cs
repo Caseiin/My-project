@@ -79,7 +79,7 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
         // Declare states
         var motionstate = new PlayerMotionState(this);
         var idlestate = new PlayerIdleState(this);
-        var throwstate = new PlayerThrowState(this, aimContext);
+        var throwstate = new PlayerThrowState(this);
 
         Any(throwstate, new FuncPredicate(() => _input.IsAimming));
 
