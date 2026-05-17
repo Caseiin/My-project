@@ -6,6 +6,8 @@ public class ProjectileThrow : MonoBehaviour
     [Header("Throw Info")]
     [SerializeField] List<AbilityProjectile> projectiles;
     [SerializeField] InputReader _input;
+    [SerializeField] float _cooldownDuration = 5f;
+    [SerializeField] int _maxCount = 5;
     [SerializeField] float throwForce = 10f;
     [SerializeField] float upwardForce = 2f;
     public float ThrowForce => throwForce;
@@ -44,6 +46,8 @@ public class ProjectileThrow : MonoBehaviour
 
     public void Throw()
     {
+        // TODO: Add logic to limit throwing whether that be a cooldown or a throw amount limit
+        
         AbilityProjectile proj = ProjectileManager.Instance.GetProjectile(projectiles[currentIndex]);
 
         if (_selectedAbility != null)
@@ -57,9 +61,6 @@ public class ProjectileThrow : MonoBehaviour
         Vector3 dir = Camera.main.transform.forward;
         Vector3 impulse = dir * throwForce + Vector3.up * upwardForce;
         proj.Launch(impulse); 
-
-        Debug.DrawRay(throwPoint.position, dir * 5f, Color.green, 2f);
-
     }
 
     void SetProjectileAbility(AbilitySO ability) => _selectedAbility[currentIndex] = ability;
