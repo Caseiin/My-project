@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7198627470306933153}
   - component: {fileID: 6414250073139654458}
   - component: {fileID: 4683592429842776399}
-  - component: {fileID: 5461290486998231679}
+  - component: {fileID: -4985047796082336058}
   m_Layer: 7
   m_Name: InteractiveProjectile
   m_TagString: Untagged
@@ -142,7 +142,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &5461290486998231679
+--- !u!114 &-4985047796082336058
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -157,6 +157,7 @@ MonoBehaviour:
   PrefabInstanceID: 0
   Range: {fileID: 9173796286268313345}
   MaxEffectRadius: 5
+  MaxLifeTimeDuration: 15
   ability: {fileID: 11400000, guid: 4dc67a7d6562dd04caf6d969b99832c1, type: 2}
   interactivePrefab: {fileID: 6105692080556874258, guid: adde76eb6febc234580b354fb48a053c, type: 3}
 --- !u!1 &9173796286268313345

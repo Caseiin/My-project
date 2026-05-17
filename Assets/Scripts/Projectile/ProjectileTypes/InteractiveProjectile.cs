@@ -3,9 +3,8 @@ using UnityEngine;
 using DG.Tweening;
 
 public class InteractiveProjectile : AbilityProjectile
-{
+{   
     public InteractiveProjectileUI interactivePrefab;
-    
     protected override void Awake()
     {
         base.Awake();

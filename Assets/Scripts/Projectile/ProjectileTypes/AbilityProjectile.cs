@@ -8,6 +8,8 @@ public abstract class AbilityProjectile : MonoBehaviour
     [HideInInspector] public int PrefabInstanceID;
     [SerializeField] protected GameObject Range;
     public float MaxEffectRadius = 5f;
+    public float MaxLifeTimeDuration = 15f;
+
     public AbilitySO ability;
     protected Rigidbody _rb;
 
@@ -25,6 +27,9 @@ public abstract class AbilityProjectile : MonoBehaviour
     static readonly int RangeColorID = Shader.PropertyToID("_Color");
     static readonly int ColorID = Shader.PropertyToID("_BaseColor");
 
+    // LifeTime
+    CountdownTimer _lifeTimeCounter;
+
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -33,7 +38,7 @@ public abstract class AbilityProjectile : MonoBehaviour
         _renderer = GetComponent<Renderer>();
         _rangeMBP = new();
         _mbp = new();
-
+        _lifeTimeCounter = new CountdownTimer(MaxLifeTimeDuration);
     }
 
     void Start()
@@ -54,6 +59,7 @@ public abstract class AbilityProjectile : MonoBehaviour
         rb.isKinematic = false;
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(impulse, ForceMode.Impulse);
+        StartLifeTimeCountDown();
     }
 
 
@@ -100,7 +106,7 @@ public abstract class AbilityProjectile : MonoBehaviour
         this.ability = ability;
         var abilityColor = ability.abilityMaterial.color; 
         SetRangeColor(abilityColor);
-        SetProjectileColor(abilityColor);  
+        SetProjectileColor(abilityColor); 
     }
 
     void SetRangeColor(Color color)
@@ -123,6 +129,10 @@ public abstract class AbilityProjectile : MonoBehaviour
         Range.transform.localScale = Vector3.zero;
     }
 
+    void Update()
+    {
+        _lifeTimeCounter.Tick(Time.deltaTime);
+    }
 
     void FindEffectablesWithinRange(out List<IEffectable> playerList, out List<IEffectable> otherList)
     {
@@ -158,6 +168,12 @@ public abstract class AbilityProjectile : MonoBehaviour
     {
         _rb.isKinematic = true;
         _rb.linearVelocity = Vector3.zero;
+    }
+
+    //Projectile LifeTime
+    void StartLifeTimeCountDown(){
+        _lifeTimeCounter.Start();
+        _lifeTimeCounter.OnTimerStop = ()=> ReturnToPool();
     }
 
 
