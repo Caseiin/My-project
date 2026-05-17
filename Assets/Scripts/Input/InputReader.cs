@@ -23,6 +23,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
 
     public event Action OnAttackTriggered;
     public event Action OnAbilityHolsterTriggered;
+    public event Action OnWeaponScrollTriggered;
     public event Action OnClickTriggered;
     public event Action<ScreenType> OnMenuActivated;
     public event Action OnInteractTriggered;
@@ -127,7 +128,10 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         var scrollValue =context.ReadValue<Vector2>().y; 
 
         if (Math.Abs(scrollValue) > 0.01f)
+        {
             OnMouseWheelScrolled?.Invoke((int)scrollValue);
+            OnWeaponScrollTriggered?.Invoke();
+        }
     }
     
     // UIActions
