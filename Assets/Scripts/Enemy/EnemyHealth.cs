@@ -14,13 +14,6 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public event Action<int> OnHealthRestored;
     public event Action<int> OnHealthTaken;
 
-    void Start()
-    {
-        // MaxHealth = _health;
-        // MaxHealth = 150;
-        // Debug.Log($"Enemy Max Health: {MaxHealth}");       
-    }
-
     public void InitializeHealth(EnemySetUpSO setUp, Action onDeath = null){
         _health = setUp.Health;
         MaxHealth = _health;
@@ -29,7 +22,16 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     public void RestoreHealth(int health)
     {
+        var remainderHealth = 0;
+        if(_health >= MaxHealth) return;
+
+        if(_health + health >= MaxHealth){
+            remainderHealth = MaxHealth - _health;
+            _health += health;
+        }
+        else 
         _health += health;
+        
         var healthUI = WorldSpaceUIManager.Instance.Spawn(HealthPrefab,transform);
         healthUI.SetHealth(health);
         OnHealthRestored?.Invoke(health);
