@@ -266,9 +266,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d38dd035643d4594b9b0b3edf9eec652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ImpactExplosionProjectile
-  PrefabInstanceID: 0
+  _displayName: Impact Bomb
   Range: {fileID: 4055661417375366729}
+  _defaultAbility: {fileID: 11400000, guid: 4dc67a7d6562dd04caf6d969b99832c1, type: 2}
   MaxEffectRadius: 5
   MaxLifeTimeDuration: 15
-  ability: {fileID: 11400000, guid: 4dc67a7d6562dd04caf6d969b99832c1, type: 2}
-  _displayName: Impact Bomb
+  PrefabInstanceID: 0

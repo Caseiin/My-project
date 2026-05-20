@@ -154,12 +154,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffb46258f78eb4f44b202d5a468d041b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractiveProjectile
-  PrefabInstanceID: 0
+  _displayName: Interactive Bomb
   Range: {fileID: 9173796286268313345}
+  _defaultAbility: {fileID: 11400000, guid: 4dc67a7d6562dd04caf6d969b99832c1, type: 2}
   MaxEffectRadius: 5
   MaxLifeTimeDuration: 15
-  ability: {fileID: 11400000, guid: 4dc67a7d6562dd04caf6d969b99832c1, type: 2}
-  _displayName: Interactive Bomb
+  PrefabInstanceID: 0
   interactivePrefab: {fileID: 6105692080556874258, guid: adde76eb6febc234580b354fb48a053c, type: 3}
 --- !u!1 &9173796286268313345
 GameObject:

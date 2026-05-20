@@ -25,13 +25,17 @@ public class ProjectileThrow : MonoBehaviour
     void Awake()
     {
         throwPoint = transform;
+        InitializeTimer();
+    }
+
+    void Start()
+    {
         // initialise with projectiles's default Ability
         _selectedAbility = new AbilitySO[_projectiles.Count];
         for(int i = 0; i < _projectiles.Count; i++){
-            _selectedAbility[i] = _projectiles[i].ability;
+            _selectedAbility[i] = _projectiles[i].Ability;
         }
-
-        InitializeTimer();
+        
     }
 
     void Update()=> _cooldownTimer.Tick(Time.deltaTime);
@@ -62,6 +66,7 @@ public class ProjectileThrow : MonoBehaviour
         AbilityProjectile proj = ProjectileManager.Instance.GetProjectile(_projectiles[currentIndex]);
         proj.transform.SetPositionAndRotation(throwPoint.position, Quaternion.identity);
         proj.SetAbility(_selectedAbility[currentIndex]);
+        Debug.Log($"Prjectile ability set to {_selectedAbility[currentIndex]}");
         proj.Launch(CalculateThrowVelocity());
         
         

@@ -1,192 +1,172 @@
+using System;
 using System.Collections.Generic;
-using DG.Tweening;
 using UnityEngine;
 
+/// <summary>
+/// Base class for all ability projectiles. Handles physics launch, lifetime,
+/// AoE effect application, and visual feedback. Subclasses define impact range display.
+/// </summary>
 [RequireComponent(typeof(Rigidbody))]
 public abstract class AbilityProjectile : MonoBehaviour
 {
-    [HideInInspector] public int PrefabInstanceID;
+    [SerializeField] string _displayName;
     [SerializeField] protected GameObject Range;
-    public float MaxEffectRadius = 5f;
+
+    [Header("Config")]
+    [SerializeField] AbilitySO _defaultAbility;
+    public float MaxEffectRadius   = 5f;
     public float MaxLifeTimeDuration = 15f;
 
-    public AbilitySO ability;
+
+    [HideInInspector] public int PrefabInstanceID;
+    public AbilitySO Ability => _defaultAbility;
+    public string DisplayName => _displayName;
+    public static Action<Color,float> OnPlayerEffectLanded;
+
     protected Rigidbody _rb;
 
-    // Effect searching
-    List<IEffectable> _playerEffectables;
-    List<IEffectable> _otherEffectables;
-
-    // Material Property block
-    Material _projectileMat;
-    MaterialPropertyBlock _rangeMBP;
-    MaterialPropertyBlock _mbp;
-
+    MaterialPropertyBlock _rangeMPB;
+    MaterialPropertyBlock _projectileMPB;
     Renderer _rangeRenderer;
-    Renderer _renderer;
-    static readonly int RangeColorID = Shader.PropertyToID("_Color");
-    static readonly int ColorID = Shader.PropertyToID("_BaseColor");
+    Renderer _projectileRenderer;
 
-    // LifeTime
-    CountdownTimer _lifeTimeCounter;
+    CountdownTimer _lifeTimeTimer;
 
-    // Display Information
-    [SerializeField] string _displayName;
-    public string DisplayName => _displayName;
+    // Cached shader IDs — static so they are resolved once per type, not per instance
+    static readonly int s_RangeColorID     = Shader.PropertyToID("_Color");
+    static readonly int s_ProjectileColorID = Shader.PropertyToID("_BaseColor");
 
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _projectileMat = GetComponent<Material>();
+
+        _projectileRenderer = GetComponent<Renderer>();
         _rangeRenderer = Range.GetComponent<Renderer>();
-        _renderer = GetComponent<Renderer>();
-        _rangeMBP = new();
-        _mbp = new();
-        _lifeTimeCounter = new CountdownTimer(MaxLifeTimeDuration);
+
+
+        _rangeMPB = new MaterialPropertyBlock();
+        _projectileMPB = new MaterialPropertyBlock();
+
+        _lifeTimeTimer = new CountdownTimer(MaxLifeTimeDuration);
+        _lifeTimeTimer.OnTimerStop = ReturnToPool;
     }
 
-    void Start()
-    {
-        Range.SetActive(false);
-        var _abilityColor =ability.abilityMaterial.color; 
-        SetRangeColor(_abilityColor);
-        SetProjectileColor(_abilityColor);   
-    }
-
-
-
-
-    public void Launch(Vector3 impulse)
-    {
-        Rigidbody rb = GetComponent<Rigidbody>();
-
-        rb.isKinematic = false;
-        rb.linearVelocity = Vector3.zero;
-        rb.AddForce(impulse, ForceMode.Impulse);
-        StartLifeTimeCountDown();
-    }
-
-
-    protected void Activate()
-    {
-        FindEffectablesWithinRange(out var _playerEffectables, out var _otherEffectables);
-        var context = new EffectContext(transform);
-        // player
-        foreach (var effectable in _playerEffectables)
-        {
-            foreach (var effect in ability.effects)
-            {
-                if (effect.Apply(effectable, context))
-                {
-                    EffectPopUpManager.Instance.DisplayEffect(effect);
-                    Messenger.AddEffectMessage(effect.Message);
-                }
-            }
-        }
-
-        // other
-        foreach (var effectable in _otherEffectables)
-        {
-            foreach (var effect in ability.effects)
-            {
-                effect.Apply(effectable,context);
-            }
-        }
-
-        ReturnToPool();
-    }
-
-    public virtual void ReturnToPool()
-    {
-        _rb.linearVelocity = Vector3.zero;
-        ResetRange();
-        ProjectileManager.Instance.ReturnProjectile(this);
-    }
-
-    public abstract void ShowImpactRange();
+    void Start()=> Range.SetActive(false);
+    void Update() => _lifeTimeTimer.Tick(Time.deltaTime);
 
     public void SetAbility(AbilitySO ability)
     {
-        this.ability = ability;
-        var abilityColor = ability.abilityMaterial.color; 
-        SetRangeColor(abilityColor);
-        SetProjectileColor(abilityColor); 
+        _defaultAbility = ability;
+        ApplyAbilityColor(ability.abilityMaterial.color);
     }
 
-    void SetRangeColor(Color color)
+    public void Launch(Vector3 impulse)
     {
+        _rb.isKinematic   = false;
+        _rb.linearVelocity = Vector3.zero;
+        _rb.AddForce(impulse, ForceMode.Impulse);
 
-        _rangeRenderer.GetPropertyBlock(_rangeMBP);
-        _rangeMBP.SetColor(RangeColorID, color);
-        _rangeRenderer.SetPropertyBlock(_rangeMBP);
-    }
-
-    void SetProjectileColor(Color color)
-    {
-        _renderer.GetPropertyBlock(_mbp);
-        _mbp.SetColor(ColorID, color);
-        _renderer.SetPropertyBlock(_mbp);
-    }
-
-    void ResetRange()
-    {
-        Range.transform.localScale = Vector3.zero;
-    }
-
-    void Update()
-    {
-        _lifeTimeCounter.Tick(Time.deltaTime);
-    }
-
-    void FindEffectablesWithinRange(out List<IEffectable> playerList, out List<IEffectable> otherList)
-    {
-        var playerBuffer = new HashSet<IEffectable>();
-        var otherBuffer = new HashSet<IEffectable>();
-
-        // Track root GameObjects already processed to avoid double-hitting
-        var seen = new HashSet<GameObject>();
-
-        var colliders = Physics.OverlapSphere(transform.position, MaxEffectRadius);
-
-        foreach (var col in colliders)
-        {
-            // Use the root GameObject as the unique key
-            var root = col.transform.root.gameObject;
-            if (!seen.Add(root)) continue; // already processed this enemy
-
-            var effectables = root.GetComponents<IEffectable>();
-            foreach (var e in effectables)
-            {
-                if (e is IPlayerEffectable)
-                    playerBuffer.Add(e);
-                else
-                    otherBuffer.Add(e);
-            }
-        }
-
-        playerList = new List<IEffectable>(playerBuffer);
-        otherList = new List<IEffectable>(otherBuffer);
+        _lifeTimeTimer.Start();
     }
 
     public void ResetPhysics()
     {
-        _rb.isKinematic = true;
+        _rb.isKinematic    = true;
         _rb.linearVelocity = Vector3.zero;
     }
 
-    //Projectile LifeTime
-    void StartLifeTimeCountDown(){
-        _lifeTimeCounter.Start();
-        _lifeTimeCounter.OnTimerStop = ()=> ReturnToPool();
+    public virtual void ReturnToPool()
+    {
+        ResetPhysics();
+        ResetRangeVisual();
+        ProjectileManager.Instance.ReturnProjectile(this);
     }
 
+    public abstract void ShowImpactRange();
+    protected void Activate()
+    {
+        FindEffectablesInRange(out var playerTargets, out var otherTargets);
+
+        var context = new EffectContext(transform);
+
+        ApplyEffectsToTargets(playerTargets, context, notifyUI: true);
+        ApplyEffectsToTargets(otherTargets,  context, notifyUI: false);
+
+        ReturnToPool();
+    }
+
+    void ApplyEffectsToTargets(List<IEffectable> targets, EffectContext context, bool notifyUI)
+    {
+        foreach (var effectable in targets)
+        {
+            foreach (var effect in Ability.effects)
+            {
+                bool applied = effect.Apply(effectable, context);
+
+                Debug.Log($"[{name}] Effect: {effect.GetType().Name} | " +
+                      $"Target: {(effectable as MonoBehaviour)?.name} | " +
+                      $"Applied: {applied} | NotifyUI: {notifyUI} | " +
+                      $"Duration: {effect.Duration}");
+
+                if (applied && notifyUI)
+                {
+                    Debug.Log($"[{name}] Invoking popup for: {effect.GetType().Name}");
+                    EffectPopUpManager.Instance.DisplayEffect(effect);
+                    Messenger.AddEffectMessage(effect.Message);
+                    OnPlayerEffectLanded?.Invoke(Ability.abilityMaterial.color, effect.Duration);
+                }
+            }
+        }
+    }
+
+    void FindEffectablesInRange(out List<IEffectable> playerList, out List<IEffectable> otherList)
+    {
+        var playerBuffer = new HashSet<IEffectable>();
+        var otherBuffer  = new HashSet<IEffectable>();
+        var seen         = new HashSet<GameObject>();
+
+        foreach (var col in Physics.OverlapSphere(transform.position, MaxEffectRadius))
+        {
+            var root = col.transform.root.gameObject;
+            if (!seen.Add(root)) continue;
+
+            foreach (var effectable in root.GetComponents<IEffectable>())
+            {
+                if (effectable is IPlayerEffectable)
+                    playerBuffer.Add(effectable);
+                else
+                    otherBuffer.Add(effectable);
+            }
+        }
+
+        playerList = new List<IEffectable>(playerBuffer);
+        otherList  = new List<IEffectable>(otherBuffer);
+    }
+
+    void ApplyAbilityColor(Color color)
+    {
+        SetRendererColor(_rangeRenderer, _rangeMPB,s_RangeColorID,color);
+        SetRendererColor(_projectileRenderer, _projectileMPB, s_ProjectileColorID, color);
+    }
+
+    void SetRendererColor(Renderer rend, MaterialPropertyBlock mpb, int propertyID, Color color)
+    {
+        rend.GetPropertyBlock(mpb);
+        mpb.SetColor(propertyID, color);
+        rend.SetPropertyBlock(mpb);
+    }
+
+    void ResetRangeVisual()
+    {
+        Range.transform.localScale = Vector3.zero;
+    }
 
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, MaxEffectRadius); // actual physics range
-        
+        Gizmos.DrawWireSphere(transform.position, MaxEffectRadius);
+
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, Range.transform.localScale.x / 2f); // visual range
+        Gizmos.DrawWireSphere(transform.position, Range.transform.localScale.x / 2f);
     }
 }

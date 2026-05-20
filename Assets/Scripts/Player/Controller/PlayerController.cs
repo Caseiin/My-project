@@ -109,14 +109,6 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
         ActionEventBus<CameraLogic>.RemoveListener(SetCameraLogic);
     }
 
-    void OnEnable()
-    {
-    }
-
-    void OnDisable()
-    {
-    }
-
     // Helper Methods
     void At(IState from, IState to, IPredicate condition) => machine.AddTransitions(from,to,condition);
     void Any(IState to, IPredicate condition) => machine.AddAnyTransition(to,condition);
