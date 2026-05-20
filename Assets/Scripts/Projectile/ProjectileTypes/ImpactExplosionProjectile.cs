@@ -3,6 +3,11 @@ using DG.Tweening;
 
 public class ImpactExplosionProjectile : AbilityProjectile
 {
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     public override void ShowImpactRange()
     {
         Range.SetActive(true);

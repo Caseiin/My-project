@@ -22,7 +22,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public event Action OnAimStarted;
 
     public event Action OnAttackTriggered;
-    public event Action OnAbilityHolsterTriggered;
     public event Action OnWeaponScrollTriggered;
     public event Action OnClickTriggered;
     public event Action<ScreenType> OnMenuActivated;
@@ -109,20 +108,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         IsAimming = context.action.IsPressed();
     }
 
-    public void OnOnHotbar1(InputAction.CallbackContext context)
-    {
-        if(context.started) OnHotBarTriggered?.Invoke(0);
-    }
-
-    public void OnOnHotbar2(InputAction.CallbackContext context)
-    {
-        if(context.started) OnHotBarTriggered?.Invoke(1);
-    } 
-
-    public void OnOnHotbar3(InputAction.CallbackContext context)
-    {
-        // if(context.started) OnHotBarTriggered?.Invoke(2);
-    }
     public void OnWeaponScroll(InputAction.CallbackContext context)
     {
         var scrollValue =context.ReadValue<Vector2>().y; 
@@ -133,18 +118,27 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
             OnWeaponScrollTriggered?.Invoke();
         }
     }
+
+    public void OnHotBarSelect(InputAction.CallbackContext context)
+    {
+        if (context.performed){
+            var hotbarValue = context.ReadValue<int>();
+            OnHotBarTriggered?.Invoke(hotbarValue);
+        }
+
+    }
     
     // UIActions
     public void OnEscape(InputAction.CallbackContext context)
     {
         if (context.started)
-        OnMenuActivated?.Invoke(ScreenType.PauseMenu);  
+            OnMenuActivated?.Invoke(ScreenType.PauseMenu);  
     }   
 
     public void OnMenu(InputAction.CallbackContext context)
     {
         if (context.started)
-        OnMenuActivated?.Invoke(ScreenType.MainMenu);
+            OnMenuActivated?.Invoke(ScreenType.MainMenu);
     }
     public void OnClick(InputAction.CallbackContext context){
         if (context.performed)
@@ -180,5 +174,6 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         }
         return false;
     }
+
 
 }

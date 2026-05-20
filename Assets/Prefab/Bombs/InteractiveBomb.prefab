@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4683592429842776399}
   - component: {fileID: -4985047796082336058}
   m_Layer: 7
-  m_Name: InteractiveProjectile
+  m_Name: InteractiveBomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -159,6 +159,7 @@ MonoBehaviour:
   MaxEffectRadius: 5
   MaxLifeTimeDuration: 15
   ability: {fileID: 11400000, guid: 4dc67a7d6562dd04caf6d969b99832c1, type: 2}
+  _displayName: Interactive Bomb
   interactivePrefab: {fileID: 6105692080556874258, guid: adde76eb6febc234580b354fb48a053c, type: 3}
 --- !u!1 &9173796286268313345
 GameObject:

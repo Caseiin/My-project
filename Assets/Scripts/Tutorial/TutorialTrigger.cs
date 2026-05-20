@@ -18,7 +18,10 @@ public class TutorialTrigger: MonoBehaviour{
 
     void OnTriggerEnter(Collider other)
     {
-        installer.Install(context);
+        if(other.gameObject.CompareTag("Player")){
+            installer.Install(context);
+            Destroy(gameObject);
+        }
     }
 
 

@@ -30,6 +30,10 @@ public abstract class AbilityProjectile : MonoBehaviour
     // LifeTime
     CountdownTimer _lifeTimeCounter;
 
+    // Display Information
+    [SerializeField] string _displayName;
+    public string DisplayName => _displayName;
+
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();

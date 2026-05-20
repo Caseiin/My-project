@@ -271,3 +271,4 @@ MonoBehaviour:
   MaxEffectRadius: 5
   MaxLifeTimeDuration: 15
   ability: {fileID: 11400000, guid: 4dc67a7d6562dd04caf6d969b99832c1, type: 2}
+  _displayName: Impact Bomb

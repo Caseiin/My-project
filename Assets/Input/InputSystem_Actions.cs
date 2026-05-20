@@ -192,31 +192,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""OnHotbar1"",
-                    ""type"": ""Button"",
-                    ""id"": ""3942ce14-6dd0-42f1-8a0b-07d2c724d505"",
-                    ""expectedControlType"": """",
+                    ""name"": ""HotBarSelect"",
+                    ""type"": ""Value"",
+                    ""id"": ""376fe39e-41aa-4de3-a3df-4152d75b1f77"",
+                    ""expectedControlType"": ""Integer"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""OnHotbar2"",
-                    ""type"": ""Button"",
-                    ""id"": ""ab64bd37-3d8f-4c80-9038-a5a9a54dce43"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""OnHotbar3"",
-                    ""type"": ""Button"",
-                    ""id"": ""9797f00b-d002-4058-81f9-d633f9ad012c"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""WeaponScroll"",
@@ -638,39 +620,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""a14df3e0-dd22-4f42-9155-a2afc135009f"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""OnHotbar1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""cbb50232-2811-42b3-a39f-3327b140797b"",
-                    ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""OnHotbar2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b7ac13da-d50c-49e9-92c9-6f1fa237d8ef"",
-                    ""path"": ""<Keyboard>/3"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""OnHotbar3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""635719a9-711d-4510-bfe5-dcdf3bf0193b"",
                     ""path"": ""<Mouse>/scroll"",
                     ""interactions"": """",
@@ -679,6 +628,72 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""WeaponScroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Hotbar"",
+                    ""id"": ""d435fa79-0dc3-4355-af93-7be71b8f3ef0"",
+                    ""path"": ""Hotbar"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HotBarSelect"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""slot1"",
+                    ""id"": ""e20ca680-63af-4201-80e6-1922d30b402a"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""HotBarSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""slot2"",
+                    ""id"": ""ccca8f4f-0a13-4864-8100-7c91871767db"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""HotBarSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""slot3"",
+                    ""id"": ""89c2d2aa-52d8-4a14-8d88-16ff5b2534a2"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""HotBarSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""slot4"",
+                    ""id"": ""2cc282a4-f1ee-4c5c-9be4-ab6ab0a60284"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""HotBarSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""slot5"",
+                    ""id"": ""8c2ee1e3-6630-43c1-ae1e-2fa0b9740a31"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HotBarSelect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -1315,9 +1330,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
-        m_Player_OnHotbar1 = m_Player.FindAction("OnHotbar1", throwIfNotFound: true);
-        m_Player_OnHotbar2 = m_Player.FindAction("OnHotbar2", throwIfNotFound: true);
-        m_Player_OnHotbar3 = m_Player.FindAction("OnHotbar3", throwIfNotFound: true);
+        m_Player_HotBarSelect = m_Player.FindAction("HotBarSelect", throwIfNotFound: true);
         m_Player_WeaponScroll = m_Player.FindAction("WeaponScroll", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -1425,9 +1438,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Aim;
-    private readonly InputAction m_Player_OnHotbar1;
-    private readonly InputAction m_Player_OnHotbar2;
-    private readonly InputAction m_Player_OnHotbar3;
+    private readonly InputAction m_Player_HotBarSelect;
     private readonly InputAction m_Player_WeaponScroll;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
@@ -1485,17 +1496,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Aim => m_Wrapper.m_Player_Aim;
         /// <summary>
-        /// Provides access to the underlying input action "Player/OnHotbar1".
+        /// Provides access to the underlying input action "Player/HotBarSelect".
         /// </summary>
-        public InputAction @OnHotbar1 => m_Wrapper.m_Player_OnHotbar1;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/OnHotbar2".
-        /// </summary>
-        public InputAction @OnHotbar2 => m_Wrapper.m_Player_OnHotbar2;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/OnHotbar3".
-        /// </summary>
-        public InputAction @OnHotbar3 => m_Wrapper.m_Player_OnHotbar3;
+        public InputAction @HotBarSelect => m_Wrapper.m_Player_HotBarSelect;
         /// <summary>
         /// Provides access to the underlying input action "Player/WeaponScroll".
         /// </summary>
@@ -1559,15 +1562,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Aim.started += instance.OnAim;
             @Aim.performed += instance.OnAim;
             @Aim.canceled += instance.OnAim;
-            @OnHotbar1.started += instance.OnOnHotbar1;
-            @OnHotbar1.performed += instance.OnOnHotbar1;
-            @OnHotbar1.canceled += instance.OnOnHotbar1;
-            @OnHotbar2.started += instance.OnOnHotbar2;
-            @OnHotbar2.performed += instance.OnOnHotbar2;
-            @OnHotbar2.canceled += instance.OnOnHotbar2;
-            @OnHotbar3.started += instance.OnOnHotbar3;
-            @OnHotbar3.performed += instance.OnOnHotbar3;
-            @OnHotbar3.canceled += instance.OnOnHotbar3;
+            @HotBarSelect.started += instance.OnHotBarSelect;
+            @HotBarSelect.performed += instance.OnHotBarSelect;
+            @HotBarSelect.canceled += instance.OnHotBarSelect;
             @WeaponScroll.started += instance.OnWeaponScroll;
             @WeaponScroll.performed += instance.OnWeaponScroll;
             @WeaponScroll.canceled += instance.OnWeaponScroll;
@@ -1615,15 +1612,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Aim.started -= instance.OnAim;
             @Aim.performed -= instance.OnAim;
             @Aim.canceled -= instance.OnAim;
-            @OnHotbar1.started -= instance.OnOnHotbar1;
-            @OnHotbar1.performed -= instance.OnOnHotbar1;
-            @OnHotbar1.canceled -= instance.OnOnHotbar1;
-            @OnHotbar2.started -= instance.OnOnHotbar2;
-            @OnHotbar2.performed -= instance.OnOnHotbar2;
-            @OnHotbar2.canceled -= instance.OnOnHotbar2;
-            @OnHotbar3.started -= instance.OnOnHotbar3;
-            @OnHotbar3.performed -= instance.OnOnHotbar3;
-            @OnHotbar3.canceled -= instance.OnOnHotbar3;
+            @HotBarSelect.started -= instance.OnHotBarSelect;
+            @HotBarSelect.performed -= instance.OnHotBarSelect;
+            @HotBarSelect.canceled -= instance.OnHotBarSelect;
             @WeaponScroll.started -= instance.OnWeaponScroll;
             @WeaponScroll.performed -= instance.OnWeaponScroll;
             @WeaponScroll.canceled -= instance.OnWeaponScroll;
@@ -2027,26 +2018,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAim(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "OnHotbar1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "HotBarSelect" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnOnHotbar1(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "OnHotbar2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnOnHotbar2(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "OnHotbar3" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnOnHotbar3(InputAction.CallbackContext context);
+        void OnHotBarSelect(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "WeaponScroll" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

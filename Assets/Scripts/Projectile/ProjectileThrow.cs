@@ -4,41 +4,42 @@ using UnityEngine;
 public class ProjectileThrow : MonoBehaviour
 {
     [Header("Throw Info")]
-    [SerializeField] List<AbilityProjectile> projectiles;
+    [SerializeField] List<AbilityProjectile> _projectiles;
     [SerializeField] InputReader _input;
     [SerializeField] float _cooldownDuration = 5f;
-    [SerializeField] int _maxCount = 5;
-    [SerializeField] float throwForce = 10f;
+    [SerializeField] int _maxThrowCount = 5;
+    [SerializeField] float _throwForce = 10f;
     [SerializeField] float upwardForce = 2f;
-    public float ThrowForce => throwForce;
-    Transform throwPoint;
-    AbilitySO[] _selectedAbility;
-    int currentIndex = 0;
-    bool CanThrow = true;
-    int _currentCount = 0;
+    public float ThrowForce => _throwForce;
 
-    CountdownTimer _countdown;
+    int currentIndex;
+    int _currentThrowCount;
+    AbilitySO[] _selectedAbility;
+    CountdownTimer _cooldownTimer;
+    Transform throwPoint;
+
+    // Cooldown flag when count ceiling is hit
+    bool CanThrow => _currentThrowCount < _maxThrowCount && _selectedAbility != null;
+
 
     void Awake()
     {
         throwPoint = transform;
-        _countdown = new CountdownTimer(_cooldownDuration);
         // initialise with projectiles's default Ability
-        _selectedAbility = new AbilitySO[projectiles.Count];
-        for(int i = 0; i < projectiles.Count; i++){
-            _selectedAbility[i] = projectiles[i].ability;
+        _selectedAbility = new AbilitySO[_projectiles.Count];
+        for(int i = 0; i < _projectiles.Count; i++){
+            _selectedAbility[i] = _projectiles[i].ability;
         }
+
+        InitializeTimer();
     }
 
-    void Update()
-    {
-        _countdown.Tick(Time.deltaTime);
-    }
+    void Update()=> _cooldownTimer.Tick(Time.deltaTime);
 
     public Vector3 CalculateThrowVelocity()
     {
-        Vector3 dir = Camera.main.transform.forward;
-        return dir * throwForce + Vector3.up * upwardForce;
+        Vector3 forward = Camera.main.transform.forward;
+        return forward * _throwForce + Vector3.up * upwardForce;
     }
 
     void OnEnable()
@@ -56,45 +57,40 @@ public class ProjectileThrow : MonoBehaviour
     public void Throw()
     {
         // TODO: Add logic to limit throwing whether that be a cooldown or a throw amount limit
-        if(!CanThrow || _currentCount >= _maxCount) return;
-        
-        AbilityProjectile proj = ProjectileManager.Instance.GetProjectile(projectiles[currentIndex]);
-        _currentCount ++;
+        if(!CanThrow) return;
 
-        if (_selectedAbility != null)
-            proj.SetAbility(_selectedAbility[currentIndex]);
-
-        
-        Rigidbody rb = proj.GetComponent<Rigidbody>();
+        AbilityProjectile proj = ProjectileManager.Instance.GetProjectile(_projectiles[currentIndex]);
         proj.transform.SetPositionAndRotation(throwPoint.position, Quaternion.identity);
+        proj.SetAbility(_selectedAbility[currentIndex]);
+        proj.Launch(CalculateThrowVelocity());
+        
+        
+        _currentThrowCount ++;
 
-        Vector3 dir = Camera.main.transform.forward;
-        Vector3 impulse = dir * throwForce + Vector3.up * upwardForce;
-        proj.Launch(impulse);
+        if(!CanThrow)
+            _cooldownTimer.Start();
 
-        if(_currentCount >= _maxCount){
-            StartThrowCoolDown();
-        }
+    }
+
+    void InitializeTimer(){
+        _cooldownTimer = new CountdownTimer(_cooldownDuration);
+        _cooldownTimer.OnTimerStop = OnCooldownComplete;
     }
 
     void SetProjectileAbility(AbilitySO ability) => _selectedAbility[currentIndex] = ability;
     void ChangeIndex(int newIndex) {
+
+        if(newIndex > _projectiles.Count - 1) return; // catch if index is out of bounds
         currentIndex = newIndex;
-        string msg = (newIndex > 0)? "Impact Bomb": "Interactive Bomb";
-        Debug.Log($"Equipped: {msg}");
-        Messenger.AddEquipMessage(msg);
+
+        string equipLabel = _projectiles[newIndex].DisplayName;
+        // Debug.Log($"Equipped: {equipLabel}");
+        Messenger.AddEquipMessage(equipLabel);
     }
 
-    void ResetThrow(){
-        CanThrow = true;
-        _currentCount = 0;
-        Debug.Log("Throw CoolDown ended!");
-    }
 
-    void StartThrowCoolDown(){
-        _countdown.OnTimerStart = ()=> CanThrow = false;
-        _countdown.OnTimerStop = ()=> ResetThrow();
-        _countdown.Start();
-        Debug.Log("Throw CoolDown started!");
+    void OnCooldownComplete(){
+        _currentThrowCount =0;
+        Debug.Log("Throw cooldown ended");
     }
 }
