@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -18,7 +19,26 @@ public abstract class QuestProcessorBase : IQuestProcessor
 
 public class GenericQuestProcessor<TMessage> : QuestProcessorBase where TMessage : QuestMessageBase
 {
-    // Implement
+    //TODO: Implement
+
+    readonly Action <TMessage, Quest> _onProcess;
+    readonly Func<TMessage, Quest, bool> _condition;
+
+    public GenericQuestProcessor(Action<TMessage,Quest> onProcess, Func<TMessage,Quest,bool> condition = null){
+        _onProcess = onProcess;
+        _condition = condition;
+    }
+
+    public override void Process(QuestMessageBase message, Dictionary<GUID, Quest> quests)
+    {
+        if(message is TMessage typedMessage && quests.TryGetValue(typedMessage.QuestID, out Quest quest) && (_condition == null || _condition(typedMessage,quest))){
+            Debug.Log($"{GetType().Name}: Processing {typeof(TMessage).Name}");
+            _onProcess(typedMessage, quest);
+            return;
+        }
+
+        base.Process(message, quests);
+    }
 }
 
 public class StartQuestProcessor: QuestProcessorBase{
@@ -74,6 +94,8 @@ public class FailQuestProcessor: QuestProcessorBase{
 
 
 public class QuestManager: MonoBehaviour{
+
+    // TODO: make use of the genericprocessor 
     Dictionary<GUID, Quest> quests = new Dictionary<GUID, Quest>();
     IQuestProcessor chain;
 
@@ -84,8 +106,7 @@ public class QuestManager: MonoBehaviour{
     }
 
     public void RegisterQuest(Quest quest) => quests.Add(quest.ID, quest);
-
-    // 
+    public void UpdateQuest(QuestMessageBase message) => chain.Process(message, quests);
 }
 
 public abstract class QuestMessageBase{
