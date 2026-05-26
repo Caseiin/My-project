@@ -42,10 +42,6 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     public float ViewRange = 30f;
     CameraLogic _cameraLogic;
 
-    // Tutorial logic
-    [Header("Tutorial Logic")]
-    [SerializeField] TutorialContextSO aimContext;
-
     // StateMachine & state declaration
     StateMachine machine;
 

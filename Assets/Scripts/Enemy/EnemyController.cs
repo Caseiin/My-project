@@ -52,11 +52,11 @@
 
 
             goapAgent = new GoapAgent(transform, _navAgent); // Build GOAP agent
-            PlayerPosition =  Registry<PlayerController>.GetFirst().transform;
         }
 
         void Start(){
-
+            PlayerPosition =  Registry<PlayerController>.GetFirst().transform;
+            InitializeBehaviour(SetUp); //TODO: Remove this later for the object pool 
         }
 
         void Update()
