@@ -27,7 +27,8 @@ public class FPSCameraLogic : CameraLogic
         float mouseY = _currentLook.y * _player._sensitivity;
 
         // Rotate body (yaw)
-        _player.transform.Rotate(Vector3.up * mouseX);
+        Quaternion deltaRotation = Quaternion.Euler(Vector3.up * mouseX);
+        _player.RB.MoveRotation(_player.RB.rotation * deltaRotation);
 
         // Rotate head (pitch)
         _xRotation -= mouseY;

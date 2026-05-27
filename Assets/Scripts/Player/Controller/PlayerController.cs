@@ -65,12 +65,12 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
 
     void Update()
     {
-        _cameraLogic.HandleLook();
         machine?.Update();
     }
 
     void FixedUpdate()
     {
+        _cameraLogic.HandleLook();
         machine?.FixedUpdate();
     }
 

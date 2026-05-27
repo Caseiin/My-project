@@ -7,4 +7,5 @@ public class EnemySetUpSO : ScriptableObject
     public BaseActionSetup Actions;
     public BaseBeliefSetUps Beliefs;
     public BaseGoalsSetup Goals;
+    public AbilitySO Reward = null;
 }

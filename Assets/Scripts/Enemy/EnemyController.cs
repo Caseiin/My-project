@@ -33,6 +33,7 @@
         BaseActionSetup actions;
         BaseBeliefSetUps beliefs;
         BaseGoalsSetup goals;
+        AbilitySO reward;
 
         EnemyHealth _enemyHealth;
         public EnemyHealth Health => _enemyHealth;
@@ -51,7 +52,7 @@
             _navAgent = GetComponent<NavMeshAgent>();
 
 
-            goapAgent = new GoapAgent(transform, _navAgent); // Build GOAP agent
+            goapAgent = new GoapAgent(transform, _navAgent);
         }
 
         void Start(){
@@ -77,6 +78,7 @@
             goals = SetUp.Goals;
             actions = SetUp.Actions;
             beliefs = SetUp.Beliefs;
+            reward = SetUp.Reward;
             DeclareStateAndGOAPInfo();            
         }
 
