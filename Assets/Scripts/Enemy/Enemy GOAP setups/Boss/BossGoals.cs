@@ -1,11 +1,18 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ArcherGoals", menuName = "Enemy/Goals/Boss")]
+[CreateAssetMenu(fileName = "BossGoals", menuName = "Enemy/Goals/Boss")]
 public class BossGoals : BaseGoalsSetup
 {
     public override void InitialiseGoals(GoapAgent agent)
     {
-        base.InitialiseGoals(agent);
-        // Add boss goals if different from other enemies
+        agent.Goals.Add(new AgentGoal.Builder("ChillOut")
+            .WithPriority(1)
+            .WithDesiredEffect(agent.Beliefs["Nothing"])
+            .Build());
+
+        agent.Goals.Add(new AgentGoal.Builder("KillPlayer")
+            .WithPriority(3)
+            .WithDesiredEffect(agent.Beliefs["PlayerDead"])
+            .Build());
     }
 }
