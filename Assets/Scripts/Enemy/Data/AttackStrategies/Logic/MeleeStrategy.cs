@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MeleeStrategy", menuName = "Enemy/Attack/Melee")]
@@ -6,15 +7,14 @@ public class MeleeStrategy : AttackStrategy
 {
     [SerializeField] int damage = 10;
     [SerializeField] float cooldown = 1.5f;
-    
-    Dictionary<EnemyController, float> _lastAttackTimes;
-    void OnEnable() => _lastAttackTimes = new Dictionary<EnemyController, float>();
+    public override float CooldownDuration => cooldown;
+
+    // TODO: Add visual effects to show attack happening
     public override void Attack(EnemyController enemy)
     {
-        _lastAttackTimes.TryGetValue(enemy, out float lastTime);
-        if (Time.time - lastTime < cooldown) return;
-        
-        _lastAttackTimes[enemy] = Time.time;
+        if (countdownTimer.IsRunning) return;
+
         enemy.PlayerPosition.GetComponent<PlayerHealth>()?.TakeDamage(damage);
+        countdownTimer.Start();
     }
 }

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class AttackActionStrategy : IActionStrategy
 {
-    readonly AttackStrategy attackStrategy;
-    readonly EnemyController enemy;
+    readonly AttackStrategy _attackStrategy;
+    readonly EnemyController _enemy;
 
 
     public bool CanPerform => !Complete;
@@ -11,8 +11,10 @@ public class AttackActionStrategy : IActionStrategy
 
     public AttackActionStrategy(AttackStrategy attackStrategy, EnemyController enemy)
     {
-        this.attackStrategy = attackStrategy;
-        this.enemy =enemy;
+        _attackStrategy = Object.Instantiate(attackStrategy);
+        _enemy =enemy;
+        _attackStrategy.Initialize();
+
     }
 
     public void Start()
@@ -22,11 +24,13 @@ public class AttackActionStrategy : IActionStrategy
 
     public void Update(float deltaTime)
     {
-        attackStrategy.Attack(enemy);
+        _attackStrategy.Attack(_enemy);
+        _attackStrategy.Tick(deltaTime);
     }
 
     public void Stop()
     {
         Complete = true;
+        _attackStrategy.ResetCount();
     }
 }

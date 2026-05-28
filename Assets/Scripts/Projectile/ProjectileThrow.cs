@@ -60,7 +60,9 @@ public class ProjectileThrow : MonoBehaviour
 
     public void Throw()
     {
-        // TODO: Add logic to limit throwing whether that be a cooldown or a throw amount limit
+        // TODO: Add logic to limit throwing whether that be a cooldown or a throw amount limit with the changing back to the next ability
+        // TODO: Add  greater limiting logic for ImpactGrenades to prioritize interactive projectiles
+
         if(!CanThrow) return;
 
         AbilityProjectile proj = ProjectileManager.Instance.GetProjectile(_projectiles[currentIndex]);
