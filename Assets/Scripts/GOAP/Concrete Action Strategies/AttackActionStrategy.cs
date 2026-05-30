@@ -13,7 +13,7 @@ public class AttackActionStrategy : IActionStrategy
     {
         _attackStrategy = Object.Instantiate(attackStrategy);
         _enemy =enemy;
-        _attackStrategy.Initialize();
+        _attackStrategy.Initialize(enemy);
 
     }
 

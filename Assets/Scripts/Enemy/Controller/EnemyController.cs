@@ -10,7 +10,8 @@
     public class EnemyController : EntityController, IMoveable
     {
         [Header("Behaviour SetUp")]
-        [SerializeField] EnemySetUpSO SetUp;
+        [SerializeField] EnemySetUpSO setUp;
+        public EnemySetUpSO SetUp => setUp;
 
 
         [Header("Sensor")]
@@ -57,7 +58,7 @@
 
         void Start(){
             PlayerPosition =  Registry<PlayerController>.GetFirst().transform;
-            InitializeBehaviour(SetUp); //TODO: Remove this later for the object pool 
+            InitializeBehaviour(setUp); //TODO: Remove this later for the object pool 
         }
 
         void Update()
@@ -73,12 +74,12 @@
         }
 
         public void InitializeBehaviour(EnemySetUpSO enemySetUp, System.Action onDeath = null){
-            SetUp = enemySetUp;
-            _enemyHealth.InitializeHealth(SetUp, onDeath);
-            goals = SetUp.Goals;
-            actions = SetUp.Actions;
-            beliefs = SetUp.Beliefs;
-            reward = SetUp.Reward;
+            setUp = enemySetUp;
+            _enemyHealth.InitializeHealth(setUp, onDeath);
+            goals = setUp.Goals;
+            actions = setUp.Actions;
+            beliefs = setUp.Beliefs;
+            reward = setUp.Reward;
             DeclareStateAndGOAPInfo();            
         }
 
@@ -89,7 +90,6 @@
             SetupBeliefs(goapAgent);
             SetupActions(goapAgent);
             SetupGoals(goapAgent);
-
 
             // FSM states
             var trackState = new EnemyTrackState(this, goapAgent);

@@ -11,10 +11,13 @@ public class BossStrategy : AttackStrategy
 
     int _currentAttackCount = 0;
     bool CanAttack => _currentAttackCount < maxAttackCount;
-
-    public override void Initialize(){
-        base.Initialize();
+    IPowerUp _power;
+    EffectContext _effectContext;
+    public override void Initialize(EnemyController enemy){
+        base.Initialize(enemy);
         countdownTimer.OnTimerStop += ResetCount;
+        _effectContext = new EffectContext(enemy.Transform);
+        _power = new EnemyPower(enemy.SetUp.Reward, _effectContext);
     }
 
     public override void Attack(EnemyController enemy)
@@ -24,9 +27,11 @@ public class BossStrategy : AttackStrategy
 
         enemy.PlayerPosition.GetComponent<PlayerHealth>()?.TakeDamage(damage);
         _currentAttackCount++;
-
-        if(!CanAttack)
+        
+        if(!CanAttack){
+            _power.UsePower();
             countdownTimer.Start();
+        }
 
     }
 

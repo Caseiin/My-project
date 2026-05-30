@@ -9,6 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17ca2f910bed6f84caca5b4dc4f24bb1, type: 3}
-  m_Name: ArcherGoals
-  m_EditorClassIdentifier: Assembly-CSharp::BossGoals
+  m_Script: {fileID: 11500000, guid: 3a5b75efebca23b479ef49d61c2dc6ea, type: 3}
+  m_Name: BossStrategy
+  m_EditorClassIdentifier: Assembly-CSharp::BossStrategy
+  damage: 10
+  maxAttackCount: 3
+  cooldown: 2
