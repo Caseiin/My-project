@@ -17,6 +17,7 @@ public class ProjectileThrow : MonoBehaviour
     [SerializeField] float _abilityCooldownDuration = 8f; // per-ability cooldown
     [SerializeField] int _impactThrowLimit      = 2;   // reduced limit when interactive available
     public float ThrowForce => _throwForce;
+    public static event Action<string, float, Color> OnCooldownActive;
 
     Dictionary<AbilitySO, AbilityCooldownState> _abilityCooldowns = new();
 
@@ -103,6 +104,8 @@ public class ProjectileThrow : MonoBehaviour
         int limit = GetThrowLimit(projType);
         if(state.ThrowCount >= limit){
             Debug.Log("Projectile Cooldown");
+            var color = ability.effects[0].EffectColour;
+            OnCooldownActive?.Invoke($"{ability.Name} cooldown", _abilityCooldownDuration, color);
             _abilityCooldowns[ability].Timer.Start();
         }
 
@@ -119,7 +122,6 @@ public class ProjectileThrow : MonoBehaviour
         currentIndex = newIndex;
 
         string equipLabel = _projectiles[newIndex].DisplayName;
-        // Debug.Log($"Equipped: {equipLabel}");
         Messenger.AddEquipMessage(equipLabel);
     }
 

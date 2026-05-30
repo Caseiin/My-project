@@ -68,10 +68,11 @@
 
         }
 
-        void FixedUpdate()
-        {
-            machine?.FixedUpdate();
-        }
+    void OnEnable() => _enemyHealth.OnDeath += DeathScene;
+    void OnDisable() => _enemyHealth.OnDeath -= DeathScene;
+
+
+    void FixedUpdate() => machine?.FixedUpdate();
 
         public void InitializeBehaviour(EnemySetUpSO enemySetUp, System.Action onDeath = null){
             setUp = enemySetUp;
@@ -118,6 +119,11 @@
         void SetupActions(GoapAgent goapAgent)
         {
             actions.InitializeActions(goapAgent,this);
+        }
+
+        void DeathScene(){
+            //TODO: Drop the reward
+            Destroy(this);
         }
 
         // Helper Methods

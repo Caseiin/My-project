@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0346407407db584291d2960758b9b04, type: 3}
-  m_Name: DamagingEffect
+  m_Name: Healing
   m_EditorClassIdentifier: Assembly-CSharp::AbilitySO
-  abilityMaterial: {fileID: 2100000, guid: abc0e321eb786894eac7db19059d086f, type: 2}
+  abilityMaterial: {fileID: 2100000, guid: 0de7f34c594be8a4a989ea2561df1152, type: 2}
   effects:
-  - rid: 6007473272275599429
+  - rid: 3045477177273614531
   references:
     version: 2
     RefIds:
-    - rid: 6007473272275599429
-      type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
+    - rid: 3045477177273614531
+      type: {class: HealingEffect, ns: , asm: Assembly-CSharp}
       data:
-        EffectIcon: {fileID: 21300000, guid: 3a28a139ec1d5d94a929d56961f63fa2, type: 3}
-        EffectColour: {r: 0.7132075, g: 0.15475246, b: 0.15475246, a: 1}
-        dmgAmount: 30
+        EffectIcon: {fileID: 21300000, guid: 361c3a1730733024fb300193d14ef793, type: 3}
+        EffectColour: {r: 0.19460493, g: 0.7735849, b: 0.07443929, a: 1}
+        healingAmount: 20
