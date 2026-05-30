@@ -37,7 +37,7 @@ public class FullScreenEffectController : MonoBehaviour
     IEnumerator RunEffect(Color effectcolor, float holdDuration)
     {
         //TODO: Fix the motionless duration vignette its not working
-        Debug.Log($"[Vignette] DisplayEffect called | Duration: {holdDuration}");
+        // Debug.Log($"[Vignette] DisplayEffect called | Duration: {holdDuration}");
 
         _material.SetColor(_ColorID, effectcolor);
         _material.SetFloat(_VignettePower, _defaultVignettePower);
