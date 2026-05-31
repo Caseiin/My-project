@@ -14,9 +14,8 @@ public class TutorialManager : Singleton<TutorialManager>
     IObjectPool<TutorialItem> _pool;
     PlayerController _player;
     TutorialItem _activeItem;
-    readonly List<TutorialData> _tutorials = new();
-    int _index = 0;
-    bool _started = false;
+    readonly Queue<TutorialData> _tutorials = new(); 
+    TutorialData _current;
     bool _idle = true;
 
     protected override void Awake()
@@ -40,22 +39,22 @@ public class TutorialManager : Singleton<TutorialManager>
 
     void Update()
     {
-        if (_idle || _index >= _tutorials.Count) return;
-        _tutorials[_index].Tick(Time.deltaTime);
+        if (_idle || _current== null) return;
+        _current.Tick(Time.deltaTime);
     }
 
     public void AddTutorial(TutorialData tutorial)
     {
-        if (_tutorials.Contains(tutorial)) return;
-        _tutorials.Add(tutorial);
-        if (!_started) TryStart();
-        else if (_idle) StartStep(_index);
+        _tutorials.Enqueue(tutorial);
+        if(_idle) StartNext();
     }
+
+
 
     public void ReportFailure()
     {
-        if (_idle || _index >= _tutorials.Count) return;
-        _tutorials[_index].ReportFailure();
+        if(_idle || _current == null) return;
+        _current.ReportFailure();
     }
 
     public void ShowHint(string hint){
@@ -77,54 +76,33 @@ public class TutorialManager : Singleton<TutorialManager>
         _activeItem.Hide();
     }
 
-
-
-    void TryStart()
+    void StartNext()
     {
-        if (_tutorials.Count > 0)
+        if (_tutorials.Count == 0)
         {
-            _started = true;
-            StartStep(0);
-        }
-    }
-
-    void StartStep(int index)
-    {
-        if (index >= _tutorials.Count)
-        {
+            _current = null;
             _idle = true;
             Debug.Log("Tutorial sequence complete.");
             return;
         }
 
-        _index = index;
-        _idle  = false;
-
-        var tut = _tutorials[index];
-        tut.StartTutorial();
-        tut.Bind(() => StartStep(_index + 1));
+        _idle = false;
+        _current = _tutorials.Dequeue(); 
+        _current.StartTutorial();
+        _current.Bind(StartNext);
     }
+
 
     // Pool Callbacks
     
-    void OnDestroyPoolItem(TutorialItem item)
-    {
-        Destroy(item.gameObject);
-    }
-
-    void OnReleaseToPool(TutorialItem item)
-    {
-        item.gameObject.SetActive(false);
-    }
-
-    void OnGetFromPool(TutorialItem item)
-    {
+    void OnDestroyPoolItem(TutorialItem item) => Destroy(item.gameObject);
+    void OnReleaseToPool(TutorialItem item) => item.gameObject.SetActive(false);
+    void OnGetFromPool(TutorialItem item){
         item.transform.SetParent(_container);
         item.gameObject.SetActive(true);
     }
 
-    TutorialItem CreateItem()
-    {
+    TutorialItem CreateItem(){
         var item = Instantiate(_itemPrefab, _container);
         item.gameObject.SetActive(false);
         return item;
