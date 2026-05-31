@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class CooldownDisplayManager : MonoBehaviour
+public class CooldownDisplayManager : Singleton<CooldownDisplayManager>
 {
     [SerializeField] CooldownDisplayItem _itemPrefab;
     [SerializeField] Transform _container;
@@ -12,8 +12,9 @@ public class CooldownDisplayManager : MonoBehaviour
     IObjectPool<CooldownDisplayItem> _pool;
     readonly Dictionary<string, CooldownDisplayItem> _activeItems = new();
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _pool = new ObjectPool<CooldownDisplayItem>(
             createFunc:    CreateItem,
             actionOnGet:   OnGetFromPool,
