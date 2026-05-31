@@ -6,7 +6,6 @@ public abstract class TutorialContextSO: ScriptableObject{
     public int failure;
     public float inactivityTimeout = 1f;
     public string Hints;
-    public float hintDuration = 3f;
     public abstract TutorialData Build(PlayerController player);
 
     void OnEnable()
@@ -19,7 +18,7 @@ public abstract class TutorialContextSO: ScriptableObject{
         new PressurePhasePolicy(
             threshold: failure,
             inactiveTime: inactivityTimeout,
-            showHint: ()=> TutorialManager.Instance.ShowHint(Hints,hintDuration),
+            showHint: ()=> TutorialManager.Instance.ShowHint(Hints),
             hindHint: ()=> TutorialManager.Instance.HideHint()
         );
 }

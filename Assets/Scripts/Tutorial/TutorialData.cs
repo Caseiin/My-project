@@ -26,6 +26,7 @@ public class TutorialData
     {
         onTutorialDone = () =>
         {
+            PhasePolicy?.OnSuccess();
             onTutorialEnd?.Invoke();
             onNextStep?.Invoke();
             Unbind();

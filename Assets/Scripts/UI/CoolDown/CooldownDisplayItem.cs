@@ -9,7 +9,7 @@ public class CooldownDisplayItem : MonoBehaviour
     [SerializeField] Slider _slider;
     [SerializeField] Image _sliderFill;
 
-    public event Action<CooldownDisplayItem> OnComplete;
+    // public event Action<CooldownDisplayItem> OnComplete;
 
     float _duration;
     float _elapsed;

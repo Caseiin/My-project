@@ -58,11 +58,11 @@ public class TutorialManager : Singleton<TutorialManager>
         _tutorials[_index].ReportFailure();
     }
 
-    public void ShowHint(string hint, float duration = 0f){
+    public void ShowHint(string hint){
         if(_activeItem != null) return;
 
         _activeItem = _pool.Get();
-        _activeItem.Show(hint, duration, onHide: ()=> {
+        _activeItem.Show(hint, onHide: ()=> {
             if(_activeItem == null) return;
             _pool.Release(_activeItem);
             _activeItem = null; 
