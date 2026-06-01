@@ -103,10 +103,10 @@ public abstract class AbilityProjectile : MonoBehaviour
             {
                 bool applied = effect.Apply(effectable, context);
 
-                Debug.Log($"[{name}] Effect: {effect.GetType().Name} | " +
-                      $"Target: {(effectable as MonoBehaviour)?.name} | " +
-                      $"Applied: {applied} | NotifyUI: {notifyUI} | " +
-                      $"Duration: {effect.Duration}");
+                // Debug.Log($"[{name}] Effect: {effect.GetType().Name} | " +
+                //       $"Target: {(effectable as MonoBehaviour)?.name} | " +
+                //       $"Applied: {applied} | NotifyUI: {notifyUI} | " +
+                //       $"Duration: {effect.Duration}");
 
                 if (applied && notifyUI)
                 {

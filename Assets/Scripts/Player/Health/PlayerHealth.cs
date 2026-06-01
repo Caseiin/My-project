@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour, IDamageable,IPlayerEffectable
 {
+    [Header("Health")]
     [SerializeField] Slider HealthSlider;
     [SerializeField] TextMeshProUGUI HealthText;
     int _health;
@@ -12,9 +13,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable,IPlayerEffectable
     public int MaxHealth{get; private set;}
 
     public event Action OnDeath;
+    public event Action OnHealing;
     public event Action<int> OnHealthRestored;
     public event Action<int> OnHealthTaken;
-    public event Action<int> OnHealthChanged;
 
     public void Initialize(int health){
         _health = health;
@@ -38,7 +39,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable,IPlayerEffectable
         HealthText.text = $"{_health}/{MaxHealth}";
 
         OnHealthRestored?.Invoke(health);
-        OnHealthChanged?.Invoke(_health);
+        OnHealing?.Invoke();
     }
 
     public void TakeDamage(int dmg)
@@ -49,7 +50,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable,IPlayerEffectable
         HealthText.text = $"{_health}/{MaxHealth}";
 
         OnHealthTaken?.Invoke(dmg);
-        OnHealthChanged?.Invoke(_health);
 
         if (_health <= 0) 
             OnDeath?.Invoke();

@@ -14,12 +14,12 @@ public class HealthTextDisplayer : MonoBehaviour
 
     void OnEnable()
     {
-        _health.OnHealthChanged += DisplayHealthMessage;
+        // _health.OnHealthChanged += DisplayHealthMessage;
     }
 
     void OnDisable()
     {
-        _health.OnHealthChanged -= DisplayHealthMessage;
+        // _health.OnHealthChanged -= DisplayHealthMessage;
     }
 
     void DisplayHealthMessage(int health)

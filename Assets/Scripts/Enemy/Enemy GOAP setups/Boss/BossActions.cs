@@ -11,13 +11,13 @@ public class BossActions : BaseActionSetup
             .Build());
 
         agent.Actions.Add(new AgentAction.Builder("AttackPlayer")
-            .WithStrategy(new AttackActionStrategy(attackStrategy,enemy))
+            .WithStrategy(new AttackActionStrategy(attackStrategy, enemy))
             .AddPreCondition(agent.Beliefs["PlayerInAttackRange"])
             .AddEffect(agent.Beliefs["PlayerDead"])
             .Build());
 
         agent.Actions.Add(new AgentAction.Builder("ChasePlayer")
-            .WithStrategy(new ChaseStrategy(enemy.NavAgent,enemy.PlayerPosition,() => enemy.AttackSensor.IsTargetInRange)) 
+            .WithStrategy(new ChaseStrategy(enemy.NavAgent, enemy.PlayerPosition, () => enemy.AttackSensor.IsTargetInRange))
             .AddPreCondition(agent.Beliefs["PlayerDetected"])
             .AddEffect(agent.Beliefs["PlayerInAttackRange"])
             .Build());

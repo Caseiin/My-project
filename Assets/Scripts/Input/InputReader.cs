@@ -26,6 +26,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
     public event Action OnClickTriggered;
     public event Action<ScreenType> OnMenuActivated;
     public event Action OnInteractTriggered;
+    public event Action OnHotBarKeyPressed;
     public event Action<int> OnHotBarTriggered;
     public event Action<int> OnMouseWheelScrolled;
 
@@ -124,6 +125,7 @@ public class InputReader : ScriptableObject,InputSystem_Actions.IUIActions,Input
         if (context.performed){
             var hotbarValue = context.ReadValue<int>();
             OnHotBarTriggered?.Invoke(hotbarValue);
+            OnHotBarKeyPressed?.Invoke();
         }
 
     }

@@ -16,4 +16,5 @@ MonoBehaviour:
   Actions: {fileID: 11400000, guid: 066d8e9796feec84bb5d22c3453422de, type: 2}
   Beliefs: {fileID: 11400000, guid: 8ab6e2343adb6e744b68e5b321844cdd, type: 2}
   Goals: {fileID: 11400000, guid: 3d877b1fb11c72e40a4678daa2e75994, type: 2}
+  StartsInvulnerable: 1
   Reward: {fileID: 11400000, guid: 4303acefee070bd4abf5cc5575c4b314, type: 2}

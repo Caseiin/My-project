@@ -21,16 +21,18 @@
         public Sensor DetectionSensor => detectionSensor;
         public Sensor AttackSensor => attackSensor;
 
-        // Movement
-        [Header("Movement")]
-        [SerializeField] float moveSpeed = 4f; 
-        public float MoveSpeed => moveSpeed;
         public bool IsMovementBlocked { get;set;} = false;
         public Rigidbody RB {get;private set;}
         NavMeshAgent _navAgent;
         public NavMeshAgent NavAgent => _navAgent;
 
-        
+        [Header("Vulnerable State")]
+        [SerializeField] Material _vulnerableHighlightMaterial;
+        MeshRenderer _renderer;
+        MeshRenderer Renderer => _renderer;
+
+
+        // 
         BaseActionSetup actions;
         BaseBeliefSetUps beliefs;
         BaseGoalsSetup goals;
@@ -51,7 +53,7 @@
             RB.freezeRotation = true;
             _enemyHealth = GetComponent<EnemyHealth>();
             _navAgent = GetComponent<NavMeshAgent>();
-
+            _renderer = GetComponent<MeshRenderer>();
 
             goapAgent = new GoapAgent(transform, _navAgent);
         }
@@ -77,6 +79,7 @@
         public void InitializeBehaviour(EnemySetUpSO enemySetUp, System.Action onDeath = null){
             setUp = enemySetUp;
             _enemyHealth.InitializeHealth(setUp, onDeath);
+            _enemyHealth.IsInvulnerable = enemySetUp.StartsInvulnerable;
             goals = setUp.Goals;
             actions = setUp.Actions;
             beliefs = setUp.Beliefs;
@@ -102,6 +105,13 @@
             At(trackState,  attackState, new FuncPredicate(() => goapAgent.Beliefs["PlayerInAttackRange"].Evaluate()));
             At(attackState, trackState,  new FuncPredicate(() => !goapAgent.Beliefs["PlayerInAttackRange"].Evaluate()&& goapAgent.Beliefs["PlayerDetected"].Evaluate()));
             At(trackState,  idlestate,   new FuncPredicate(() => !goapAgent.Beliefs["PlayerDetected"].Evaluate()));
+
+            if (setUp.StartsInvulnerable)
+            {
+                var vulnerableState = new EnemyVulnerableState(this, goapAgent, _renderer, _vulnerableHighlightMaterial);
+                Any(vulnerableState, new FuncPredicate(() => !goapAgent.Beliefs["AgentIsInvulnerable"].Evaluate()));
+                At(vulnerableState, idlestate, new FuncPredicate(() => vulnerableState.IsVulnerabilityDone));
+            }
 
             machine.SetState(idlestate);
         }
@@ -129,4 +139,6 @@
         // Helper Methods
         void At(IState from, IState to, IPredicate condition) => machine.AddTransitions(from,to,condition);
         void Any(IState to, IPredicate condition) => machine.AddAnyTransition(to,condition);
+
+
     }

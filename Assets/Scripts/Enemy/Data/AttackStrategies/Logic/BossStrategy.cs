@@ -13,7 +13,10 @@ public class BossStrategy : AttackStrategy
     bool CanAttack => _currentAttackCount < maxAttackCount;
     IPowerUp _power;
     EffectContext _effectContext;
-    public override void Initialize(EnemyController enemy){
+
+
+    public override void Initialize(EnemyController enemy)
+    {
         base.Initialize(enemy);
         countdownTimer.OnTimerStop += ResetCount;
         _effectContext = new EffectContext(enemy.Transform);
@@ -22,19 +25,18 @@ public class BossStrategy : AttackStrategy
 
     public override void Attack(EnemyController enemy)
     {
-
-        if(!CanAttack) return;
+        if (!CanAttack) return;
 
         enemy.PlayerPosition.GetComponent<PlayerHealth>()?.TakeDamage(damage);
         _currentAttackCount++;
-        
-        if(!CanAttack){
+
+        if (!CanAttack)
+        {
             _power.UsePower();
             countdownTimer.Start();
+            enemy.Health.IsInvulnerable = false;
         }
-
     }
 
     public override void ResetCount() => _currentAttackCount = 0;
-
 }

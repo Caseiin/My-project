@@ -103,7 +103,7 @@ public class ProjectileThrow : MonoBehaviour
 
         int limit = GetThrowLimit(projType);
         if(state.ThrowCount >= limit){
-            Debug.Log("Projectile Cooldown");
+            // Debug.Log("Projectile Cooldown");
             var color = ability.effects[0].EffectColour;
             OnCooldownActive?.Invoke($"{ability.Name} cooldown", _abilityCooldownDuration, color);
             _abilityCooldowns[ability].Timer.Start();
@@ -130,7 +130,7 @@ public class ProjectileThrow : MonoBehaviour
 
         state.ThrowCount = 0;
         _abilityCooldowns[ability] = state;
-        Debug.Log($"[Projectile Throw] Cooldown ended  for {ability.name}");
+        // Debug.Log($"[Projectile Throw] Cooldown ended  for {ability.name}");
     }
 
     bool CanThrowAbility(AbilitySO ability, AbilityProjectile projType){

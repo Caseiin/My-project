@@ -13,5 +13,6 @@ public abstract class BaseBeliefSetUps : ScriptableObject
         factory.AddBelief("PlayerDead", () => enemy.PlayerPosition == null || enemy.PlayerPosition.GetComponent<PlayerHealth>()?.Health <= 0f);
         factory.AddBelief("AgentStuck", () => enemy.IsMovementBlocked);
         factory.AddBelief("AgentNearDeath", ()=> enemy.Health.Health <= enemy.Health.MaxHealth * 0.3f);
+        factory.AddBelief("AgentIsInvulnerable", ()=> enemy.Health.IsInvulnerable);
     }
 }

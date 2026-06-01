@@ -23,5 +23,5 @@ MonoBehaviour:
       type: {class: DamageEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectIcon: {fileID: 21300000, guid: 3a28a139ec1d5d94a929d56961f63fa2, type: 3}
-        EffectColour: {r: 0.7283019, g: 0.37947357, b: 0.009619043, a: 1}
+        EffectColour: {r: 0.7294118, g: 0.2299629, b: 0.00784313, a: 1}
         dmgAmount: 30

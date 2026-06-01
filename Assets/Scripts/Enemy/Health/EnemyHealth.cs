@@ -9,7 +9,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     int _health;
     public int Health => _health;
     public int MaxHealth{get; private set;}
-    public bool IsInVulnerable{get;set;} = false;
+    public bool IsInvulnerable{get;set;} = false;
     
     public event Action OnDeath;
     public event Action<int> OnHealthRestored;
@@ -40,7 +40,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     public void TakeDamage(int dmg)
     {
-        if(IsInVulnerable) return;
+        if(IsInvulnerable) return;
         _health -= dmg; // subtract first
 
         var dmgUI = WorldSpaceUIManager.Instance.Spawn(HealthPrefab, transform);
