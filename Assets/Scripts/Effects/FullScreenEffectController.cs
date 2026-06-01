@@ -9,6 +9,10 @@ public class FullScreenEffectController : MonoBehaviour
     [SerializeField] ScriptableRendererFeature _fullScreenEffect;
     [SerializeField] Material _material;
 
+    [Header("Colors")]
+    [SerializeField] Color _damageColor = Color.red;
+    [SerializeField] Color _healColor   = Color.green;
+
     [Header("Config")]
     [SerializeField] float _vignetteStart   = 1.76f;  // corners covered on hit
     [SerializeField] float _vignettePeak    = 5.2f;  // briefly tighten
@@ -19,31 +23,39 @@ public class FullScreenEffectController : MonoBehaviour
     static readonly int _ColorID = Shader.PropertyToID("_BaseColor");
     static readonly int _VignettePower = Shader.PropertyToID("_VignettePower");
 
+    PlayerHealth _playerHealth;
     Coroutine _activeEffect;
 
-    void Start()=> _fullScreenEffect.SetActive(false);
+    void Awake() => _playerHealth = Registry<PlayerController>.GetFirst().Health;
 
-    void OnEnable() => AbilityProjectile.OnPlayerEffectLanded += DisplayEffect;
-    void OnDisable() => AbilityProjectile.OnPlayerEffectLanded -= DisplayEffect;
-
-
-    public void DisplayEffect(Color effectcolor, float holdDuration){
-        if(_activeEffect != null)
-            StopCoroutine(_activeEffect);
-
-        _activeEffect = StartCoroutine(RunEffect(effectcolor, holdDuration));
+    void OnEnable()
+    {
+        _playerHealth.OnHealthTaken    += _value=> TriggerEffect(_damageColor);
+        _playerHealth.OnHealthRestored += _value=> TriggerEffect(_healColor);
     }
 
-    IEnumerator RunEffect(Color effectcolor, float holdDuration)
+    void OnDisable()
     {
-        //TODO: Fix the motionless duration vignette its not working
-        // Debug.Log($"[Vignette] DisplayEffect called | Duration: {holdDuration}");
+        _playerHealth.OnHealthTaken    -= _value=> TriggerEffect(_damageColor);
+        _playerHealth.OnHealthRestored -= _value=> TriggerEffect(_healColor);
+    }
+
+    void Start() => _fullScreenEffect.SetActive(false);
+
+    void TriggerEffect(Color color)
+    {
+        if (_activeEffect != null)
+            StopCoroutine(_activeEffect);
+
+        _activeEffect = StartCoroutine(RunEffect(color));
+    }
+
+    IEnumerator RunEffect(Color effectcolor)
+    {
 
         _material.SetColor(_ColorID, effectcolor);
         _material.SetFloat(_VignettePower, _defaultVignettePower);
         _fullScreenEffect.SetActive(true);
-
-        yield return new WaitForSeconds(holdDuration);
 
         float elapsed = 0f;
         while (elapsed < _fadeOutDuration){

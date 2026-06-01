@@ -3,55 +3,70 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHealth : MonoBehaviour, IDamageable,IPlayerEffectable
+public class PlayerHealth : MonoBehaviour, IDamageable, IPlayerEffectable
 {
     [Header("Health")]
-    [SerializeField] Slider HealthSlider;
-    [SerializeField] TextMeshProUGUI HealthText;
-    int _health;
-    public int Health{get; private set;}
-    public int MaxHealth{get; private set;}
+    [SerializeField] Slider healthSlider;
+    [SerializeField] TextMeshProUGUI healthText;
 
-    public event Action OnDeath;
-    public event Action OnHealing;
-    public event Action<int> OnHealthRestored;
-    public event Action<int> OnHealthTaken;
+    public int Health    { get; private set; }
+    public int MaxHealth { get; private set; }
 
-    public void Initialize(int health){
-        _health = health;
-        Health = health;
-        MaxHealth = health;        
-        HealthText.text = $"{_health}/{MaxHealth}";
-    }
-    public void RestoreHealth(int health)
+    public event Action       OnDeath;
+    public event Action       OnHealing;
+    public event Action       OnFullHealth;
+    public event Action<int>  OnHealthRestored;
+    public event Action<int>  OnHealthTaken;
+
+    public void Initialize(int health)
     {
-        int remainderHealth =0;
-        if(_health >= MaxHealth) return;
+        Health = MaxHealth = health;
+        RefreshUI();
+    }
 
-        if(_health + health >= MaxHealth){
-            remainderHealth = MaxHealth - _health;
-            _health += health;
+    public void RestoreToFull()
+    {
+        if (Health >= MaxHealth) 
+        {
+            OnFullHealth?.Invoke(); // Already full — still fire so the queue advances
+            return;
         }
-        else 
-        _health += health;
 
-        HealthSlider.value = (float)_health/MaxHealth;
-        HealthText.text = $"{_health}/{MaxHealth}";
-
-        OnHealthRestored?.Invoke(health);
+        Health = MaxHealth;
+        RefreshUI();
         OnHealing?.Invoke();
+        OnHealthRestored?.Invoke(MaxHealth); // Restored to full by definition
+        OnFullHealth?.Invoke();
+    }
+
+    public void RestoreHealth(int amount)
+    {
+        if (Health >= MaxHealth) return;
+
+        int actual = Mathf.Min(amount, MaxHealth - Health); // Clamp to remainder
+        Health += actual;
+
+        RefreshUI();
+        OnHealing?.Invoke();
+        OnHealthRestored?.Invoke(actual);
+
+        if (Health == MaxHealth)
+            OnFullHealth?.Invoke();
     }
 
     public void TakeDamage(int dmg)
     {
-        // ToDO: Death action must occur
-        _health -= dmg;
-        HealthSlider.value = (float)_health/MaxHealth;
-        HealthText.text = $"{_health}/{MaxHealth}";
-
+        Health = Mathf.Max(Health - dmg, 0); // Clamp — never go below zero
+        RefreshUI();
         OnHealthTaken?.Invoke(dmg);
 
-        if (_health <= 0) 
+        if (Health <= 0)
             OnDeath?.Invoke();
+    }
+
+    void RefreshUI()
+    {
+        healthSlider.value = (float)Health / MaxHealth;
+        healthText.text    = $"{Health}/{MaxHealth}";
     }
 }

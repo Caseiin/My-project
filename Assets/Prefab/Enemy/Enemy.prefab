@@ -22,7 +22,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1917209980920412868
 Transform:
   m_ObjectHideFlags: 0
@@ -159,10 +159,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b925def109c2474f94191dca5b4165c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
-  setUp: {fileID: 11400000, guid: e001d5184c89d374db8563e02b741f0e, type: 2}
+  setUp: {fileID: 11400000, guid: 68bd57109e2f86c48a7c151a84249749, type: 2}
   detectionSensor: {fileID: 2159658418295279667}
   attackSensor: {fileID: 4860909874872314263}
-  moveSpeed: 4
   _vulnerableHighlightMaterial: {fileID: 2100000, guid: 676ec60a8edbe284f9f75a9a3d607ed0, type: 2}
 --- !u!114 &6913047797074134885
 MonoBehaviour:

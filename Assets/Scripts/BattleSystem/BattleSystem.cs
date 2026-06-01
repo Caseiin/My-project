@@ -1,68 +1,70 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleSystem : MonoBehaviour
 {
-    [SerializeField] GameObject enemy;
-    [SerializeField] List<EnemySetUpSO> enemyBehaviourSetUps;
-    [SerializeField] int level = 1;
-    [SerializeField] int baseEnemyCount = 3;
+    [SerializeField] List<BattleData> battleData;
+    [SerializeField] GameObject enemyPrefab;
+    [SerializeField] Transform spawnPoint;
 
-    public static Action<int> OnLevelChanged;
-    EnemySpawn spawner = new();
-    int _activeEnemies = 0;
+    readonly Queue<BattleData> _battleQueue = new Queue<BattleData>();
 
-    void Start()
+    PlayerController _player;
+    bool _waitingForNextSpawn;
+
+    public static event Action<string> OnEnemySpawned;
+    public static event Action OnBattleComplete;
+
+    void Awake()
     {
-        StartBattle();
+        _player = Registry<PlayerController>.GetFirst();
+
+        foreach (var data in battleData)
+            _battleQueue.Enqueue(data);
     }
 
-    public void StartBattle()
+    void OnEnable()  => _player.Health.OnFullHealth += HandlePlayerFullHealth;
+    void OnDisable() => _player.Health.OnFullHealth -= HandlePlayerFullHealth;
+
+    void Start() => SpawnNext(); // Kick off the first enemy immediately
+
+    void HandlePlayerFullHealth()
     {
-        Debug.Log($"Start Battle - Level {level}");
-        StartCoroutine(SpawnWave());
+        if (!_waitingForNextSpawn) return; // Guard: only act after an enemy death
+        _waitingForNextSpawn = false;
+        SpawnNext();
     }
 
-    IEnumerator SpawnWave()
+    void SpawnNext()
     {
-        int enemyCount = baseEnemyCount + (level - 1);
-        _activeEnemies = enemyCount;
-
-        Debug.Log($"Spawning wave: {enemyCount} enemies");
-
-        for (int i = 0; i < enemyCount; i++)
+        if (_battleQueue.Count == 0)
         {
-            EnemySetUpSO behaviour = PickBehaviour();
-            spawner.Spawn(enemy, behaviour, OnEnemyDied);
+            OnBattleComplete?.Invoke();
+            return;
         }
 
-        yield break;
+        var setup = _battleQueue.Dequeue();
+
+        var enemy = Instantiate(enemyPrefab, spawnPoint)
+            .GetComponent<EnemyController>();
+
+        enemy.InitializeBehaviour(setup.SetupData, () => OnEnemyDied(enemy));
+
+        OnEnemySpawned?.Invoke(setup.EnemyName);
     }
 
-    void OnEnemyDied()
+    void OnEnemyDied(EnemyController enemy)
     {
-        _activeEnemies--;
-        Debug.Log($"Enemy died. Remaining: {_activeEnemies}");
-
-        if (_activeEnemies <= 0)
+        Destroy(enemy.gameObject);
+        
+        if (_battleQueue.Count == 0)
         {
-            OnWaveCleared();
+            OnBattleComplete?.Invoke();
+            return;
         }
-    }
 
-    void OnWaveCleared()
-    {
-        level++;
-        OnLevelChanged?.Invoke(level);
-        Debug.Log($"Wave cleared! Starting level {level}");
-        StartCoroutine(SpawnWave());
-    }
-
-    EnemySetUpSO PickBehaviour()
-    {
-        int unlocked = Mathf.Min(level, enemyBehaviourSetUps.Count);
-        return enemyBehaviourSetUps[UnityEngine.Random.Range(0, unlocked)];
+        _waitingForNextSpawn = true;   // Arm the flag — next full-health fires the spawn
+        _player.Health.RestoreToFull(); // Trigger the restore; OnFullHealth will follow
     }
 }
