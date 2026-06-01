@@ -7,7 +7,7 @@ public class BattleSystem : MonoBehaviour
 {
     [SerializeField] UnityEvent onBattleComplete;
     [SerializeField] List<BattleData> battleData;
-    [SerializeField]PlayerController _player;
+    PlayerHealth _playerhealth;
 
     readonly Queue<BattleData> _battleQueue = new Queue<BattleData>();
 
@@ -17,30 +17,30 @@ public class BattleSystem : MonoBehaviour
 
     void Start()
     {
+        _playerhealth = Registry<PlayerController>.GetFirst().GetComponent<PlayerHealth>();
         foreach (var data in battleData)
             _battleQueue.Enqueue(data);
 
-        Debug.Log(_player.Health);
-        if (_player == null)
-        {
-            Debug.Log("Player is null for battle system");
+
+
+        if(_playerhealth == null){
+            Debug.Log("Player Health is null for battle system");
+            return;
         }
 
-        if(_player.Health == null){
-            Debug.Log("Player Health is null for battle system");
-            
-        }
+        Debug.Log(_playerhealth);
+        _playerhealth.OnFullHealth += HandlePlayerFullHealth;
     }
 
     void OnEnable()
     {
-        if (_player.Health == null) return;
-        _player.Health.OnFullHealth += HandlePlayerFullHealth;
+        if (_playerhealth== null) return;
+        _playerhealth.OnFullHealth += HandlePlayerFullHealth;
     } 
     void OnDisable()
     {
-        if (_player.Health == null) return;
-        _player.Health.OnFullHealth -= HandlePlayerFullHealth;
+        if (_playerhealth == null) return;
+       _playerhealth.OnFullHealth -= HandlePlayerFullHealth;
     } 
 
     // void Start() => SpawnNext();
@@ -56,7 +56,6 @@ public class BattleSystem : MonoBehaviour
     {
         if (_battleQueue.Count == 0)
         {
-            _player.SetCameraLogic(new IdleCameraLogic(_player));
             ReleaseCursor();
             onBattleComplete?.Invoke();
             return;
@@ -72,7 +71,7 @@ public class BattleSystem : MonoBehaviour
     void OnEnemyDied(EnemyController enemy)
     {
         if (enemy == null) return;
-        if (_player == null || _player.Health == null) return;
+        if (_playerhealth == null) return;
 
         enemy.gameObject.SetActive(false);
 
@@ -83,7 +82,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         _waitingForNextSpawn = true;
-        _player.Health.RestoreToFull();
+        _playerhealth.RestoreToFull();
     }
 
     void ReleaseCursor()

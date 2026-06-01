@@ -59,6 +59,10 @@ public class FullScreenEffectController : MonoBehaviour
             Debug.Log("player health is null");
             return;
         }
+
+        _playerHealth.OnHealthTaken += _damageHandler;
+        _playerHealth.OnHealthRestored += _healHandler;
+        
         Debug.Log(_fullScreenEffect);
         Debug.Log(_material);
         ClearEffect();

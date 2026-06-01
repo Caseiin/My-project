@@ -12,6 +12,7 @@ public class RingMenu : MonoBehaviour
     float stepLength;
     int selectedIndex;
     public static Action<AbilitySO> onAbiiltySelected;
+    public static Action<string, Color> OnAbilityIndicated;
     public event Action onSelectedAbility;
 
     void Awake()
@@ -73,6 +74,7 @@ public class RingMenu : MonoBehaviour
         var selectedAbility = data.Elements[selectedIndex].Ability;
         onAbiiltySelected?.Invoke(selectedAbility);
         onSelectedAbility?.Invoke();
+        OnAbilityIndicated?.Invoke(selectedAbility.name, selectedAbility.effects[0].EffectColour);
         Debug.Log($" Selected Ability: {selectedAbility}");
     }
 }

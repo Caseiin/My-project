@@ -36,7 +36,7 @@ public class UIScreensManager : Singleton<UIScreensManager>
         HideAllScreens();
         _screensMap[type].Show();
         ActionEventBus<CameraLogic>.Invoke(new IdleCameraLogic(_player));
-
+        ReleaseCursor();
     }
 
     public void HideAllScreens()
@@ -60,6 +60,12 @@ public class UIScreensManager : Singleton<UIScreensManager>
             ShowScreen(type);
             _currentScreen = type;
         }
+    }
+
+    void ReleaseCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void OnExitClick()
