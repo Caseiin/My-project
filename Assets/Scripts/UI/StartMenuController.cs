@@ -4,6 +4,12 @@ using UnityEngine.SceneManagement;
 public class StartMenuController : MonoBehaviour
 {
     [SerializeField] SceneReference scene;
+
+    void Awake()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
     public void OnStartClick()
     {
         SceneManager.LoadScene(scene.ScenePath);

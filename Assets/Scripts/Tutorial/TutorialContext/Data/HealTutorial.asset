@@ -15,4 +15,5 @@ MonoBehaviour:
   TutorialName: HealTutorial
   failure: 0
   inactivityTimeout: 0.25
-  Hints: Change Projectile type to heart healing bomb and heal yourself
+  Hints: Change Projectile type to heart healing bomb and heal yourself using what
+    you learnt

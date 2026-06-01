@@ -23,24 +23,46 @@ public class FullScreenEffectController : MonoBehaviour
     static readonly int _ColorID = Shader.PropertyToID("_BaseColor");
     static readonly int _VignettePower = Shader.PropertyToID("_VignettePower");
 
-    PlayerHealth _playerHealth;
+    PlayerHealth _playerHealth = null;
     Coroutine _activeEffect;
+    Action<int> _damageHandler;
+    Action<int> _healHandler;
 
-    void Awake() => _playerHealth = Registry<PlayerController>.GetFirst().Health;
 
+    void Awake()
+    {
+        _damageHandler = _ => TriggerEffect(_damageColor);
+        _healHandler = _ => TriggerEffect(_healColor);
+    }
     void OnEnable()
     {
-        _playerHealth.OnHealthTaken    += _value=> TriggerEffect(_damageColor);
-        _playerHealth.OnHealthRestored += _value=> TriggerEffect(_healColor);
+        if (_playerHealth == null) return;
+
+        _playerHealth.OnHealthTaken += _damageHandler;
+        _playerHealth.OnHealthRestored += _healHandler;
+        _playerHealth.OnDeath += ClearEffect;
     }
 
     void OnDisable()
     {
-        _playerHealth.OnHealthTaken    -= _value=> TriggerEffect(_damageColor);
-        _playerHealth.OnHealthRestored -= _value=> TriggerEffect(_healColor);
+        if (_playerHealth == null) return;
+
+        _playerHealth.OnHealthTaken -= _damageHandler;
+        _playerHealth.OnHealthRestored -= _healHandler;
+        _playerHealth.OnDeath -= ClearEffect;
     }
 
-    void Start() => _fullScreenEffect.SetActive(false);
+    void Start()
+    {
+        _playerHealth = Registry<PlayerController>.GetFirst().Health;
+        if(_playerHealth == null){
+            Debug.Log("player health is null");
+            return;
+        }
+        Debug.Log(_fullScreenEffect);
+        Debug.Log(_material);
+        ClearEffect();
+    }
 
     void TriggerEffect(Color color)
     {
@@ -64,8 +86,18 @@ public class FullScreenEffectController : MonoBehaviour
             _material.SetFloat(_VignettePower, Mathf.Lerp(_vignetteStart, _vignettePeak, timeLapsed));
             yield return null;
         }
+        ClearEffect();
+    }
 
+    void ClearEffect()
+    {
+        if (_activeEffect != null)
+        {
+            StopCoroutine(_activeEffect);
+            _activeEffect = null;
+        }
+
+        _material.SetFloat(_VignettePower, 0f);
         _fullScreenEffect.SetActive(false);
-        _activeEffect = null;
     }
 }

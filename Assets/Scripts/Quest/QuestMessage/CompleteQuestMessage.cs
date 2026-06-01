@@ -1,1 +1,0 @@
-public class CompleteQuestMessage: QuestMessageBase{}

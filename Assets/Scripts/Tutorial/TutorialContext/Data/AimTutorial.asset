@@ -15,4 +15,4 @@ MonoBehaviour:
   TutorialName: AimTutorial
   failure: 0
   inactivityTimeout: 1
-  Hints: Right Mouse Click To Aim
+  Hints: Right Mouse Click To Aim and Left mouse click to shoot

@@ -13,7 +13,8 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
 
     [Header("Health")]
     [SerializeField] int _health = 150;
-    public PlayerHealth Health {get; private set;}
+    PlayerHealth _playerhealth;
+    public PlayerHealth Health => _playerhealth;
 
     [Header("Movement")]
     [SerializeField] float _movementThreshold = 0.05f;
@@ -49,17 +50,17 @@ public class PlayerController : EntityController,IMoveable,IPlayerEffectable
     {
         Registry<PlayerController>.TryAdd(this);
         RB = GetComponent<Rigidbody>();
-        Health = GetComponent<PlayerHealth>();
+        _playerhealth = GetComponent<PlayerHealth>();
         ThrowLogic = Hand.GetComponent<ProjectileThrow>();
         Trajectory = Hand.GetComponentInChildren<TrajectorPredictor>();
     }
 
     void Start()
     {
+        Health.Initialize(_health);
         DeclareStateInformation();
         SetCameraLogic(new FPSCameraLogic(this)); 
         Input.EnableInputMap();
-        Health.Initialize(_health);
         ActionEventBus<CameraLogic>.AddListener(SetCameraLogic);
     }
 

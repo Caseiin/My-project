@@ -113,7 +113,6 @@ public abstract class AbilityProjectile : MonoBehaviour
                     Debug.Log($"[{name}] Invoking popup for: {effect.GetType().Name}");
                     EffectPopUpManager.Instance.DisplayEffect(effect);
                     Messenger.AddEffectMessage(effect.Message);
-                    OnPlayerEffectLanded?.Invoke(Ability.abilityMaterial.color, effect.Duration);
                 }
             }
         }

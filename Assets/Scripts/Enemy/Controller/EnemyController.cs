@@ -59,7 +59,7 @@
         }
 
         void Start(){
-            PlayerPosition =  Registry<PlayerController>.GetFirst().transform;
+            PlayerPosition = Registry<PlayerController>.GetFirst().transform;
             InitializeBehaviour(setUp); //TODO: Remove this later for the object pool 
         }
 
@@ -67,24 +67,28 @@
         {
             machine?.Update();
             goapAgent?.Update(Time.deltaTime);
-
         }
 
     void OnEnable() => _enemyHealth.OnDeath += DeathScene;
     void OnDisable() => _enemyHealth.OnDeath -= DeathScene;
 
 
-    void FixedUpdate() => machine?.FixedUpdate();
-
+    void FixedUpdate()
+    {
+        machine?.FixedUpdate();
+    }
         public void InitializeBehaviour(EnemySetUpSO enemySetUp, System.Action onDeath = null){
+
             setUp = enemySetUp;
             _enemyHealth.InitializeHealth(setUp, onDeath);
             _enemyHealth.IsInvulnerable = enemySetUp.StartsInvulnerable;
-            goals = setUp.Goals;
+            goals   = setUp.Goals;
             actions = setUp.Actions;
             beliefs = setUp.Beliefs;
-            reward = setUp.Reward;
-            DeclareStateAndGOAPInfo();            
+            reward  = setUp.Reward;
+
+            DeclareStateAndGOAPInfo();
+
         }
 
         void DeclareStateAndGOAPInfo()

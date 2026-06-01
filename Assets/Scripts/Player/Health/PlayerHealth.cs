@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour, IDamageable, IPlayerEffectable
@@ -8,19 +9,21 @@ public class PlayerHealth : MonoBehaviour, IDamageable, IPlayerEffectable
     [Header("Health")]
     [SerializeField] Slider healthSlider;
     [SerializeField] TextMeshProUGUI healthText;
+    [SerializeField] SceneReference deathscene;
 
     public int Health    { get; private set; }
     public int MaxHealth { get; private set; }
 
-    public event Action       OnDeath;
-    public event Action       OnHealing;
-    public event Action       OnFullHealth;
+    public event Action  OnDeath;
+    public event Action OnHealing;
+    public event Action OnFullHealth;
     public event Action<int>  OnHealthRestored;
     public event Action<int>  OnHealthTaken;
 
     public void Initialize(int health)
     {
         Health = MaxHealth = health;
+        OnDeath = HandleDeath;
         RefreshUI();
     }
 
@@ -68,5 +71,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable, IPlayerEffectable
     {
         healthSlider.value = (float)Health / MaxHealth;
         healthText.text    = $"{Health}/{MaxHealth}";
+    }
+
+    void HandleDeath(){
+        SceneManager.LoadScene(deathscene.ScenePath);
     }
 }
